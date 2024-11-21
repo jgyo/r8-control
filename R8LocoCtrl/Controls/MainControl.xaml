@@ -1,0 +1,451 @@
+﻿<UserControl
+    x:Class="R8LocoCtrl.Controls.MainControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Tools="clr-namespace:R8LocoCtrl.Tools"
+    xmlns:ctrl="clr-namespace:R8LocoCtrl.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:gauges="clr-namespace:R8LocoCtrl.Gauges"
+    xmlns:int="clr-namespace:R8LocoCtrl.Interface"
+    xmlns:local="clr-namespace:R8LocoCtrl.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syn="http://schemas.syncfusion.com/wpf"
+    xmlns:vm="clr-namespace:R8LocoCtrl.ViewModel"
+    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True,
+                                     Type=int:Run8ListenerClient}"
+    d:Height="400"
+    d:Width="830"
+    Background="Black"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Tools:HasFlagConverter x:Key="HasFlagConverter" />
+        <BorderGapMaskConverter x:Key="BorderGapMaskConverter" />
+        <SolidColorBrush x:Key="DefaultTextBoxColor" Color="#FFE8E8E8" />
+        <SolidColorBrush x:Key="SafeRangeColor" Color="#ff00ff00" />
+        <SolidColorBrush x:Key="CautionColor" Color="#ffffff00" />
+        <SolidColorBrush x:Key="AlertColor" Color="#ffff0000" />
+
+        <Style x:Key="DataBoxStyle" TargetType="{x:Type GroupBox}">
+            <Setter Property="BorderThickness" Value="5" />
+            <Setter Property="BorderBrush" Value="{StaticResource DefaultTextBoxColor}" />
+            <Setter Property="Foreground" Value="{StaticResource DefaultTextBoxColor}" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupBox}">
+                        <Grid SnapsToDevicePixels="true">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="6" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="6" />
+                            </Grid.RowDefinitions>
+                            <Border
+                                Grid.Row="1"
+                                Grid.RowSpan="3"
+                                Grid.ColumnSpan="5"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                                <Border.OpacityMask>
+                                    <MultiBinding Converter="{StaticResource BorderGapMaskConverter}" ConverterParameter="16">
+                                        <Binding ElementName="Header" Path="ActualWidth" />
+                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Mode=Self}" />
+                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Mode=Self}" />
+                                    </MultiBinding>
+                                </Border.OpacityMask>
+                            </Border>
+                            <Border
+                                x:Name="Header"
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="2"
+                                Padding="4,1,4,0">
+                                <ContentPresenter
+                                    HorizontalAlignment="Center"
+                                    ContentSource="Header"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ContentPresenter
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                Grid.ColumnSpan="3"
+                                Margin="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DataTextBoxStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="TextWrapping" Value="NoWrap" />
+            <Setter Property="Margin" Value="8,0" />
+            <Setter Property="Foreground" Value="{StaticResource DefaultTextBoxColor}" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="TextTrimming" Value="None" />
+        </Style>
+        <Style TargetType="{x:Type Image}">
+            <Setter Property="Width" Value="32" />
+            <Setter Property="Height" Value="32" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
+    </UserControl.Resources>
+
+    <!--  Top Level Control  -->
+
+    <Grid
+        Width="834"
+        Height="350"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <!--  Top-Left Grid  -->
+
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <GroupBox
+                HorizontalAlignment="Stretch"
+                Header="ER"
+                Style="{DynamicResource DataBoxStyle}">
+                <TextBlock Style="{DynamicResource DataTextBoxStyle}" Text="{Binding EqPsi, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+            <GroupBox
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                Header="BP"
+                Style="{DynamicResource DataBoxStyle}">
+                <TextBlock Style="{DynamicResource DataTextBoxStyle}" Text="{Binding BpPsi, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+            <GroupBox
+                Grid.Row="2"
+                HorizontalAlignment="Stretch"
+                Header="BC"
+                Style="{DynamicResource DataBoxStyle}">
+                <TextBlock Style="{DynamicResource DataTextBoxStyle}" Text="{Binding BcPsi, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+
+            <GroupBox
+                Grid.Row="2"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                Header="Main"
+                Style="{DynamicResource DataBoxStyle}">
+                <TextBlock Style="{DynamicResource DataTextBoxStyle}" Text="{Binding MainPsi, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+            <GroupBox
+                Grid.Row="2"
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                Header="Rear"
+                Style="{DynamicResource DataBoxStyle}">
+                <TextBlock Style="{DynamicResource DataTextBoxStyle}" Text="{Binding EotPsi, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+            <GroupBox
+                Grid.Row="2"
+                Grid.Column="3"
+                HorizontalAlignment="Stretch"
+                Header="Flow"
+                Style="{DynamicResource DataBoxStyle}">
+                <TextBlock Style="{DynamicResource DataTextBoxStyle}" Text="{Binding CFM, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+            <gauges:DoubleBarGauge
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                Grid.ColumnSpan="3"
+                Margin="0,20,0,10"
+                BottomBarValue="{Binding BpPsi, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}"
+                PipePressureReference="{Binding PressureReference, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}"
+                TopBarValue="{Binding EqPsi, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+        </Grid>
+
+        <!--  Speedometer  -->
+        <syn:SfCircularGauge
+            x:Name="Speedometer"
+            Grid.Column="1"
+            Width="200"
+            Height="260"
+            GaugeHeaderPosition="0.5,0.75"
+            HeaderAlignment="Custom">
+            <syn:SfCircularGauge.GaugeHeader>
+                <Grid Width="35">
+                    <TextBlock
+                        Height="40"
+                        HorizontalAlignment="Center"
+                        FontSize="13"
+                        FontWeight="Bold"
+                        Foreground="{StaticResource DefaultTextBoxColor}"
+                        Text="{Binding Speed, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                </Grid>
+            </syn:SfCircularGauge.GaugeHeader>
+            <syn:SfCircularGauge.Scales>
+                <syn:CircularScale
+                    EndValue="{Binding MaxSpeedValue, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}"
+                    Interval="10"
+                    LabelOffset="0.1"
+                    LabelStroke="{DynamicResource DefaultTextBoxColor}"
+                    Radius="100"
+                    RimStroke="{StaticResource DefaultTextBoxColor}"
+                    RimStrokeThickness="4"
+                    ShowRim="True">
+                    <syn:CircularScale.MajorTickSettings>
+                        <syn:MajorTickSetting
+                            Length="10"
+                            Stroke="{DynamicResource DefaultTextBoxColor}"
+                            StrokeThickness="1" />
+                    </syn:CircularScale.MajorTickSettings>
+                    <syn:CircularScale.MinorTickSettings>
+                        <syn:MinorTickSetting
+                            Length="5"
+                            Stroke="{DynamicResource DefaultTextBoxColor}"
+                            StrokeThickness="1" />
+                    </syn:CircularScale.MinorTickSettings>
+                    <syn:CircularScale.Pointers>
+                        <syn:CircularPointer
+                            x:Name="SafeRangeMaxBar"
+                            PointerType="RangePointer"
+                            RangePointerStroke="{DynamicResource SafeRangeColor}"
+                            RangePointerStrokeThickness="5"
+                            Value="{Binding SafeRangeMax, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                        <syn:CircularPointer
+                            x:Name="CautionRangeMaxBar"
+                            PointerType="RangePointer"
+                            RangePointerStroke="{DynamicResource CautionColor}"
+                            RangePointerStrokeThickness="5"
+                            RangeStart="{Binding SafeRangeMax, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}"
+                            Value="{Binding CautionRangeMax, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                        <syn:CircularPointer
+                            x:Name="AlertRangeMaxBar"
+                            PointerType="RangePointer"
+                            RangePointerStroke="{DynamicResource AlertColor}"
+                            RangePointerStrokeThickness="5"
+                            RangeStart="{Binding CautionRangeMax, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}"
+                            Value="{Binding AlertRangeMax, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                        <syn:CircularPointer
+                            x:Name="SpeedNeedle"
+                            KnobFill="{StaticResource DefaultTextBoxColor}"
+                            KnobStroke="{StaticResource DefaultTextBoxColor}"
+                            NeedleLengthFactor="0.65"
+                            NeedlePointerStroke="{StaticResource DefaultTextBoxColor}"
+                            NeedlePointerStrokeThickness="7"
+                            NeedlePointerType="Triangle"
+                            PointerCapDiameter="12"
+                            PointerType="NeedlePointer"
+                            Value="{Binding Speed, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                        <syn:CircularPointer
+                            x:Name="NextMinSpeedPointer"
+                            PointerType="SymbolPointer"
+                            Symbol="Triangle"
+                            SymbolPointerHeight="15"
+                            SymbolPointerStroke="White"
+                            SymbolPointerWidth="12"
+                            Value="{Binding NextMinSpeed, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                    </syn:CircularScale.Pointers>
+                </syn:CircularScale>
+            </syn:SfCircularGauge.Scales>
+        </syn:SfCircularGauge>
+
+        <!--  Top-Right Grid  -->
+
+        <Grid Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <GroupBox
+                HorizontalAlignment="Stretch"
+                Header="MPH/Min"
+                Style="{StaticResource DataBoxStyle}">
+                <TextBlock Style="{StaticResource DataTextBoxStyle}" Text="{Binding SpeedMphPerMin, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainControl}}, StringFormat=\{0:F1\}}" />
+            </GroupBox>
+            <GroupBox
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                Header="Temp"
+                Style="{StaticResource DataBoxStyle}">
+                <TextBlock Style="{StaticResource DataTextBoxStyle}" Text="{Binding WaterTemp, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+            <GroupBox
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                Header="RPM"
+                Style="{StaticResource DataBoxStyle}">
+                <TextBlock Style="{StaticResource DataTextBoxStyle}" Text="{Binding DieselRpm, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+            <GroupBox
+                Grid.Row="2"
+                Grid.Column="0"
+                HorizontalAlignment="Stretch"
+                Header="Reverser"
+                Style="{StaticResource DataBoxStyle}">
+                <TextBlock Style="{StaticResource DataTextBoxStyle}" Text="{Binding ReverserPosition, Converter={StaticResource ReverserConverter}, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+            <GroupBox
+                Grid.Row="2"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                Header="Amps"
+                Style="{StaticResource DataBoxStyle}">
+                <TextBlock Style="{StaticResource DataTextBoxStyle}" Text="{Binding Ammeter, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+            </GroupBox>
+            <GroupBox
+                Grid.Row="2"
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                Header="Throttle"
+                Style="{StaticResource DataBoxStyle}">
+                <TextBlock Style="{StaticResource DataTextBoxStyle}">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource NotchConverter}">
+                            <Binding Path="Throttle" RelativeSource="{RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}" />
+                            <Binding Path="BrakeStatus" RelativeSource="{RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </GroupBox>
+            <Grid
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                Margin="4,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <GroupBox
+                    Margin="2,0,2,0"
+                    HorizontalAlignment="Stretch"
+                    Header="Previous Signal"
+                    Style="{StaticResource DataBoxStyle}">
+                    <TextBlock
+                        FontSize="18"
+                        Style="{StaticResource DataTextBoxStyle}"
+                        Text="{Binding PreviousSignal, Converter={StaticResource SignalShortConverter}, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}"
+                        ToolTip="{Binding PreviousSignal, Converter={StaticResource SignalLongConverter}, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                </GroupBox>
+                <GroupBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="2,0,2,0"
+                    HorizontalAlignment="Stretch"
+                    Header="Next Signal"
+                    Style="{StaticResource DataBoxStyle}">
+                    <TextBlock
+                        FontSize="18"
+                        Style="{StaticResource DataTextBoxStyle}"
+                        Text="{Binding NextSignal, Converter={StaticResource SignalShortConverter}, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}"
+                        ToolTip="{Binding NextSignal, Converter={StaticResource SignalLongConverter}, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                </GroupBox>
+            </Grid>
+        </Grid>
+
+        <!--  Bottom Grid  -->
+
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <gauges:FuelGauge HorizontalAlignment="Center" Level="{Binding FuelLevel, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainControl}}}" />
+
+            <!--  Locomotive Status Icons  -->
+
+            <StackPanel
+                Grid.Column="1"
+                Margin="8"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Image Source="{Binding LocoStatus, ConverterParameter=128/bell-dark/bell-white, Converter={StaticResource ImageSelector}, FallbackValue=pack://siteoforigin:\,\,\,/icons/bell-white.png, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainControl}}}" />
+                <Image Source="{Binding LocoStatus, ConverterParameter=64/horn-dark/horn-white, Converter={StaticResource ImageSelector}, FallbackValue=pack://siteoforigin:\,\,\,/icons/horn-white.png, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainControl}}}" />
+                <Image Source="{Binding LocoStatus, ConverterParameter=1/ParkingBrakeGrey/ParkingBrakeAmber, Converter={StaticResource ImageSelector}, FallbackValue=pack://siteoforigin:\,\,\,/icons/parkingbrakeamber.png, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                <Image Source="pack://siteoforigin:,,,/icons/headlight-dark.png" />
+                <Image Source="{Binding AlerterStatus, ConverterParameter=-1/warning-dark/warning-yellow/warning-red, Converter={StaticResource ImageSelector}, FallbackValue=pack://siteoforigin:\,\,\,/icons/warning-red.png, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}">
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Width" Value="32" />
+                            <Setter Property="Height" Value="32" />
+                            <Setter Property="Margin" Value="4" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AlerterStatus, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" Value="PreWarning">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard x:Name="SlowBlink" Storyboard="{StaticResource SlowBlinker}" />
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <StopStoryboard BeginStoryboardName="SlowBlink" />
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding AlerterStatus, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" Value="Warning">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard x:Name="FastBlink" Storyboard="{StaticResource FastBlinker}" />
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <StopStoryboard BeginStoryboardName="FastBlink" />
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <Image Source="{Binding LocoStatus, ConverterParameter=8/sand-dark/sand-white, Converter={StaticResource ImageSelector}, FallbackValue=pack://siteoforigin:\,\,\,/icons/sand-white.png, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                <Image Source="{Binding LocoStatus, ConverterParameter=2/slip-dark/slip-white, Converter={StaticResource ImageSelector}, FallbackValue=pack://siteoforigin:\,\,\,/icons/slip-white.png, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                <Image Source="{Binding BrakeStatus, ConverterParameter=4/Compressor-dark/Compressor-white, Converter={StaticResource ImageSelector}, FallbackValue=pack://siteoforigin:\,\,\,/icons/compressor-white.png, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
+                <Image Source="{Binding LocoStatus, ConverterParameter=4/pcs-dark/pcs-red, Converter={StaticResource ImageSelector}, FallbackValue=pack://siteoforigin:\,\,\,/icons/pcs-red.png, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainControl}}}" />
+            </StackPanel>
+
+            <gauges:EotGauge
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                Error="{Binding EotStatus, ConverterParameter=8, Converter={StaticResource HasFlagConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainControl}}}"
+                Id="{Binding EotId, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrl:MainControl}}}"
+                IsBeaconOn="{Binding EotStatus, ConverterParameter=2, Converter={StaticResource HasFlagConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainControl}}}"
+                IsCommTesting="{Binding EotStatus, ConverterParameter=4, Converter={StaticResource HasFlagConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainControl}}}"
+                IsMoving="{Binding EotStatus, ConverterParameter=1, Converter={StaticResource HasFlagConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainControl}}}" />
+        </Grid>
+    </Grid>
+</UserControl>

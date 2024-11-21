@@ -1,0 +1,7 @@
+﻿R8 Control Version History
+
+1.0.0.1 November 19, 2024   Added missing subdivision map (Needles) to Maps/Southern CA menu.
+                            Added version labels to the main window status bar and to the
+                            "About" window.
+                            Added this VersionHistory.txt file.
+1.0.0.0 November 17, 2024   Original release via Google Drive link.

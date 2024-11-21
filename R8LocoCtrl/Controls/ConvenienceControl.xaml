@@ -1,0 +1,77 @@
+﻿<UserControl
+    x:Class="R8LocoCtrl.Controls.ConvenienceControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:R8LocoCtrl.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="137"
+    d:DesignWidth="137"
+    DataContext="{StaticResource actionViewModel}"
+    mc:Ignorable="d">
+    <Grid>
+        <WrapPanel Background="White">
+            <Button
+                ClickMode="Press"
+                Command="{Binding AutoStartTrainCommand}"
+                CommandParameter="{StaticResource True}"
+                Content="Auto Start"
+                ToolTip="Starts all engines of a consist.">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding AutoStartTrainCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                ClickMode="Press"
+                Command="{Binding AutoMUCommand}"
+                CommandParameter="{StaticResource True}"
+                Content="Auto MU"
+                ToolTip="Configures all MUs of a consist.">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding AutoMUCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                ClickMode="Press"
+                Command="{Binding AutoCBCommand}"
+                CommandParameter="{StaticResource True}"
+                Content="Auto CB"
+                ToolTip="Sets all circuit breaker switches in a conist.">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding AutoCBCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                ClickMode="Press"
+                Command="{Binding AutoABCommand}"
+                CommandParameter="{StaticResource True}"
+                Content="Auto AB"
+                ToolTip="Automatic configuration of airbrake system.">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding AutoABCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                ClickMode="Press"
+                Command="{Binding AutoEOTCommand}"
+                CommandParameter="{StaticResource True}"
+                Content="Auto EOT"
+                ToolTip="Adds and configures the EOT if needed.">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding AutoEOTCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+        </WrapPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,226 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>icons\R8Control.ico</ApplicationIcon>
+    <Version>1.0.0.1</Version>
+    <FileVersion>1.0.0.1</FileVersion>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ViewModel\DirectoryPathsViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="bell-dark.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Debug\net8.0-windows\icons\bell-dark.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\bell-white.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\break-128.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\break-emergency.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\caboose-dark.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\caboose-white.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\close.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\communication-dark.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\communication-white.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\Compressor-Dark.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\Compressor-White.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\headlight-dark.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\headlight-low.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\headlight-white.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\horn-dark.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\horn-white.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\ParkingBrakeAmber.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\ParkingBrakeGrey.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\ParkingBrakeRed.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\sand-dark.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\sand-white.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\slip-dark.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\slip-white.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\warning-dark.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\warning-red.png" />
+    <Content Include="bin\Debug\net8.0-windows\icons\warning-yellow.png" />
+    <Content Include="icons\R8Control.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Caching" Version="3.1.1" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="SimpleUdp" Version="2.0.2" />
+    <PackageReference Include="Syncfusion.PdfViewer.WPF" Version="27.2.2"/>
+    <PackageReference Include="Syncfusion.SfGauge.WPF" Version="27.2.2"/>
+    <PackageReference Include="Syncfusion.SfInput.WPF" Version="27.2.2"/>
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="27.2.2"/>
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="27.2.2"/>
+</ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="bell-dark.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="CR8ID.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CR8ID.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CR8ID.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>CR8ID.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="gy-cartoon.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\action-brite-half.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\action-dark-half.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\bell-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\bell-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\break-128.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\break-emergency.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\broken-link.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\caboose-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\caboose-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\check.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\close-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\close.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\communication-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\communication-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\Compressor-Dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\Compressor-White.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\danger-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\danger.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\DynamicBrakesLabel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\headlight-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\headlight-low.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\headlight-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\horn-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\horn-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\IndyBrakesLabel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\link.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\ParkingBrakeAmber.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\ParkingBrakeGrey.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\ParkingBrakeRed.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\pcs-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\pcs-red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\R8Control.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\ReverserLabel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\sand-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\sand-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\slip-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\slip-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\ThrottleLabel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\TrainBrakesLabel.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\volume-down.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\volume-up.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\volume.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\warning-dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\warning-red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="icons\warning-yellow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="VersionHistory.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,153 @@
+﻿<UserControl
+    x:Class="R8LocoCtrl.Controls.ProgramProperties"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:R8LocoCtrl.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    Width="524"
+    Height="367"
+    DataContext="{StaticResource programProperties}"
+    mc:Ignorable="d">
+    <WrapPanel Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+        <StackPanel Margin="4">
+            <Label Margin="4,0" Content="Maximum Safe Speed" />
+            <syncfusion:IntegerTextBox
+                Width="150"
+                Height="23"
+                Margin="4"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                TextWrapping="Wrap"
+                UseNullOption="True"
+                WatermarkText="Enter max. safe speed:"
+                WatermarkTextIsVisible="True"
+                Value="{Binding MaximumSafeSpeed}" />
+            <TextBlock
+                Width="150"
+                Margin="4"
+                TextWrapping="Wrap">
+                The maximum safe speed defines the top of the green arc within the speedometer gauge.
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Margin="4">
+
+            <Label Margin="4,0" Content="Maximum Caution Speed" />
+            <syncfusion:IntegerTextBox
+                Width="150"
+                Height="23"
+                Margin="4"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                TextWrapping="Wrap"
+                UseNullOption="True"
+                WatermarkText="Enter max. caution speed:"
+                WatermarkTextIsVisible="True"
+                Value="{Binding MaximumCautionSpeed}" />
+            <TextBlock
+                Width="150"
+                Margin="4"
+                TextWrapping="Wrap">
+                The maximum caution speed defines the top of the yellow arc within the speedometer gauge.
+            </TextBlock>
+        </StackPanel>
+
+
+        <StackPanel Margin="4">
+            <Label Margin="4,0" Content="Maximum Speedometer Speed" />
+            <syncfusion:IntegerTextBox
+                Width="150"
+                Height="23"
+                Margin="4"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                TextWrapping="Wrap"
+                UseNullOption="True"
+                WatermarkText="Enter max. speed:"
+                WatermarkTextIsVisible="True"
+                Value="{Binding MaximumSpeedometerSpeed}" />
+            <TextBlock
+                Width="150"
+                Margin="4"
+                HorizontalAlignment="Left"
+                TextWrapping="Wrap">
+                The maximum speedometer speed defines the top speed of the speedometer and the top of the red arc.
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Margin="4" Orientation="Horizontal">
+            <StackPanel>
+                <Label Margin="4,0" Content="Pressure Reference" />
+                <syncfusion:IntegerTextBox
+                    Width="150"
+                    Height="23"
+                    Margin="4"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    TextWrapping="Wrap"
+                    UseNullOption="True"
+                    WatermarkText="Enter the pressure reference:"
+                    WatermarkTextIsVisible="True"
+                    Value="{Binding PressureReference}" />
+            </StackPanel>
+            <TextBlock
+                Width="300"
+                Margin="4,6,4,4"
+                HorizontalAlignment="Left"
+                TextWrapping="Wrap">
+                The pressure reference sets the markers in the preasure gauge that show the
+                standard pressure for the ER and BP when brakes are not applied.
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Margin="4">
+            <DockPanel Width="500" LastChildFill="False">
+                <Label Margin="4,0" Content="Grade Map Directory Path" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Right"
+                    Text="The directory path is valid. Maps found."
+                    Visibility="{Binding IsGradeMapPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+                <Image
+                    Height="16"
+                    DockPanel.Dock="Right"
+                    Source="pack://siteoforigin:,,,/icons/check.png"
+                    Visibility="{Binding IsGradeMapPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+            </DockPanel>
+            <syncfusion:SfTextBoxExt
+                Width="500"
+                Height="23"
+                Margin="4"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="{Binding GradeMapPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="Enter the grade map directory path:" />
+            <TextBlock
+                Width="500"
+                Margin="4"
+                TextWrapping="Wrap">
+                The grade map directory path is a path to a directory
+                installed with Run 8, one directory below  the main Run 8
+                directory. Grade maps are by default installed in this
+                directory by Run 8.
+            </TextBlock>
+        </StackPanel>
+        <Grid Width="500">
+            <Grid Width="300" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding ResetPropertiesCommand}"
+                    Content="Reset" />
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding SubmitPropertiesCommand}"
+                    Content="Submit" />
+
+            </Grid>
+        </Grid>
+    </WrapPanel>
+</UserControl>

@@ -1,0 +1,463 @@
+﻿<UserControl
+    x:Class="R8LocoCtrl.Controls.RadioControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:R8LocoCtrl.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="400"
+    d:DesignWidth="160"
+    DataContext="{StaticResource actionViewModel}"
+    mc:Ignorable="d">
+    <Grid>
+        <WrapPanel Background="white">
+            <Button
+                x:Name="DTMF1Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="1"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF1">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF1Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF1Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMF2Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="2"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF2">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF2Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF2Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMF3Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="3"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF3">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF3Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF3Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMF4Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="4"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF4">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF4Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF4Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMF5Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="5"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF5">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF5Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF5Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMF6Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="6"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF6">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF6Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF6Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMF7Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="7"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF7">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF7Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF7Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMF8Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="8"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF8">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF8Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF8Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMF9Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="9"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF9">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF9Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF9Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMFStarButton"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="*"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMFStar">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMFStarButton" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMFStarButton" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMF0Button"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="0"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMF0">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMF0Button" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMF0Button" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                x:Name="DTMFPoundButton"
+                Width="36"
+                Height="36"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding DTMFToneCommand}"
+                Content="#"
+                FontSize="16"
+                FontWeight="Bold"
+                Tag="DTMFPound">
+                <Button.CommandParameter>
+                    <MultiBinding Converter="{StaticResource DTMFConverter}">
+                        <Binding ElementName="DTMFPoundButton" Path="Tag" />
+                        <Binding Source="{StaticResource True}" />
+                    </MultiBinding>
+                </Button.CommandParameter>
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding DTMFToneCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource DTMFConverter}">
+                                    <Binding ElementName="DTMFPoundButton" Path="Tag" />
+                                    <Binding Source="{StaticResource False}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+
+            <Button
+                Width="36"
+                Height="36"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding SendRadioVolumeIncreaseCommand}"
+                CommandParameter="{StaticResource True}">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding SendRadioVolumeIncreaseCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+                <Image
+                    Width="24"
+                    Height="24"
+                    Source="pack://siteoforigin:,,,/icons/volume-up.png" />
+            </Button>
+            <Button
+                Width="36"
+                Height="36"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding SendRadioVolumeDecreaseCommand}"
+                CommandParameter="{StaticResource True}">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding SendRadioVolumeDecreaseCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+                <Image
+                    Width="24"
+                    Height="24"
+                    Source="pack://siteoforigin:,,,/icons/volume-down.png" />
+            </Button>
+            <Button
+                Width="36"
+                Height="36"
+                VerticalContentAlignment="Center"
+                ClickMode="Press"
+                Command="{Binding SendRadioVolumeMuteCommand}"
+                CommandParameter="{StaticResource True}">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding SendRadioVolumeMuteCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+                <Image
+                    Width="24"
+                    Height="24"
+                    Source="pack://siteoforigin:,,,/icons/volume.png" />
+            </Button>
+            <Button
+                ClickMode="Press"
+                Command="{Binding SendRadioChannelModeCommand}"
+                CommandParameter="{StaticResource True}"
+                Content="Channel Mode">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding SendRadioChannelModeCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+            <Button
+                ClickMode="Press"
+                Command="{Binding SendRadioDTMFModeCommand}"
+                CommandParameter="{StaticResource True}"
+                Content="DTMF Mode">
+                <b:Interaction.Triggers>
+                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding SendRadioDTMFModeCommand}" CommandParameter="{StaticResource False}" />
+                    </b:DataTrigger>
+                </b:Interaction.Triggers>
+            </Button>
+        </WrapPanel>
+    </Grid>
+</UserControl>

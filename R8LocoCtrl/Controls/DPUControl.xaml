@@ -1,0 +1,122 @@
+﻿<UserControl
+    x:Class="R8LocoCtrl.Controls.DPUControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:R8LocoCtrl.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="175"
+    DataContext="{StaticResource actionViewModel}"
+    mc:Ignorable="d">
+    <Grid>
+        <StackPanel Background="White">
+            <GroupBox Header="DPU Control">
+                <WrapPanel>
+                    <Button
+                        ClickMode="Press"
+                        Command="{Binding ThrottleIncreaseCommand}"
+                        CommandParameter="{StaticResource True}"
+                        Content="Throttle ▲">
+                        <b:Interaction.Triggers>
+                            <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                                <b:InvokeCommandAction Command="{Binding ThrottleIncreaseCommand}" CommandParameter="{StaticResource False}" />
+                            </b:DataTrigger>
+                        </b:Interaction.Triggers>
+                    </Button>
+                    <Button
+                        ClickMode="Press"
+                        Command="{Binding ThrottleDecreaseCommand}"
+                        CommandParameter="{StaticResource True}"
+                        Content="Throttle ▼">
+                        <b:Interaction.Triggers>
+                            <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                                <b:InvokeCommandAction Command="{Binding ThrottleDecreaseCommand}" CommandParameter="{StaticResource False}" />
+                            </b:DataTrigger>
+                        </b:Interaction.Triggers>
+                    </Button>
+                    <Button
+                        ClickMode="Press"
+                        Command="{Binding DynBrakeSetupCommand}"
+                        CommandParameter="{StaticResource True}"
+                        Content="Dyn-Brake Setup">
+                        <b:Interaction.Triggers>
+                            <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                                <b:InvokeCommandAction Command="{Binding DynBrakeSetupCommand}" CommandParameter="{StaticResource False}" />
+                            </b:DataTrigger>
+                        </b:Interaction.Triggers>
+                    </Button>
+                    <Button
+                        ClickMode="Press"
+                        Command="{Binding DPUFenceIncreaseCommand}"
+                        CommandParameter="{StaticResource True}"
+                        Content="Fence ►">
+                        <b:Interaction.Triggers>
+                            <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                                <b:InvokeCommandAction Command="{Binding DPUFenceIncreaseCommand}" CommandParameter="{StaticResource False}" />
+                            </b:DataTrigger>
+                        </b:Interaction.Triggers>
+                    </Button>
+                    <Button
+                        ClickMode="Press"
+                        Command="{Binding DPUFenceDecreaseCommand}"
+                        CommandParameter="{StaticResource True}"
+                        Content="Fence ◄">
+                        <b:Interaction.Triggers>
+                            <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
+                                <b:InvokeCommandAction Command="{Binding DPUFenceDecreaseCommand}" CommandParameter="{StaticResource False}" />
+                            </b:DataTrigger>
+                        </b:Interaction.Triggers>
+                    </Button>
+                </WrapPanel>
+            </GroupBox>
+            <GroupBox Header="Traction Motors">
+                <WrapPanel>
+                    <CheckBox
+                        x:Name="tm1"
+                        Margin="4"
+                        Content="TM 1"
+                        IsChecked="true" />
+                    <CheckBox
+                        x:Name="tm2"
+                        Margin="4"
+                        Content="TM 2"
+                        IsChecked="true" />
+                    <CheckBox
+                        x:Name="tm3"
+                        Margin="4"
+                        Content="TM 3"
+                        IsChecked="true" />
+                    <CheckBox
+                        x:Name="tm4"
+                        Margin="4"
+                        Content="TM 4"
+                        IsChecked="true" />
+                    <CheckBox
+                        x:Name="tm5"
+                        Margin="4"
+                        Content="TM 5"
+                        IsChecked="true" />
+                    <CheckBox
+                        x:Name="tm6"
+                        Margin="4"
+                        Content="TM 6"
+                        IsChecked="true" />
+                    <Button Command="{Binding TractionMotorsCommand}" Content="Apply">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BoolsArrayConverter}">
+                                <Binding ElementName="tm1" Path="IsChecked" />
+                                <Binding ElementName="tm2" Path="IsChecked" />
+                                <Binding ElementName="tm3" Path="IsChecked" />
+                                <Binding ElementName="tm4" Path="IsChecked" />
+                                <Binding ElementName="tm5" Path="IsChecked" />
+                                <Binding ElementName="tm6" Path="IsChecked" />
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                    </Button>
+                </WrapPanel>
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</UserControl>
