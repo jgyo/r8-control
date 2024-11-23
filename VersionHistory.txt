@@ -1,5 +1,8 @@
 ﻿R8 Control Version History
 
+1.0.0.3 November 23, 2024   Added Always on Top menu option to Windows menu.
+1.0.0.2 November 23, 2024   Removed unnecessary DLLs to reduce the package's size.
+                            Added horn sequencer button below horn button.
 1.0.0.1 November 19, 2024   Added missing subdivision map (Needles) to Maps/Southern CA menu.
                             Added version labels to the main window status bar and to the
                             "About" window.
