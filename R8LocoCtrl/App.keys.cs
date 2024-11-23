@@ -11,6 +11,6 @@ namespace R8LocoCtrl
         // be required to purchase a license for its use. Please check with
         // Syncfusion to determine what you require and abide by their
         // requirements.
-        private const string SFKEY  = "This should not be seen on GitHub";
+        private const string SFKEY  = "ADD YOUR SYNCFUSION LICENSE KEY HERE";
     }
 }
