@@ -30,6 +30,11 @@
             <Button
                 Width="115"
                 Height="20"
+                Command="{Binding SendHornSequenceCommand}"
+                Content="Horn Sequencer" />
+            <Button
+                Width="115"
+                Height="20"
                 ClickMode="Press"
                 Command="{Binding SendBellCommand}"
                 CommandParameter="{StaticResource True}"

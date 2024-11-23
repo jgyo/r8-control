@@ -9,6 +9,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace R8LocoCtrl.Interface
 {
@@ -36,6 +37,8 @@ namespace R8LocoCtrl.Interface
                 OnPropertyChanged();
             }
         }
+
+
 
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
@@ -161,6 +164,31 @@ namespace R8LocoCtrl.Interface
         public void SendHorn(bool buttonIsPressed)
         {
             SendMessage(8, (byte)(buttonIsPressed ? 1 : 0));
+        }
+        public async Task SendHornSequencerAsync()
+        {
+            // Long
+            SendHorn(true);
+            await Task.Delay(2000);
+            SendHorn(false);
+            await Task.Delay(1500);
+
+            // Long
+            SendHorn(true);
+            await Task.Delay(2000);
+            SendHorn(false);
+            await Task.Delay(1500);
+
+            // Short
+            SendHorn(true);
+            await Task.Delay(600);
+            SendHorn(false);
+            await Task.Delay(1500);
+
+            // Long
+            SendHorn(true);
+            await Task.Delay(2200);
+            SendHorn(false);
         }
         public void SendIndyBailOff(bool buttonIsPressed)
         {
