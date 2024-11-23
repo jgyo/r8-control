@@ -9,7 +9,6 @@ using R8LocoCtrl.Interface;
 using R8LocoCtrl.Tools;
 using SimpleUdp;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -44,6 +43,7 @@ namespace R8LocoCtrl.ViewModel
         private RelayCommand<HeadlightValues>? _SendFrontHeadlightCommand = null;
         private RelayCommand<bool>? _SendGaugeLightSwitchCommand = null;
         private RelayCommand<bool>? _SendHornCommand = null;
+        private RelayCommand? _SendHornSequenceCommand = null;
         private RelayCommand<bool>? _SendIndyBailOffCommand = null;
         private RelayCommand<bool>? _SendRadioChannelModeCommand = null;
         private RelayCommand<bool>? _SendRadioDTMFModeCommand = null;
@@ -315,6 +315,14 @@ namespace R8LocoCtrl.ViewModel
                 return _SendHornCommand;
             }
         }
+        public RelayCommand SendHornSequenceCommand
+        {
+            get
+            {
+                _SendHornSequenceCommand ??= new RelayCommand(SendHornSequenceExecute);
+                return _SendHornSequenceCommand;
+            }
+        }
         public RelayCommand<bool> SendIndyBailOffCommand
         {
             get
@@ -482,58 +490,47 @@ namespace R8LocoCtrl.ViewModel
         {
             senderClient?.SendAutoABTrain(parameter);
         }
-
         protected virtual void AutoCBExecute(bool parameter)
         {
             senderClient?.SendAutoCBTrain(parameter);
         }
-
         protected virtual void AutoEOTExecute(bool parameter)
         {
             senderClient?.SendAutoEOTTrain(parameter);
         }
-
         protected virtual void AutoMUExecute(bool parameter)
         {
             senderClient?.SendAutoMUTrain(parameter);
         }
-
         protected virtual void AutoStartTrainExecute(bool parameter)
         {
             senderClient?.SendAutoStartTrain(parameter);
         }
-
         protected virtual void ControlSwitchExecute(bool parameter)
         {
             senderClient?.SendControlSwitch(parameter);
         }
-
         protected virtual void DPUFenceDecreaseExecute(bool parameter)
         {
             senderClient?.SendDPUFenceDecrease(parameter);
         }
-
         protected virtual void DPUFenceIncreaseExecute(bool parameter)
         {
             senderClient?.SendDPUFenceIncrease(parameter);
         }
-
         protected virtual void DTMFToneExecute(DTMFCommandParameter parameter)
         {
             if (parameter == null) return;
             senderClient?.SendDTMFTone(parameter.Tone, parameter.IsButtonPressed);
         }
-
         protected virtual void DynBrakeSetupExecute(bool parameter)
         {
             senderClient?.SendDynBrakeSetup(parameter);
         }
-
         protected virtual void DynBrakeSwitchExecute(bool parameter)
         {
             senderClient?.SendDynBrakeSwitch(parameter);
         }
-
         protected virtual void EngineStartExecute(bool[]? values)
         {
             ArgumentNullException.ThrowIfNull(values);
@@ -545,32 +542,26 @@ namespace R8LocoCtrl.ViewModel
             else
                 senderClient?.SendEngineStop(isKeyDown);
         }
-
         protected virtual void EngRunSwitchExecute(bool parameter)
         {
             senderClient?.SendEngRunSwitch(parameter);
         }
-
         protected virtual void GenFieldSwitchExecute(bool parameter)
         {
             senderClient?.SendGenFieldSwitch(parameter);
         }
-
         protected virtual void HEPExecute(bool parameter)
         {
             senderClient?.SendHEPSwitch(parameter);
         }
-
         protected virtual void IsolationSwitchExecute(IsolationSwitchValues parameter)
         {
             senderClient?.SendIsolationSwitch(parameter);
         }
-
         protected virtual void MUHeadlightSwitchExecute(MUHLSwitchValues parameter)
         {
             senderClient?.SendMUHLSwitch(parameter);
         }
-
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             switch (propertyName)
@@ -622,137 +613,114 @@ namespace R8LocoCtrl.ViewModel
 
             base.OnPropertyChanged(propertyName);
         }
-
         protected virtual void SendAlerterExecute(bool parameter)
         {
             senderClient?.SendAlerter(parameter);
         }
-
         protected virtual void SendBellExecute(bool parameter)
         {
             senderClient?.SendBell(parameter);
         }
-
         protected virtual void SendCabLightSwitchExecute(bool parameter)
         {
             senderClient?.SendCabLightSwitch(parameter);
         }
-
         protected virtual void SendDistanceCountDownExecute(bool isPressed)
         {
             senderClient?.SendDistanceCounter(false, isPressed);
         }
-
         protected virtual void SendDistanceCountUpExecute(bool isPressed)
         {
             senderClient?.SendDistanceCounter(true, isPressed);
         }
-
         protected virtual void SendEOTEmgStopExecute(bool parameter)
         {
             senderClient?.SendEOTEmgStop(parameter);
         }
-
         protected virtual void SenderSanderExecute(bool parameter)
         {
             senderClient?.SendSander(parameter);
         }
-
         protected virtual void SendFrontHeadlightExecute(HeadlightValues parameter)
         {
             senderClient?.SendHeadlightFront(parameter);
         }
-
         protected virtual void SendGaugeLightSwitchExecute(bool parameter)
         {
             senderClient?.SendGaugeLightSwitch(parameter);
         }
-
         protected virtual void SendHornExecute(bool parameter)
         {
             senderClient?.SendHorn(parameter);
         }
-
+        protected virtual async void SendHornSequenceExecute()
+        {
+            await senderClient!.SendHornSequencerAsync();
+        }
         protected virtual void SendIndyBailOffExecute(bool parameter)
         {
             senderClient?.SendIndyBailOff(parameter);
         }
-
         protected virtual void SendRadioChannelModeExecute(bool parameter)
         {
             senderClient?.SendRadioChannelMode(parameter);
         }
-
         protected virtual void SendRadioDTMFModeExecute(bool parameter)
         {
             senderClient?.SendRadioDTMFMode(parameter);
         }
-
         protected virtual void SendRadioVolumeDecreaseExecute(bool parameter)
         {
             senderClient?.SendRadioVolumeDecrease(parameter);
         }
-
         protected virtual void SendRadioVolumeIncreaseExecute(bool parameter)
         {
             senderClient?.SendRadioVolumeIncrease(parameter);
         }
-
         protected virtual void SendRadioVolumeMuteExecute(bool parameter)
         {
             senderClient?.SendRadioVolumeMute(parameter);
         }
-
         protected virtual void SendRearHeadlightExecute(HeadlightValues parameter)
         {
             senderClient?.SendHeadlightRear(parameter);
         }
-
         protected virtual void SendReleaseParkingExecute(bool parameter)
         {
             senderClient?.SendParkingBrakeRelease(parameter);
         }
-
         protected virtual void SendSetParkingExecute(bool parameter)
         {
             senderClient?.SendParkingBrakeSet(parameter);
         }
-
         protected virtual void SendSlowSpeedDecrementExecute(bool parameter)
         {
             senderClient?.SendSlowSpeedDecrement(parameter);
         }
-
         protected virtual void SendSlowSpeedIncrementExecute(bool parameter)
         {
             senderClient?.SendSlowSpeedIncrement(parameter);
         }
-
         protected virtual void SendSlowSpeedOnOffExecute(bool parameter)
         {
             senderClient?.SendSlowSpeedToggle(parameter);
         }
-
         protected virtual void SendStepLightSwitchExecute(bool parameter)
         {
             senderClient?.SendStepLightSwitch(parameter);
         }
-
         protected virtual void ServiceSelectorExecute(ServiceSelectorSwitchValues parameter)
         {
             senderClient?.SendServiceSelectorSwitch(parameter);
         }
-
         protected virtual void ThrottleDecreaseExecute(bool parameter)
         {
             senderClient?.SendDPUThrottleDecrease(parameter);
         }
-
         protected virtual void ThrottleIncreaseExecute(bool parameter)
         {
             senderClient?.SendDPUThrottleIncrease(parameter);
         }
-
         protected virtual void TractionMotorsExecute(bool[] parameter)
         {
             TractionMotors motors = TractionMotors.flag;
@@ -765,7 +733,6 @@ namespace R8LocoCtrl.ViewModel
 
             senderClient?.SendTractionMotors(motors);
         }
-
         protected virtual void TrainBrakeCutOutExecute(TrainBrakeCutoutValues parameter)
         {
             senderClient?.SendTrainBrakeCutoutValve(parameter);
@@ -773,12 +740,13 @@ namespace R8LocoCtrl.ViewModel
 
         internal void SetEndPoint(UdpEndpoint? endPoint)
         {
-            if(senderClient == null)
+            if (senderClient == null)
             {
                 senderClient = new Run8SenderClient();
             }
 
             senderClient.Endpoint = endPoint;
         }
+
     }
 }
