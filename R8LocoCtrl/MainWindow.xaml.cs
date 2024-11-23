@@ -293,5 +293,26 @@ namespace R8LocoCtrl
         {
             this.Close();
         }
+
+        private async void DockingManager_DockStateChanged(FrameworkElement sender, DockStateEventArgs e)
+        {
+            // Setting TopMost on the main window will put the main
+            // window and all detached dockable windows on top of
+            // all other displayed windows. However, if a window is
+            // undocked and floated on the screen, it may be covered
+            // by other windows from other programs.
+            //
+            // Resetting TopMost twice after a tear will put all
+            // application windows back on top, but how to do that
+            // programmatically? This even is the trick, but it fires
+            // just a little too soon for that to work. Taking a
+            // brief break, about 1/10 second, allows the tear to
+            // complete and allows the trick to work.
+
+            await Task.Delay(100);
+
+            AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
+            AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
+        }
     }
 }
