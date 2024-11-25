@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     Width="524"
-    Height="367"
     DataContext="{StaticResource programProperties}"
     mc:Ignorable="d">
     <WrapPanel Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
@@ -101,17 +100,17 @@
         </StackPanel>
         <StackPanel Margin="4">
             <DockPanel Width="500" LastChildFill="False">
-                <Label Margin="4,0" Content="Grade Map Directory Path" />
+                <Label Margin="4,0" Content="Run 8 Directory Path" />
                 <TextBlock
                     VerticalAlignment="Center"
                     DockPanel.Dock="Right"
-                    Text="The directory path is valid. Maps found."
-                    Visibility="{Binding IsGradeMapPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+                    Text="The directory path is valid. Run 8 exe found."
+                    Visibility="{Binding IsRun8PathValid, Converter={StaticResource boolToVisibilityConverter}}" />
                 <Image
                     Height="16"
                     DockPanel.Dock="Right"
                     Source="pack://siteoforigin:,,,/icons/check.png"
-                    Visibility="{Binding IsGradeMapPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+                    Visibility="{Binding IsRun8PathValid, Converter={StaticResource boolToVisibilityConverter}}" />
             </DockPanel>
             <syncfusion:SfTextBoxExt
                 Width="500"
@@ -119,16 +118,111 @@
                 Margin="4"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Text="{Binding GradeMapPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Watermark="Enter the grade map directory path:" />
+                Text="{Binding Run8Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="Enter the Run 8 exe directory path:" />
             <TextBlock
                 Width="500"
                 Margin="4"
                 TextWrapping="Wrap">
-                The grade map directory path is a path to a directory
-                installed with Run 8, one directory below  the main Run 8
-                directory. Grade maps are by default installed in this
-                directory by Run 8.
+                The Run 8 directory path is a path to the directory
+                where the Run 8 executable, "Run-8 Train Simulator V3.exe," is
+                installed. This directory will give access to
+                the Run 8 executable and to the Run 8 grade
+                maps. Grade maps are by default installed in maps
+                directory below the Run 8 executable.
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Margin="4">
+            <DockPanel Width="500" LastChildFill="False">
+                <Label Margin="4,0" Content="Dispatcher.NET Directory Path" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Right"
+                    Text="The directory path is valid. Dispatcher.NET found."
+                    Visibility="{Binding IsDispatcherPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+                <Image
+                    Height="16"
+                    DockPanel.Dock="Right"
+                    Source="pack://siteoforigin:,,,/icons/check.png"
+                    Visibility="{Binding IsDispatcherPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+            </DockPanel>
+            <syncfusion:SfTextBoxExt
+                Width="500"
+                Height="23"
+                Margin="4"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="{Binding DispatcherPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="Enter the Dispatcher.NET directory path:" />
+            <TextBlock
+                Width="500"
+                Margin="4"
+                TextWrapping="Wrap">
+                The Dispatcher.NET directory path is a path to the directory
+                where the Dispatcher.NET executable, "Dispatcher.NET.exe," is
+                installed. This directory enables the Dispatcher.NET menu option.
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Margin="4">
+            <DockPanel Width="500" LastChildFill="False">
+                <Label Margin="4,0" Content="Consist Editor Directory Path" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Right"
+                    Text="The directory path is valid. Consist Editor found."
+                    Visibility="{Binding IsConsistEdPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+                <Image
+                    Height="16"
+                    DockPanel.Dock="Right"
+                    Source="pack://siteoforigin:,,,/icons/check.png"
+                    Visibility="{Binding IsConsistEdPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+            </DockPanel>
+            <syncfusion:SfTextBoxExt
+                Width="500"
+                Height="23"
+                Margin="4"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="{Binding ConsistEdPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="Enter the Consist Editor directory path:" />
+            <TextBlock
+                Width="500"
+                Margin="4"
+                TextWrapping="Wrap">
+                The Consist Editor directory path is a path to the directory
+                where the External Consist Editor executable, "External Consist Editor.exe," is
+                installed. This directory enables the Consist Editor menu option.
+            </TextBlock>
+        </StackPanel>
+        <StackPanel Margin="4">
+            <DockPanel Width="500" LastChildFill="False">
+                <Label Margin="4,0" Content="External Assistant Directory Path" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    DockPanel.Dock="Right"
+                    Text="The directory path is valid. External Assistant found."
+                    Visibility="{Binding IsEAPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+                <Image
+                    Height="16"
+                    DockPanel.Dock="Right"
+                    Source="pack://siteoforigin:,,,/icons/check.png"
+                    Visibility="{Binding IsEAPathValid, Converter={StaticResource boolToVisibilityConverter}}" />
+            </DockPanel>
+            <syncfusion:SfTextBoxExt
+                Width="500"
+                Height="23"
+                Margin="4"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Text="{Binding EAPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="Enter the External Assistant directory path:" />
+            <TextBlock
+                Width="500"
+                Margin="4"
+                TextWrapping="Wrap">
+                The External Assistant directory path is a path to the directory
+                where the External Assistant executable, "ExternalAssistantForRun8.exe," is
+                installed. This directory enables the External Assistant menu option.
             </TextBlock>
         </StackPanel>
         <Grid Width="500">

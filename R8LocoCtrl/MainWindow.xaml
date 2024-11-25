@@ -15,11 +15,11 @@
     xmlns:syn="http://schemas.syncfusion.com/wpf"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
-    Topmost="{Binding ElementName=AlwaysOnTop, Path=IsChecked}"
     Title="R8 Control"
     Width="1230"
     Height="540"
     DataContext="{StaticResource dmViewModel}"
+    Topmost="{Binding ElementName=AlwaysOnTop, Path=IsChecked}"
     mc:Ignorable="d">
     <Window.Resources>
         <Tools:LocoStatusToAlerterStatusConverter x:Key="LocoStatusToAlerterStatusConverter" />
@@ -32,7 +32,7 @@
                     Command="{Binding ActivateWindowCommand}"
                     CommandParameter="{x:Static int:Run8Windows.Setup}"
                     Header="Setup" />
-                <syn:MenuItemAdv Header="Close" Click="MenuItemAdv_Close" />
+                <syn:MenuItemAdv Click="MenuItemAdv_Close" Header="Close" />
             </syn:MenuItemAdv>
             <syn:MenuItemAdv Header="Maps">
                 <syn:MenuItemAdv Header="Southern CA">
@@ -140,22 +140,46 @@
                 <syn:MenuItemSeparator />
                 <syn:MenuItemAdv x:Name="GradeMapsMenu" Header="Grade Maps" />
             </syn:MenuItemAdv>
-
+            <syn:MenuItemAdv Header="Apps">
+                <syn:MenuItemAdv
+                    Command="{Binding ExecuteAppCommand, Source={StaticResource programProperties}}"
+                    CommandParameter="{Binding Run8FilePath, Source={StaticResource programProperties}}"
+                    Header="Run 8"
+                    IsEnabled="{Binding IsRun8PathValid, Source={StaticResource programProperties}}" />
+                <syn:MenuItemAdv
+                    Command="{Binding ExecuteAppCommand, Source={StaticResource programProperties}}"
+                    CommandParameter="{Binding DispatcherFilePath, Source={StaticResource programProperties}}"
+                    Header="Dispatcher.NET"
+                    IsEnabled="{Binding IsDispatcherPathValid, Source={StaticResource programProperties}}" />
+                <syn:MenuItemAdv
+                    Command="{Binding ExecuteAppCommand, Source={StaticResource programProperties}}"
+                    CommandParameter="{Binding ConsistEdFilePath, Source={StaticResource programProperties}}"
+                    Header="Consist Editor"
+                    IsEnabled="{Binding IsConsistEdPathValid, Source={StaticResource programProperties}}" />
+                <syn:MenuItemAdv
+                    Command="{Binding ExecuteAppCommand, Source={StaticResource programProperties}}"
+                    CommandParameter="{Binding EAFilePath, Source={StaticResource programProperties}}"
+                    Header="External Assistent"
+                    IsEnabled="{Binding IsEAPathValid, Source={StaticResource programProperties}}" />
+            </syn:MenuItemAdv>
             <syn:MenuItemAdv Header="Window">
                 <syn:MenuItemAdv Command="{Binding DefaultStateCommand}" Header="Default Layout" />
                 <syn:MenuItemAdv
                     x:Name="PersistStateMenuItem"
                     Command="{Binding PersistStateCommand}"
-                    IsChecked="{Binding IsPersistStateSet}"
                     CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
                     Header="Persist State Mode"
+                    IsCheckable="True"
+                    IsChecked="{Binding IsPersistStateSet}" />
+                <!--
+                    Adding the always on top feature is simple. Just create
+                    the menu item, make it checkable, and then bind TopMost of
+                    the main window to IsChecked of the menu item.
+                -->
+                <syn:MenuItemAdv
+                    x:Name="AlwaysOnTop"
+                    Header="Always on Top"
                     IsCheckable="True" />
-                <!-- Adding the always on top feature is simple. Just create
-                     the menu item, make it checkable, and then bind TopMost of
-                     the main window to IsChecked of the menu item. -->
-                <syn:MenuItemAdv x:Name="AlwaysOnTop"
-                                 Header="Always on Top"
-                                 IsCheckable="True" />
                 <syn:MenuItemSeparator />
                 <syn:MenuItemAdv
                     Command="{Binding ActivateWindowCommand}"
@@ -192,7 +216,7 @@
             </syn:MenuItemAdv>
 
             <syn:MenuItemAdv Header="Help">
-                <syn:MenuItemAdv Header="About" Click="MenuItemAdv_About"  />
+                <syn:MenuItemAdv Click="MenuItemAdv_About" Header="About" />
             </syn:MenuItemAdv>
         </syn:MenuAdv>
         <StatusBar DataContext="{StaticResource r8client}" DockPanel.Dock="Bottom">
@@ -210,10 +234,13 @@
                 <TextBlock Text="{Binding Connected, ConverterParameter=Connected/Disconnected, Converter={StaticResource TextSelector}}" />
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Text="Version:" x:Name="sbVersion" />
+                <TextBlock x:Name="sbVersion" Text="Version:" />
             </StatusBarItem>
         </StatusBar>
-        <syn:DockingManager x:Name="dockingManager" UseDocumentContainer="True" DockStateChanged="DockingManager_DockStateChanged">
+        <syn:DockingManager
+            x:Name="dockingManager"
+            DockStateChanged="DockingManager_DockStateChanged"
+            UseDocumentContainer="True">
             <ContentControl
                 x:Name="Driver2"
                 syn:DockingManager.DesiredHeightInDockedMode="400"

@@ -2,8 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="R8LocoCtrl" GeneratedClassName="CR8ID">
   <Profiles />
   <Settings>
-    <Setting Name="GradeMapPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="Run8Path" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Run8Studios\Run8 Train Simulator V3</Value>
     </Setting>
     <Setting Name="MaxSafeSpeed" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">60</Value>
@@ -34,6 +34,15 @@
     </Setting>
     <Setting Name="Maximized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ConsistEdPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DispatcherPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="EAPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

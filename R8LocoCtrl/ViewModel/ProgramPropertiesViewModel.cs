@@ -6,48 +6,150 @@
 //-----------------------------------------------------------------------
 using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows;
 
 namespace R8LocoCtrl.ViewModel
 {
     public class ProgramPropertiesViewModel : ViewModelBase
     {
 
+        private const string CONSIST_ED = "External Consist Editor.exe";
+        private const string DISPATCHER = "Dispatcher.NET.exe";
+        private const string EA_FILE = "ExternalAssistantForRun8.exe";
+        private const string RUN8_FILE = "Run-8 Train Simulator V3.exe";
+
+        private RelayCommand? _SubmitPropertiesCommand = null;
+        private string? consistEdPath;
+        private string? dispatcherPath;
+        private string? eAPath;
         private string? gradeMapPath;
-        private bool isGradeMapPathValid;
+        private bool isConsistEdPathValid;
+        private bool isDispatcherPathValid;
+        private bool isEAPathValid;
+        private bool isRun8PathValid;
         private int maximumCautionSpeed;
         private int maximumSafeSpeed;
         private int maximumSpeedometerSpeed;
         private int pressureReference;
+        private RelayCommand? resetPropertiesCommand = null;
+        private string? run8Path;
 
         public ProgramPropertiesViewModel()
         {
             ResetProperties();
         }
 
-        public event EventHandler<ProgramPropertiesViewModel>? SubmitProperties;
-
-        private void CheckGradeMapPath()
+        RelayCommand<string>? _ExecuteAppCommand = null;
+        public RelayCommand<string> ExecuteAppCommand
         {
-            bool isValid = false;
-            try
+            get
             {
-                if(GradeMapPath == null) return;
-                if(!Directory.Exists(GradeMapPath)) return;
-                var files = Directory.EnumerateFiles(GradeMapPath, "run8*.pdf");
-                if(!files.Any()) return;
-                isValid = files.Any(m => m.Contains("map.pdf", StringComparison.CurrentCultureIgnoreCase));
-            }
-            catch (Exception)
-            {
-            }
-            finally
-            {
-                IsGradeMapPathValid = isValid;
+                _ExecuteAppCommand ??= new RelayCommand<string>(ExecuteAppExecute);
+                return _ExecuteAppCommand;
             }
         }
 
+        protected virtual void ExecuteAppExecute(string? filepath)
+        {
+            if(filepath == null)
+                return;
+
+            try
+            {
+                var pi = new ProcessStartInfo(filepath)
+                {
+                    UseShellExecute = false,
+                    WorkingDirectory = Path.GetDirectoryName(filepath)
+                };
+                
+                Process.Start(pi);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message, "Exception");
+            }
+        }
+
+        public event EventHandler<ProgramPropertiesViewModel>? SubmitProperties;
+
+        public string? ConsistEdFilePath
+        {
+            get
+            {
+                if (IsConsistEdPathValid)
+                    return Path.Combine(ConsistEdPath!, CONSIST_ED);
+                return null;
+            }
+        }
+        public string? ConsistEdPath
+        {
+            get => consistEdPath;
+            set
+            {
+                if (consistEdPath == value)
+                {
+                    return;
+                }
+
+                consistEdPath = value;
+                OnPropertyChanged();
+                IsConsistEdPathValid = CheckExePath(ConsistEdPath, CONSIST_ED);
+                OnPropertyChanged("ConsistEdFilePath");
+            }
+        }
+        public string? DispatcherFilePath
+        {
+            get
+            {
+                if (IsDispatcherPathValid)
+                    return Path.Combine(DispatcherPath!, DISPATCHER);
+                return null;
+            }
+        }
+        public string? DispatcherPath
+        {
+            get => dispatcherPath;
+            set
+            {
+                if (dispatcherPath == value)
+                {
+                    return;
+                }
+
+                dispatcherPath = value;
+                OnPropertyChanged();
+                IsDispatcherPathValid = CheckExePath(DispatcherPath, DISPATCHER);
+                OnPropertyChanged("DispatcherFilePath");
+            }
+        }
+        public string? EAFilePath
+        {
+            get
+            {
+                if (IsEAPathValid)
+                    return Path.Combine(EAPath!, EA_FILE);
+                return null;
+            }
+        }
+        public string? EAPath
+        {
+            get => eAPath;
+            set
+            {
+                if (eAPath == value)
+                {
+                    return;
+                }
+
+                eAPath = value;
+                OnPropertyChanged();
+                IsEAPathValid = CheckExePath(EAPath, EA_FILE);
+                OnPropertyChanged("EAFilePath");
+            }
+        }
         public string? GradeMapPath
         {
             get { return gradeMapPath; }
@@ -60,21 +162,61 @@ namespace R8LocoCtrl.ViewModel
 
                 gradeMapPath = value;
                 OnPropertyChanged();
-                CheckGradeMapPath();
             }
         }
-
-        public bool IsGradeMapPathValid
+        public bool IsConsistEdPathValid
         {
-            get => isGradeMapPathValid;
+            get => isConsistEdPathValid;
             set
             {
-                if (isGradeMapPathValid == value)
+                if (isConsistEdPathValid == value)
                 {
                     return;
                 }
 
-                isGradeMapPathValid = value;
+                isConsistEdPathValid = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsDispatcherPathValid
+        {
+            get => isDispatcherPathValid;
+            set
+            {
+                if (isDispatcherPathValid == value)
+                {
+                    return;
+                }
+
+                isDispatcherPathValid = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsEAPathValid
+        {
+            get => isEAPathValid;
+            set
+            {
+                if (isEAPathValid == value)
+                {
+                    return;
+                }
+
+                isEAPathValid = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsRun8PathValid
+        {
+            get => isRun8PathValid;
+            set
+            {
+                if (isRun8PathValid == value)
+                {
+                    return;
+                }
+
+                isRun8PathValid = value;
                 OnPropertyChanged();
             }
         }
@@ -134,18 +276,46 @@ namespace R8LocoCtrl.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        private void ResetProperties()
+        public RelayCommand ResetPropertiesCommand
         {
-            GradeMapPath = CR8ID.Default.GradeMapPath;
-            MaximumCautionSpeed = CR8ID.Default.MaxCautionSpeed;
-            MaximumSafeSpeed = CR8ID.Default.MaxSafeSpeed;
-            MaximumSpeedometerSpeed = CR8ID.Default.MaxSpeedOSpeed;
-            PressureReference = CR8ID.Default.PressureReference;
+            get
+            {
+                resetPropertiesCommand ??= new RelayCommand(ResetPropertiesExecute);
+                return resetPropertiesCommand;
+            }
         }
+        public string? Run8FilePath
+        {
+            get
+            {
+                if (IsRun8PathValid)
+                    return Path.Combine(Run8Path!, RUN8_FILE);
+                return null;
+            }
+        }
+        public string? Run8Path
+        {
+            get { return run8Path; }
+            set
+            {
+                if (run8Path == value)
+                {
+                    return;
+                }
 
-        #region SubmitPropertiesCommand        
-        private RelayCommand? _SubmitPropertiesCommand = null;
+                run8Path = value;
+                OnPropertyChanged();
+                IsRun8PathValid = CheckExePath(Run8Path, RUN8_FILE);
+                OnPropertyChanged("Run8FilePath");
+                if (IsRun8PathValid)
+                {
+                    GradeMapPath = Path.Combine(run8Path!, "maps");
+                    return;
+                }
+
+                GradeMapPath = null;
+            }
+        }
         public RelayCommand SubmitPropertiesCommand
         {
             get
@@ -155,39 +325,52 @@ namespace R8LocoCtrl.ViewModel
             }
         }
 
-        protected virtual void SubmitPropertiesExecute()
+        private bool CheckExePath(string? path, string exeName)
         {
-            CR8ID.Default.GradeMapPath = GradeMapPath;
-            CR8ID.Default.MaxCautionSpeed = MaximumCautionSpeed;
-            CR8ID.Default.MaxSafeSpeed = MaximumSafeSpeed;
-            CR8ID.Default.MaxSpeedOSpeed = MaximumSpeedometerSpeed;
-            CR8ID.Default.PressureReference = PressureReference;
-
-            CR8ID.Default.Save();
-
-            SubmitProperties?.Invoke(this, this);
-
-        }
-        #endregion SubmitPropertiesCommand
-
-
-        #region ResetPropertiesCommand        
-        private RelayCommand? resetPropertiesCommand = null;
-        public RelayCommand ResetPropertiesCommand
-        {
-            get
+            bool isValid = false;
+            try
             {
-                resetPropertiesCommand ??= new RelayCommand(ResetPropertiesExecute);
-                return resetPropertiesCommand;
+                if (path == null) return false;
+                if (!Directory.Exists(path)) return false;
+                var files = Directory.EnumerateFiles(path, "*.exe");
+                if (!files.Any()) return false;
+                isValid = files.Any(m => m.Contains(exeName, StringComparison.CurrentCultureIgnoreCase));
             }
+            catch (Exception)
+            {
+            }
+
+            return isValid;
+        }
+        private void ResetProperties()
+        {
+            Run8Path = CR8ID.Default.Run8Path;
+            MaximumCautionSpeed = CR8ID.Default.MaxCautionSpeed;
+            MaximumSafeSpeed = CR8ID.Default.MaxSafeSpeed;
+            MaximumSpeedometerSpeed = CR8ID.Default.MaxSpeedOSpeed;
+            PressureReference = CR8ID.Default.PressureReference;
         }
 
         protected virtual void ResetPropertiesExecute()
         {
             ResetProperties();
         }
-        #endregion ResetPropertiesCommand
+        protected virtual void SubmitPropertiesExecute()
+        {
+            CR8ID.Default.Run8Path = Run8Path;
+            CR8ID.Default.MaxCautionSpeed = MaximumCautionSpeed;
+            CR8ID.Default.MaxSafeSpeed = MaximumSafeSpeed;
+            CR8ID.Default.MaxSpeedOSpeed = MaximumSpeedometerSpeed;
+            CR8ID.Default.PressureReference = PressureReference;
+            CR8ID.Default.EAPath = EAPath;
+            CR8ID.Default.DispatcherPath = DispatcherPath;
+            CR8ID.Default.ConsistEdPath = ConsistEdPath;
 
+            CR8ID.Default.Save();
+
+            SubmitProperties?.Invoke(this, this);
+
+        }
 
     }
 }

@@ -6,6 +6,8 @@ systems where Run 8 is viewed in full-screen mode, and **R8C** is viewed
 on another. However, it is possible to view Run 8 in window mode
 and have both programs operating on a single screen.
 
+![image](https://github.com/user-attachments/assets/cdd1fd84-583f-4328-b303-4ec78cb61f7c)
+
 Run 8 already supports Rail Driver and has a keyboard and
 mouse interface. Why should you consider using **R8C** with Run 8?
 There are several reasons. First and foremost, Rail Driver
@@ -15,12 +17,14 @@ allows precise increments and decrements of the throttle and
 brake controls, making it much easier to find "sweet spots" where
 everything balances out and trains run themselves.
 
-There are many places where that may be impossible, even with fine
-control, like locations where the grade changes frequently, but even
-there, the ability to subtlely adjust your inputs helps.
+![image](https://github.com/user-attachments/assets/7614e9a6-cdce-4041-99bc-4fa3627129a8)
 
-And keyboard shortcuts can be complex to remember, especially where
-many of them exist. You will still use some shortcuts
+Each slider control in the Driver 1 window (except for the Reverser) can be
+adjusted by increments of 1 out of 256 possible values. That's as precise as it gets
+and is impossible within Run 8 alone.
+
+Also, keyboard shortcuts can be complex to remember, especially where
+many exist. You will still use some shortcuts
 while using **R8C**, but less often. **R8C** has buttons
 and sliders for all of the following functions (plus some):
 
@@ -44,14 +48,19 @@ and sliders for all of the following functions (plus some):
 * Radio controls.
 * Light controls.
 
-You might also appreciate seeing not only the previous signal's
-type but also the next signal's type. That's not available even
+You saw some of the controls for these functions above. Here are
+The other input controls are laid out for you to see.
+
+![image](https://github.com/user-attachments/assets/9758394a-acba-4892-a6f5-e2964363e6fb)
+
+You might also appreciate seeing the previous signal's
+type and the next signal's type. That's not available even
 in Run 8 by itself.
 
-And, in addition to these and other features you will find in
+In addition to these and other features, you will find in
 **R8C**, the program is free and open source. When I tire of
 updating the code to keep up with Run 8 and add new features,
-another developer may come along with his own branch, and pick
+another developer may come along with his own branch and pick
 up where I've stopped.
 
 So, download a copy for yourself, and enjoy!
