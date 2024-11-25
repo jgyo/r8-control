@@ -12,7 +12,7 @@ namespace R8LocoCtrl {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.12.0.0")]
     internal sealed partial class CR8ID : global::System.Configuration.ApplicationSettingsBase {
         
         private static CR8ID defaultInstance = ((CR8ID)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new CR8ID())));
@@ -25,13 +25,13 @@ namespace R8LocoCtrl {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string GradeMapPath {
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Run8Studios\\Run8 Train Simulator V3")]
+        public string Run8Path {
             get {
-                return ((string)(this["GradeMapPath"]));
+                return ((string)(this["Run8Path"]));
             }
             set {
-                this["GradeMapPath"] = value;
+                this["Run8Path"] = value;
             }
         }
         
@@ -152,6 +152,42 @@ namespace R8LocoCtrl {
             }
             set {
                 this["Maximized"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ConsistEdPath {
+            get {
+                return ((string)(this["ConsistEdPath"]));
+            }
+            set {
+                this["ConsistEdPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DispatcherPath {
+            get {
+                return ((string)(this["DispatcherPath"]));
+            }
+            set {
+                this["DispatcherPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string EAPath {
+            get {
+                return ((string)(this["EAPath"]));
+            }
+            set {
+                this["EAPath"] = value;
             }
         }
     }

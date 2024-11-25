@@ -75,7 +75,7 @@ namespace R8LocoCtrl
 
         private void ConfigureGradeMapMenu()
         {
-            if (!progProperties.IsGradeMapPathValid)
+            if (!progProperties.IsRun8PathValid)
             {
                 this.GradeMapsMenu.Items.Clear();
                 this.GradeMapsMenu.ToolTip = "Requires configuration in setup.";
@@ -239,7 +239,7 @@ namespace R8LocoCtrl
 
         private void ProgProperties_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "IsGradeMapPathValid")
+            if (e.PropertyName == "IsRun8PathValid")
             {
                 ConfigureGradeMapMenu();
             }
@@ -254,10 +254,13 @@ namespace R8LocoCtrl
         private static void SetProgramProperties(ProgramPropertiesViewModel properties)
         {
             properties.PressureReference = CR8ID.Default.PressureReference;
-            properties.GradeMapPath = CR8ID.Default.GradeMapPath;
+            properties.Run8Path = CR8ID.Default.Run8Path;
             properties.MaximumCautionSpeed = CR8ID.Default.MaxCautionSpeed;
             properties.MaximumSafeSpeed = CR8ID.Default.MaxSafeSpeed;
             properties.MaximumSpeedometerSpeed = CR8ID.Default.MaxSpeedOSpeed;
+            properties.DispatcherPath = CR8ID.Default.DispatcherPath;
+            properties.EAPath = CR8ID.Default.EAPath;
+            properties.ConsistEdPath = CR8ID.Default.ConsistEdPath;
         }
 
         private void SetSpeedometerProperties(ProgramPropertiesViewModel properties)
