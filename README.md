@@ -6,6 +6,9 @@ systems where Run 8 is viewed in full-screen mode, and **R8C** is viewed
 on another. However, it is possible to view Run 8 in window mode
 and have both programs operating on a single screen.
 
+![image](https://github.com/user-attachments/assets/cdd1fd84-583f-4328-b303-4ec78cb61f7c)
+
+
 Run 8 already supports Rail Driver and has a keyboard and
 mouse interface. Why should you consider using **R8C** with Run 8?
 There are several reasons. First and foremost, Rail Driver
