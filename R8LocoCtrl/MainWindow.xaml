@@ -78,11 +78,11 @@
                     </syn:MenuItemAdv>
                     <syn:MenuItemAdv
                         Command="{Binding LoadMapCommand}"
-                        CommandParameter="seligman/seligman"
+                        CommandParameter="seligman/Seligman"
                         Header="Seligman" />
                     <syn:MenuItemAdv
                         Command="{Binding LoadMapCommand}"
-                        CommandParameter="stockton/stockton"
+                        CommandParameter="stockton/Stockton"
                         Header="Stockton" />
 
                 </syn:MenuItemAdv>
@@ -111,7 +111,7 @@
                         Header="Waycross Route" />
                     <syn:MenuItemAdv
                         Command="{Binding LoadMapCommand}"
-                        CommandParameter="riceyard/riceyard"
+                        CommandParameter="waycross/riceyard"
                         Header="Riceyard Route" />
 
                 </syn:MenuItemAdv>
@@ -128,7 +128,7 @@
                 <syn:MenuItemAdv Header="Pennsylvania">
                     <syn:MenuItemAdv
                         Command="{Binding LoadMapCommand}"
-                        CommandParameter="pittsburgeast/pittsburgeast"
+                        CommandParameter="pittsburgheast/PittsburghEast"
                         Header="Pittsburgh Line East" />
                     <syn:MenuItemAdv
                         Command="{Binding LoadMapCommand}"
