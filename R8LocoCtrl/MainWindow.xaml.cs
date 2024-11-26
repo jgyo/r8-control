@@ -156,7 +156,7 @@ namespace R8LocoCtrl
 
             var docStream = File.OpenRead(filepath);
 
-            var pdfViewer = new PdfViewerControl() { Name = filename.Replace('.', '_'), ItemSource = docStream };
+            var pdfViewer = new PdfViewerControl() { Name = filename.Replace('.', '_').Replace('-','_'), ItemSource = docStream };
             dockingManager.Children.Add(pdfViewer);
             DockingManager.SetHeader(pdfViewer, filename);
             DockingManager.SetState(pdfViewer, DockState.Document);
@@ -316,6 +316,22 @@ namespace R8LocoCtrl
 
             AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
             AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
+        }
+
+        private void dockingManager_ChildrenCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Move)
+                return;
+
+            if(e.OldItems == null) return;
+            foreach(var child in e.OldItems)
+            {
+                var pdfViewer = child as PdfViewerControl;
+                if(pdfViewer == null) continue;
+                var file = pdfViewer.ItemSource as FileStream;
+                file?.Close();
+                file?.Dispose();
+            }
         }
     }
 }

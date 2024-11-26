@@ -240,7 +240,7 @@
         <syn:DockingManager
             x:Name="dockingManager"
             DockStateChanged="DockingManager_DockStateChanged"
-            UseDocumentContainer="True">
+            UseDocumentContainer="True" ChildrenCollectionChanged="dockingManager_ChildrenCollectionChanged">
             <ContentControl
                 x:Name="Driver2"
                 syn:DockingManager.DesiredHeightInDockedMode="400"
