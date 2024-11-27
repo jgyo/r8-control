@@ -7,17 +7,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icons\R8Control.ico</ApplicationIcon>
-    <Version>1.0.0.5</Version>
-    <FileVersion>1.0.0.5</FileVersion>
-    <AssemblyVersion>1.0.0.5</AssemblyVersion>
+    <Version>1.0.0.6</Version>
+    <FileVersion>1.0.0.6</FileVersion>
+    <AssemblyVersion>1.0.0.6</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="ViewModel\DirectoryPathsViewModel.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="bell-dark.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,10 +58,6 @@
     <PackageReference Include="Syncfusion.Shared.WPF" Version="27.2.2" />
     <PackageReference Include="Syncfusion.Tools.WPF" Version="27.2.2" />
 </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="bell-dark.png" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="CR8ID.Designer.cs">

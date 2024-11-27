@@ -239,8 +239,9 @@
         </StatusBar>
         <syn:DockingManager
             x:Name="dockingManager"
+            ChildrenCollectionChanged="dockingManager_ChildrenCollectionChanged"
             DockStateChanged="DockingManager_DockStateChanged"
-            UseDocumentContainer="True" ChildrenCollectionChanged="dockingManager_ChildrenCollectionChanged">
+            UseDocumentContainer="True">
             <ContentControl
                 x:Name="Driver2"
                 syn:DockingManager.DesiredHeightInDockedMode="400"
@@ -368,6 +369,7 @@
                             PressureReference="{Binding Source={StaticResource speedoViewModel}, Path=PressureReference}"
                             PreviousSignal="{Binding PreviousSignalInstruction}"
                             ReverserPosition="{Binding ReverserPosition}"
+                            SafeRangeMax="{Binding Source={StaticResource speedoViewModel}, Path=MaxSafeSpeed}"
                             Speed="{Binding SpeedMph}"
                             SpeedMphPerMin="{Binding AccelerationMphMin}"
                             Throttle="{Binding ThrottleNotch}"
