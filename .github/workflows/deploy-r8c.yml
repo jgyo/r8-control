@@ -25,10 +25,12 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v2
   
-            - name: Setup DotNet 8.0
+            - name: Setup DotNet
               uses: actions/setup-dotnet@v1
               with:
-                dotnet-version: 8.0.x
+                dotnet-version: |
+                    3.0.x
+                    8.0.x
         
             - name: Setup DotNet 3.0
               uses: actions/setup-dotnet@v1
@@ -42,7 +44,7 @@ jobs:
               run: dotnet restore ${{ env.PROJECT_PATH }}
 
             - name: Build Console App
-              run: msbuild -nologo -p:TargetFramework=net35 ${{ env.CONSOLE_PATH }}
+              run: msbuild -nologo -p:TargetFramework=net35;configuration=Release ${{ env.CONSOLE_PATH }}
   
             - name: Build Project
               run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
