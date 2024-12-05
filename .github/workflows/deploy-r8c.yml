@@ -16,13 +16,13 @@ env:
   ISS_PATH: R8LocoCtrl/setup.iss
   OUTPUT_DIR: R8LocoCtrl/output
   PUBLISH_DIR: R8LocoCtrl/bin/Release/net8.0-windows/publish/
-  SyncfusionLicenseKey: ${{ secrets.SyncfusionLicenseKey }}
     
 jobs:
     deploy:
         name: "Deploy R8 Control"
         runs-on: windows-latest
         steps:
+            - run: $env:SyncfusionLicenseKey = ${{ secrets.SyncfusionLicenseKey }}
             - run: env
 
             - name: Syncfusion License Setup
