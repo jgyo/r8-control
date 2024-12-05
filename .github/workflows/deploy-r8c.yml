@@ -22,6 +22,9 @@ jobs:
         name: "Deploy R8 Control"
         runs-on: windows-latest
         steps:
+            - name: Syncfusion License Setup
+              run: LicenseKeyValidatorConsole /platform:"WPF" /version:"27.2.2" /licensekey:"${{ secrets:SyncfusionLicenseKey }}"
+
             - name: Checkout Code
               uses: actions/checkout@v2
   
@@ -29,20 +32,10 @@ jobs:
               uses: actions/setup-dotnet@v1
               with:
                 dotnet-version: |
-                    2.0.x
                     8.0.x
-
-#            - name: Add msbuild to PATH
-#              uses: microsoft/setup-msbuild@v2
 
             - name: Restore Project
               run: dotnet restore ${{ env.PROJECT_PATH }}
-
-            - name: Restore Console Project
-              run: dotnet restore ${{ env.CONSOLE_PATH }}
-
-#            - name: Build Console App
-#              run: msbuild ${{ env.CONSOLE_PATH }} -nologo -p:Configuration=Release -p:TargetFrameworkVersion=net35
   
             - name: Build Project
               run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
