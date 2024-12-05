@@ -29,17 +29,17 @@ jobs:
               uses: actions/setup-dotnet@v1
               with:
                 dotnet-version: |
-                    3.0.x
+                    4.8.x
                     8.0.x
 
-            - name: Add msbuild to PATH
-              uses: microsoft/setup-msbuild@v2
+#            - name: Add msbuild to PATH
+#              uses: microsoft/setup-msbuild@v2
 
             - name: Restore Project
               run: dotnet restore ${{ env.PROJECT_PATH }}
 
-            - name: Build Console App
-              run: msbuild ${{ env.CONSOLE_PATH }} -nologo -p:Configuration=Release -p:TargetFrameworkVersion=net35
+#            - name: Build Console App
+#              run: msbuild ${{ env.CONSOLE_PATH }} -nologo -p:Configuration=Release -p:TargetFrameworkVersion=net35
   
             - name: Build Project
               run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
