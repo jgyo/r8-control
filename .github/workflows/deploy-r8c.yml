@@ -48,14 +48,14 @@ jobs:
                 options: /O+
 
             - name: Rename Setup File
-              run: ren ${{ env.OUTPUT_DIR }}/mysetup.exe ${{ env.APPLICATION_NAME }}.${{ github.ref_name }}.exe
+              run: ren ${{ env.OUTPUT_DIR }}/mysetup.exe "${{ env.APPLICATION_NAME }}.${{ github.ref_name }}.exe"
 
               # zip contents here
             - name: Create Zip File
               uses: ihiroky/archive-action@v1
               with:
                 root_dir: ${{ env.PUBLISH_DIR }}
-                file_path: ${{ env.OUTPUT_DIR }}/${{ env.APPLICATION_NAME }}.${{ github.ref_name }}.zip
+                file_path: "${{ env.OUTPUT_DIR }}/${{ env.APPLICATION_NAME }}.${{ github.ref_name }}.zip"
 
             - name: Create Release
               id: create_release
