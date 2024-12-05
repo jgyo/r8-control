@@ -15,7 +15,7 @@ env:
   CONSOLE_PATH: CheckDotNetVersion/CheckDotNetVersion.csproj
   ISS_PATH: R8LocoCtrl/setup.iss
   OUTPUT_DIR: R8LocoCtrl/output
-  PUBLISH_DIR: R8LocoCtrl/bin/Release/net8.0-windows/publish/win-x64
+  PUBLISH_DIR: R8LocoCtrl/bin/Release/net8.0-windows/win-x64/publish
   SyncfusionLicenseKey: ${{ secrets.SyncfusionLicenseKey }}
     
 jobs:
