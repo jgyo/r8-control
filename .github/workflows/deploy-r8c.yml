@@ -32,6 +32,9 @@ jobs:
                     3.0.x
                     8.0.x
 
+            - name: Add msbuild to PATH
+              uses: microsoft/setup-msbuild@v2
+
             - name: Restore Project
               run: dotnet restore ${{ env.PROJECT_PATH }}
 
