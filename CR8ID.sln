@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "R8LocoCtrl", "R8LocoCtrl\R8LocoCtrl.csproj", "{39681826-5963-4952-9FE5-23643C681DF8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckDotNetVersion", "CheckDotNetVersion\CheckDotNetVersion.csproj", "{DA7594CE-F29E-44AF-BEBA-C99C32D4D95C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{39681826-5963-4952-9FE5-23643C681DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39681826-5963-4952-9FE5-23643C681DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39681826-5963-4952-9FE5-23643C681DF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA7594CE-F29E-44AF-BEBA-C99C32D4D95C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA7594CE-F29E-44AF-BEBA-C99C32D4D95C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA7594CE-F29E-44AF-BEBA-C99C32D4D95C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA7594CE-F29E-44AF-BEBA-C99C32D4D95C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

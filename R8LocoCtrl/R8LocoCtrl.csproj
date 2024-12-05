@@ -3,13 +3,14 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFrameworkVersion>win-x64</TargetFrameworkVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icons\R8Control.ico</ApplicationIcon>
-    <Version>1.0.0.6</Version>
-    <FileVersion>1.0.0.6</FileVersion>
-    <AssemblyVersion>1.0.0.6</AssemblyVersion>
+    <Version>1.1.0</Version>
+    <FileVersion>1.1.0</FileVersion>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -58,6 +59,10 @@
     <PackageReference Include="Syncfusion.Shared.WPF" Version="27.2.2" />
     <PackageReference Include="Syncfusion.Tools.WPF" Version="27.2.2" />
 </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CheckDotNetVersion\CheckDotNetVersion.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="CR8ID.Designer.cs">
@@ -211,5 +216,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>

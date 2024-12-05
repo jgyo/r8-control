@@ -32,6 +32,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+[Oo]utput/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -397,4 +398,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# My exclusions
 /R8LocoCtrl/App.xaml.cs

@@ -1,0 +1,76 @@
+name: "Deploy R8 Control"
+
+on:
+    push:
+        tags:
+            - "v*"
+permissions:
+    contents: write
+
+env:
+  APPLICATION_NAME: R8 Control
+  PROJECT_DIR: R8LocoCtrl
+  PROJECT_NAME: R8LocoCtrl
+  PROJECT_PATH: R8LocoCtrl/R8LocoCtrl.cproj
+  ISS_PATH: R8LocoCtrl/R8C.iss
+  OUTPUT_DIR: R8LocoCtrl/output
+  PUBLISH_DIR: R8LocoCtrl/bin/Release/net8.0-windows/publish/
+    
+jobs:
+    deploy:
+        name: "Deploy R8 Control"
+        runs-on: windows-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v2
+  
+            - name: Setup DotNet 8.0
+              uses: actions/setup-dotnet@v1
+              with:
+                dotnet-version: 8.0.x
+        
+            - name: Setup DotNet 4.6
+              uses: actions/setup-dotnet@v1
+              with:
+                dotnet-version: 4.5.x
+
+            - name: Restore Project
+              run: dotnet restore ${{ env.PROJECT_PATH }}
+  
+            - name: Build Project
+              run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+  
+            - name: Publish Project
+              run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -r win-x64 --no-build
+
+            - name: Compile Installer
+              uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+              with:
+                path: ${{ env.ISS_PATH }}
+                options: /O+
+
+            - name: Rename Setup File
+              run: ren ${{ env.OUTPUT_DIR }}/mysetup.exe ${{ env.APPLICATION_NAME }}.${{ github.ref_name }}.exe
+
+              # zip contents here
+            - name: Create Zip File
+              uses: ihiroky/archive-action@v1
+              with:
+                root_dir: ${{ env.PUBLISH_DIR }}
+                file_path: ${{ env.OUTPUT_DIR }}/${{ env.APPLICATION_NAME }}.${{ github.ref_name }}.zip
+
+            - name: Create Release
+              id: create_release
+              uses: softprops/action-gh-release@v2
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                tag_name: ${{ github.ref_name }}
+                name: ${{ env.APPLICATION_NAME }} Release ${{ github.ref_name }}
+                draft: false
+                prerelease: false
+                body_path: ${{ env.PROJECT_DIR }}/changes.md
+                files: |
+                    ${{ env.OUTPUT_DIR }}/${{ env.APPLICATION_NAME }}.${{ github.ref_name }}.exe
+                    ${{ env.OUTPUT_DIR }}/${{ env.APPLICATION_NAME }}.${{ github.ref_name }}.zip
+                fail_on_unmatched_files: true
