@@ -36,6 +36,7 @@ SetupIconFile=.\icons\R8Control.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+UninstallDisplayIcon={app}\{#MyAppExeName}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -44,8 +45,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: ".\bin\Release\net8.0-windows\win-x64\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\bin\Release\net8.0-windows\win-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ".\bin\Release\net8.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: ".\bin\Release\net8.0-windows\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -63,28 +64,90 @@ const
   DotnetUrlMsg = 'https://dotnet.microsoft.com/en-us/download/dotnet';
   UrlErrorMsg = 'Unable to open the Dotnet download page. Please search for Dotnet on the web, and download 8.0 or later manually.';
   RestartMsg = 'Please restart this setup after installing Dotnet 8.0 or above. Thank you!';
+  
+function DeleteND(const S: String;Index, Count: Integer): String;
+var resultStr: String;
+begin
+  resultStr := S;
+  Delete(resultStr, Index, Count);
+  result := resultStr;
+end;
+  
+function CheckVersion(var targetVersion: String; var installedVersion: String): Boolean;
+var
+  leftStr, rightStr: String;
+  leftDelimPos, rightDelimPos: Integer;
+  leftValue, rightValue: Integer;
+  funcResult: Boolean;
+begin
+  targetVersion := Trim(targetVersion);
+  installedVersion := Trim(installedVersion);
+  funcResult := True;
+  
+  while ((Length(targetVersion) > 0) and (Length(installedVersion) > 0) and funcResult) do
+  begin
+    leftDelimPos := Pos('.', targetVersion);
+    rightDelimPos := Pos('.', installedVersion);
+    
+    if leftDelimPos = 0 then
+    begin
+      leftStr := targetVersion;
+      targetVersion := '';
+    end else begin
+      leftStr := DeleteND(targetVersion, leftDelimPos, 25);
+      targetVersion := DeleteND(targetVersion, 1, leftDelimPos);
+    end;
+    
+    if rightDelimPos = 0 then
+    begin
+      rightStr := installedVersion;
+      installedVersion := '';
+    end else begin
+      rightStr := DeleteND(installedVersion, rightDelimPos, 25);
+      installedVersion := DeleteND(installedVersion, 1, rightDelimPos);
+    end;
+    leftValue := StrToIntDef(leftStr, -1);
+    rightValue := StrToIntDef(rightStr, -1);
+    if (leftValue >= 0) and (rightValue >= 0) then
+    begin
+      if leftValue > rightValue then
+        funcResult := False;
+    end else begin
+      // This should never run
+      funcResult := False;
+    end;
+  end;
+  
+  Result := funcResult;
+end;
 
 function DetectAndInstallPrerequisites: Boolean;
 var
-  dialogResult: Integer;
+  DialogResult: Integer;
   ResultCode: Integer;
+  targetVersion, installedVersion, TmpFilename: string;
+  StdOut: AnsiString;
   
 begin
   (*** Place your prerequisite detection and extraction+installation code below. ***)
   (*** Return False if missing prerequisites were detected but their installation failed, else return True. ***)
-
-  ExtractTemporaryFile('CheckDotNetVersion.exe');
-  if Exec(ExpandConstant('{tmp}\CheckDotNetVersion.exe'), '8.0', '', SW_SHOWNORMAL, ewWaitUntilTerminated, ResultCode) then
+  
+  TmpFilename := ExpandConstant('{tmp}') + 'console.txt';
+  Exec('cmd.exe', '/C dotnet --version > "' + TmpFilename + '"', '', SW_HIDE,
+    ewWaitUntilTerminated, ResultCode);
+  targetVersion := '8.0';
+  if LoadStringFromFile(TmpFilename, StdOut) then
   begin
-    // Success! Nothing to do.
-    if ResultCode = 0 then
+    installedVersion := Utf8Decode(StdOut)
+    if CheckVersion(targetVersion, installedVersion) then
     begin
+      // Success!
       Result := True;
     end
     else begin
-      // Failure! Tell user
+      // Failure Tell user
       dialogResult := MsgBox(DotnetRequiredMsg, mbInformation, MB_YESNO);
-      if dialogResult = IDYES then
+      if DialogResult = IDYES then
       begin
         // function Exec(const Filename, Params, WorkingDir: String; const ShowCmd: Integer; const Wait: TExecWait; var ResultCode: Integer): Boolean;
         // function ShellExec(const Verb, Filename, Params, WorkingDir: String; const ShowCmd: Integer; const Wait: TExecWait; var ErrorCode: Integer): Boolean;

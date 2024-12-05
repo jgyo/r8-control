@@ -12,7 +12,6 @@ env:
   PROJECT_DIR: R8LocoCtrl
   PROJECT_NAME: R8LocoCtrl
   PROJECT_PATH: R8LocoCtrl/R8LocoCtrl.csproj
-  CONSOLE_PATH: CheckDotNetVersion/CheckDotNetVersion.csproj
   ISS_PATH: R8LocoCtrl/setup.iss
   OUTPUT_DIR: R8LocoCtrl/output
   PUBLISH_DIR: R8LocoCtrl/bin/Release/net8.0-windows/win-x64/publish
