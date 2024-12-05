@@ -92,7 +92,7 @@ begin
         begin
           MsgBox(UrlErrorMsg, mbError, MB_OK);
         end
-      end;-
+      end;
       Result := False;
     end;
   end;
