@@ -23,7 +23,7 @@ jobs:
         runs-on: windows-latest
         steps:
             - name: Syncfusion License Setup
-              run: LicenseKeyValidatorConsole /platform:"WPF" /version:"27.2.2" /licensekey:"${{ secrets:SyncfusionLicenseKey }}"
+              run: LicenseKeyValidatorConsole /platform:"WPF" /version:"27.2.2" /licensekey:"${{ secrets.SyncfusionLicenseKey }}"
 
             - name: Checkout Code
               uses: actions/checkout@v2
