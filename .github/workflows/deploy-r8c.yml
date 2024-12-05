@@ -39,7 +39,7 @@ jobs:
               run: dotnet restore ${{ env.PROJECT_PATH }}
 
             - name: Build Console App
-              run: msbuild -nologo -p:TargetFramework=net35;Configuration=Release ${{ env.CONSOLE_PATH }}
+              run: msbuild ${{ env.CONSOLE_PATH }} -nologo -p:Configuration=Release;TargetFrameworkVersion=net35
   
             - name: Build Project
               run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
