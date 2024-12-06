@@ -49,7 +49,7 @@ jobs:
             - run: echo "{">>./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "Syncfusion.Licensing.SyncfusionLicenseProvider">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo ".RegisterLicense(">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
-            - run: echo """${{ secrets.SYNCFUSIONLICENSEKEY }}"");">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
+            - run: echo """$env:SyncfusionLicenseKey"");">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
