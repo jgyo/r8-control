@@ -15,7 +15,7 @@ env:
   ISS_PATH: R8LocoCtrl/setup.iss
   OUTPUT_DIR: R8LocoCtrl/output
   PUBLISH_DIR: R8LocoCtrl/bin/Release/net8.0-windows/win-x64/publish
-  secretKey: ${{ secrets.SYNCFUSIONLICENSEKEY }}
+  secretKey: ${{ secrets.SYNCFUSION_LICENSE_KEY }}
     
 jobs:
     deploy:
@@ -68,8 +68,6 @@ jobs:
 
             - name: Rename Setup File
               run: ren ${{ env.OUTPUT_DIR }}/mysetup.exe "${{ env.APPLICATION_NAME }}.${{ github.ref_name }}.exe"
-
-            - run: copy ./${{ env.PROJECT_DIR }}/App.xaml.cs ./${{ env.PUBLISH_DIR }}/
 
               # zip contents here
             - name: Create Zip File
