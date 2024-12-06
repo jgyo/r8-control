@@ -401,3 +401,5 @@ FodyWeavers.xsd
 
 # My exclusions
 /R8LocoCtrl/App.xaml.cs
+/uptag.ps1
+*.ps1
