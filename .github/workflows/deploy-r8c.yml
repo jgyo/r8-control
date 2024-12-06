@@ -15,7 +15,7 @@ env:
   ISS_PATH: R8LocoCtrl/setup.iss
   OUTPUT_DIR: R8LocoCtrl/output
   PUBLISH_DIR: R8LocoCtrl/bin/Release/net8.0-windows/win-x64/publish
-  SyncfusionLicenseKey: ${{ secrets.SyncfusionLicenseKey }}
+  SyncfusionLicenseKey: ${{ secrets.SYNCFUSIONLICENSEKEY }}
     
 jobs:
     deploy:
@@ -49,7 +49,7 @@ jobs:
             - run: echo "{">>./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "Syncfusion.Licensing.SyncfusionLicenseProvider">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo ".RegisterLicense(">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
-            - run: echo """${{ secrets.SyncfusionLicenseKey }}"");">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
+            - run: echo """${{ secrets.SYNCFUSIONLICENSEKEY }}"");">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
