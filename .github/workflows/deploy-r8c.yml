@@ -41,14 +41,14 @@ jobs:
             - run: echo "using System.Text;">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "using System.Threading.Tasks;">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
-            - run: echo "namespace R8LocoCtrl>> ./${{ env.PROJECT_DIR }}/App.xaml.cs
+            - run: echo "namespace R8LocoCtrl">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "{">>./${{ env.PROJECT_DIR }}/App.xaml.cs
-            - run: echo "public partial class App>> ./${{ env.PROJECT_DIR }}/App.xaml.cs
+            - run: echo "public partial class App">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "{">>./${{ env.PROJECT_DIR }}/App.xaml.cs
-            - run: echo "public App()>> ./${{ env.PROJECT_DIR }}/App.xaml.cs
+            - run: echo "public App()">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "{">>./${{ env.PROJECT_DIR }}/App.xaml.cs
-            - run: echo "Syncfusion.Licensing.SyncfusionLicenseProvider>> ./${{ env.PROJECT_DIR }}/App.xaml.cs
-            - run: echo ".RegisterLicense(>> ./${{ env.PROJECT_DIR }}/App.xaml.cs
+            - run: echo "Syncfusion.Licensing.SyncfusionLicenseProvider">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
+            - run: echo ".RegisterLicense(">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo """${{ secrets.SyncfusionLicenseKey }}"");">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
