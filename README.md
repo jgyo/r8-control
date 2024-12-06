@@ -1,5 +1,24 @@
 # R8 Control
 
+#### <img src="New32x32.png" alt="New" title="Something new has happened." width="24" height="24" /> A New Resource is Ready to Deploy
+We released version 1.1.1 of **R8 Control** today (12/6/24) and made
+a few changes in our release process. You will notice that we released two
+types of packages for installing the application. One of the packages
+is a regular zip file containing all the files needed to run **R8C**.
+That's how the program has been released up until now. We have also
+added a new Inno Setup install file that a user may run on his
+desktop to automate the installation process.
+
+The runtime files in both packages are identical, so the user can
+choose either to install **R8C** on his system.
+
+We plan to check out ways to sign the packages so users can trust
+that the packages come from us and haven't been modified. It took
+us a while to get to this point because the automated deployment
+we implemented presented us with many twists and turns. Hopefully,
+the next step won't be quite as difficult
+
+---
 **R8 Control** (R8C) is an external Run 8 controller offering precise throttle
 control and many other features. It is designed for use on multiple-screen
 systems where Run 8 is viewed in full-screen mode, and **R8C** is viewed
