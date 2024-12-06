@@ -51,7 +51,7 @@ jobs:
             - run: echo ".RegisterLicense(">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - name: Key Line
               with:
-                secretKey: ${{ secret.SYNCFUSIONLICENSEKEY }}
+                secretKey: ${{ secrets.SYNCFUSIONLICENSEKEY }}
               run: echo """$env:secretKey"");">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "}">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
