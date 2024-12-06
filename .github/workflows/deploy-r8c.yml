@@ -35,7 +35,7 @@ jobs:
               run: dotnet restore ${{ env.PROJECT_PATH }}
 
             - name: Restore App.xaml.cs with license key
-              run: echo "using System;""> ./${{ env.PROJECT_DIR }}/App.xaml.cs
+              run: echo "using System;"> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "using System.Collections.Generic;">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "using System.Linq;">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
             - run: echo "using System.Text;">> ./${{ env.PROJECT_DIR }}/App.xaml.cs
