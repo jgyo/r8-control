@@ -1,5 +1,11 @@
 # R8 Control
 
+#### <img src="New32x32.png" alt="New" title="Something new has happened." width="24" height="24" /> Join the New R8C Discord Server
+I have created a new discord server to help support **R8 Control** users. Please help me build the server by joining
+and helping in the effort. If you need help or if you can provide help to other users, we want and need you there.
+Run 8 is also supported on the server for convenience. To join the server, [CLICK HERE](https://discord.gg/AaujbRfQ5z).
+
+
 #### <img src="New32x32.png" alt="New" title="Something new has happened." width="24" height="24" /> A New Resource is Ready to Deploy
 We released version 1.1.1 of **R8 Control** today (12/6/24) and made
 a few changes in our release process. You will notice that we released two
