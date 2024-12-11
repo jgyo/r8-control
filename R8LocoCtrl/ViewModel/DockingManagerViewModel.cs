@@ -7,6 +7,7 @@
 using CommunityToolkit.Mvvm.Input;
 using R8LocoCtrl.Interface;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,6 +23,34 @@ namespace R8LocoCtrl.ViewModel
         public event EventHandler<string[]>? LoadMap;
         public event EventHandler<string>? OpenGradeMapWindow;
         public event EventHandler<bool>? PersistState;
+
+        #region OpenInBrowserCommand
+        RelayCommand<string?>? _OpenInBrowserCommand = null;
+        public RelayCommand<string?> OpenInBrowserCommand
+        {
+            get
+            {
+                _OpenInBrowserCommand ??= new RelayCommand<string?>(OpenInBrowserExecute);
+                return _OpenInBrowserCommand;
+            }
+        }
+
+        protected virtual void OpenInBrowserExecute(string? link)
+        {
+            if (string.IsNullOrEmpty(link)) throw new ArgumentNullException("link");
+            try
+            {
+                _ = Process.Start(new ProcessStartInfo(link) { UseShellExecute = true });
+            } catch
+            {
+                MessageBox.Show(
+                    "Unable to open link. You may need to set up a default browser.",
+                    "Opening Link Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+        #endregion OpenInBrowserCommand
 
         #region RefreshMapsCommand
         private RelayCommand? _RefreshMapsCommand = null;

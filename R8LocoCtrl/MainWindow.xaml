@@ -217,6 +217,14 @@
 
             <syn:MenuItemAdv Header="Help">
                 <syn:MenuItemAdv Click="MenuItemAdv_About" Header="About" />
+                <syn:MenuItemAdv
+                    Command="{Binding OpenInBrowserCommand}"
+                    CommandParameter="https://github.com/jgyo/r8-control"
+                    Header="GitHub Repo" />
+                <syn:MenuItemAdv
+                    Command="{Binding OpenInBrowserCommand}"
+                    CommandParameter="https://discord.gg/AaujbRfQ5z"
+                    Header="Discord" />
             </syn:MenuItemAdv>
         </syn:MenuAdv>
         <StatusBar DataContext="{StaticResource r8client}" DockPanel.Dock="Bottom">
