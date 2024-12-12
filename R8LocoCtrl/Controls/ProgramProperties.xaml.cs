@@ -46,6 +46,7 @@ namespace R8LocoCtrl.Controls
             speedo.MaxSafeSpeed = properties.MaximumSafeSpeed;
             speedo.MaxSpeedometerSpeed = properties.MaximumSpeedometerSpeed;
             speedo.PressureReference = properties.PressureReference;
+            speedo.SSPointerVisible = properties.SSPointerVisible;
         }
     }
 }

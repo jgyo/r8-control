@@ -272,6 +272,7 @@
                             Symbol="Triangle"
                             SymbolPointerHeight="15"
                             SymbolPointerStroke="White"
+                            SymbolPointerVisibility="{Binding SSPointerVisibility, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}"
                             SymbolPointerWidth="12"
                             Value="{Binding NextMinSpeed, RelativeSource={RelativeSource AncestorType={x:Type local:MainControl}, Mode=FindAncestor}}" />
                     </syn:CircularScale.Pointers>

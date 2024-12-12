@@ -190,5 +190,17 @@ namespace R8LocoCtrl {
                 this["EAPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SSPointerVisible {
+            get {
+                return ((bool)(this["SSPointerVisible"]));
+            }
+            set {
+                this["SSPointerVisible"] = value;
+            }
+        }
     }
 }

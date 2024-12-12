@@ -381,6 +381,7 @@
                             SafeRangeMax="{Binding Source={StaticResource speedoViewModel}, Path=MaxSafeSpeed}"
                             Speed="{Binding SpeedMph}"
                             SpeedMphPerMin="{Binding AccelerationMphMin}"
+                            SSPointerVisibility="{Binding Source={StaticResource speedoViewModel}, Path=SSPointerVisible, Converter={StaticResource boolToVisibilityConverter}}"
                             Throttle="{Binding ThrottleNotch}"
                             WaterTemp="{Binding WaterTemp}">
                             <controls:MainControl.NextMinSpeed>

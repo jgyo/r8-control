@@ -99,6 +99,10 @@
             </TextBlock>
         </StackPanel>
         <StackPanel Margin="4">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox Margin="4" IsChecked="{Binding SSPointerVisible}" Content="Future MPH Enabled" />
+                <TextBlock Margin="4" Width="350" TextWrapping="Wrap">This determines if the pointer that indicates MPH in one minute is visible. Some users think the pointer is distracting, so this option has been added to the program.</TextBlock>
+            </StackPanel>
             <DockPanel Width="500" LastChildFill="False">
                 <Label Margin="4,0" Content="Run 8 Directory Path" />
                 <TextBlock
