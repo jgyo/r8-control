@@ -402,3 +402,5 @@ FodyWeavers.xsd
 # My exclusions
 /R8LocoCtrl/App.xaml.cs
 *.ps1
+.templates/
+/Output/
