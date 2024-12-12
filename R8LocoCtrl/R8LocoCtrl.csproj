@@ -15,36 +15,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove=".templates\**" />
+    <EmbeddedResource Remove=".templates\**" />
+    <None Remove=".templates\**" />
+    <Page Remove=".templates\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="ViewModel\DirectoryPathsViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="bin\Debug\net8.0-windows\icons\bell-dark.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\bell-white.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\break-128.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\break-emergency.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\caboose-dark.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\caboose-white.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\close.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\communication-dark.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\communication-white.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\Compressor-Dark.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\Compressor-White.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\headlight-dark.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\headlight-low.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\headlight-white.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\horn-dark.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\horn-white.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\ParkingBrakeAmber.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\ParkingBrakeGrey.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\ParkingBrakeRed.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\sand-dark.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\sand-white.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\slip-dark.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\slip-white.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\warning-dark.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\warning-red.png" />
-    <Content Include="bin\Debug\net8.0-windows\icons\warning-yellow.png" />
     <Content Include="icons\R8Control.ico" />
   </ItemGroup>
 
