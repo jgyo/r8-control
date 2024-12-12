@@ -214,9 +214,7 @@
                     CommandParameter="{x:Static int:Run8Windows.StartUp}"
                     Header="Start Up" />
             </syn:MenuItemAdv>
-
             <syn:MenuItemAdv Header="Help">
-                <syn:MenuItemAdv Click="MenuItemAdv_About" Header="About" />
                 <syn:MenuItemAdv
                     Command="{Binding OpenInBrowserCommand}"
                     CommandParameter="https://github.com/jgyo/r8-control"
@@ -225,6 +223,9 @@
                     Command="{Binding OpenInBrowserCommand}"
                     CommandParameter="https://discord.gg/AaujbRfQ5z"
                     Header="Discord" />
+                <syn:MenuItemSeparator />
+                <syn:MenuItemAdv Click="MenuItemAdv_About" Header="About" />
+                <syn:MenuItemAdv Click="MenuItemAdv_VersionCheck" Header="Check for Update" />
             </syn:MenuItemAdv>
         </syn:MenuAdv>
         <StatusBar DataContext="{StaticResource r8client}" DockPanel.Dock="Bottom">
