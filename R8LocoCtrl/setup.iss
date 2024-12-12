@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "R8 Control"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "1.1.2"
 #define MyAppPublisher "Gil Yoder"
 #define MyAppURL "https://github.com/jgyo/r8-control"
 #define MyAppExeName "R8LocoCtrl.exe"
