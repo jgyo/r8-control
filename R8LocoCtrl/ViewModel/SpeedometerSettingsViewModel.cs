@@ -71,5 +71,20 @@ namespace R8LocoCtrl.ViewModel
             }
         }
 
+        private bool sSPointerVisible;
+        public bool SSPointerVisible
+        {
+            get => sSPointerVisible;
+            set
+            {
+                if (sSPointerVisible == value)
+                {
+                    return;
+                }
+
+                sSPointerVisible = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

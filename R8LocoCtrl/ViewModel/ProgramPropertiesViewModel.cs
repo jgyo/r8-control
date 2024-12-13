@@ -21,11 +21,14 @@ namespace R8LocoCtrl.ViewModel
         private const string EA_FILE = "ExternalAssistantForRun8.exe";
         private const string RUN8_FILE = "Run-8 Train Simulator V3.exe";
 
+        RelayCommand<string>? _ExecuteAppCommand = null;
         private RelayCommand? _SubmitPropertiesCommand = null;
         private string? consistEdPath;
         private string? dispatcherPath;
+        private int dynBrakeLC;
         private string? eAPath;
         private string? gradeMapPath;
+        private int indyBrakeLC;
         private bool isConsistEdPathValid;
         private bool isDispatcherPathValid;
         private bool isEAPathValid;
@@ -36,41 +39,12 @@ namespace R8LocoCtrl.ViewModel
         private int pressureReference;
         private RelayCommand? resetPropertiesCommand = null;
         private string? run8Path;
+        private bool sSPointerVisible;
+        private int trainBrakeLC;
 
         public ProgramPropertiesViewModel()
         {
             ResetProperties();
-        }
-
-        RelayCommand<string>? _ExecuteAppCommand = null;
-        public RelayCommand<string> ExecuteAppCommand
-        {
-            get
-            {
-                _ExecuteAppCommand ??= new RelayCommand<string>(ExecuteAppExecute);
-                return _ExecuteAppCommand;
-            }
-        }
-
-        protected virtual void ExecuteAppExecute(string? filepath)
-        {
-            if(filepath == null)
-                return;
-
-            try
-            {
-                var pi = new ProcessStartInfo(filepath)
-                {
-                    UseShellExecute = false,
-                    WorkingDirectory = Path.GetDirectoryName(filepath)
-                };
-                
-                Process.Start(pi);
-            }
-            catch(Exception e)
-            {
-                MessageBox.Show(e.Message, "Exception");
-            }
         }
 
         public event EventHandler<ProgramPropertiesViewModel>? SubmitProperties;
@@ -125,6 +99,11 @@ namespace R8LocoCtrl.ViewModel
                 OnPropertyChanged("DispatcherFilePath");
             }
         }
+        public int DynBrakeLC
+        {
+            get => dynBrakeLC;
+            set => SetProperty(ref dynBrakeLC, value);
+        }
         public string? EAFilePath
         {
             get
@@ -150,6 +129,14 @@ namespace R8LocoCtrl.ViewModel
                 OnPropertyChanged("EAFilePath");
             }
         }
+        public RelayCommand<string> ExecuteAppCommand
+        {
+            get
+            {
+                _ExecuteAppCommand ??= new RelayCommand<string>(ExecuteAppExecute);
+                return _ExecuteAppCommand;
+            }
+        }
         public string? GradeMapPath
         {
             get { return gradeMapPath; }
@@ -163,6 +150,11 @@ namespace R8LocoCtrl.ViewModel
                 gradeMapPath = value;
                 OnPropertyChanged();
             }
+        }
+        public int IndyBrakeLC
+        {
+            get => indyBrakeLC;
+            set => SetProperty(ref indyBrakeLC, value);
         }
         public bool IsConsistEdPathValid
         {
@@ -316,6 +308,20 @@ namespace R8LocoCtrl.ViewModel
                 GradeMapPath = null;
             }
         }
+        public bool SSPointerVisible
+        {
+            get { return sSPointerVisible; }
+            set
+            {
+                if (sSPointerVisible == value)
+                {
+                    return;
+                }
+
+                sSPointerVisible = value;
+                OnPropertyChanged();
+            }
+        }
         public RelayCommand SubmitPropertiesCommand
         {
             get
@@ -323,6 +329,11 @@ namespace R8LocoCtrl.ViewModel
                 _SubmitPropertiesCommand ??= new RelayCommand(SubmitPropertiesExecute);
                 return _SubmitPropertiesCommand;
             }
+        }
+        public int TrainBrakeLC
+        {
+            get => trainBrakeLC;
+            set => SetProperty(ref trainBrakeLC, value);
         }
 
         private bool CheckExePath(string? path, string exeName)
@@ -349,8 +360,33 @@ namespace R8LocoCtrl.ViewModel
             MaximumSafeSpeed = CR8ID.Default.MaxSafeSpeed;
             MaximumSpeedometerSpeed = CR8ID.Default.MaxSpeedOSpeed;
             PressureReference = CR8ID.Default.PressureReference;
+            SSPointerVisible = CR8ID.Default.SSPointerVisible;
+
+            TrainBrakeLC = CR8ID.Default.TrainBrakeLC;
+            DynBrakeLC = CR8ID.Default.DynBrakeLC;
+            IndyBrakeLC = CR8ID.Default.IndyBrakeLC;
         }
 
+        protected virtual void ExecuteAppExecute(string? filepath)
+        {
+            if (filepath == null)
+                return;
+
+            try
+            {
+                var pi = new ProcessStartInfo(filepath)
+                {
+                    UseShellExecute = false,
+                    WorkingDirectory = Path.GetDirectoryName(filepath)
+                };
+
+                Process.Start(pi);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Exception");
+            }
+        }
         protected virtual void ResetPropertiesExecute()
         {
             ResetProperties();
@@ -365,11 +401,15 @@ namespace R8LocoCtrl.ViewModel
             CR8ID.Default.EAPath = EAPath;
             CR8ID.Default.DispatcherPath = DispatcherPath;
             CR8ID.Default.ConsistEdPath = ConsistEdPath;
+            CR8ID.Default.SSPointerVisible = SSPointerVisible;
+
+            CR8ID.Default.TrainBrakeLC = TrainBrakeLC;
+            CR8ID.Default.DynBrakeLC = DynBrakeLC;
+            CR8ID.Default.IndyBrakeLC = IndyBrakeLC;
 
             CR8ID.Default.Save();
 
             SubmitProperties?.Invoke(this, this);
-
         }
 
     }
