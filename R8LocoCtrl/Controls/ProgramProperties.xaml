@@ -100,8 +100,70 @@
         </StackPanel>
         <StackPanel Margin="4">
             <StackPanel Orientation="Horizontal">
-                <CheckBox Margin="4" IsChecked="{Binding SSPointerVisible}" Content="Future MPH Enabled" />
-                <TextBlock Margin="4" Width="350" TextWrapping="Wrap">This determines if the pointer that indicates MPH in one minute is visible. Some users think the pointer is distracting, so this option has been added to the program.</TextBlock>
+                <CheckBox
+                    Margin="4"
+                    Content="Future MPH Enabled"
+                    IsChecked="{Binding SSPointerVisible}" />
+                <TextBlock
+                    Width="350"
+                    Margin="4"
+                    TextWrapping="Wrap">
+                    This determines if the pointer that indicates MPH in one minute is visible. Some users think the pointer is distracting, so this option has been added to the program.
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Margin="4,0">
+                <Label Margin="4" Content="Large Change Settings for Brake Controls" />
+                <Grid Width="489" Margin="4,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <syncfusion:UpDown
+                        Grid.Column="0"
+                        Width="40"
+                        MaxValue="50"
+                        MinValue="1"
+                        NumberDecimalDigits="0"
+                        Step="1"
+                        Value="{Binding DynBrakeLC}" />
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="4"
+                        Text="Dynamic Brakes" />
+                    <syncfusion:UpDown
+                        Grid.Column="2"
+                        Width="40"
+                        MaxValue="50"
+                        MinValue="1"
+                        NumberDecimalDigits="0"
+                        Step="1"
+                        Value="{Binding TrainBrakeLC}" />
+                    <TextBlock
+                        Grid.Column="3"
+                        Margin="4"
+                        Text="Train Brakes" />
+                    <syncfusion:UpDown
+                        Grid.Column="4"
+                        Width="40"
+                        MaxValue="50"
+                        MinValue="1"
+                        NumberDecimalDigits="0"
+                        Step="1"
+                        Value="{Binding IndyBrakeLC}" />
+                    <TextBlock
+                        Grid.Column="5"
+                        Margin="4"
+                        Text="Indy Brakes" />
+                </Grid>
+                <TextBlock Margin="4" TextWrapping="Wrap">
+                    The large change settings determine the how granular slider changes are when making
+                    a "large" change. A large changes occurs when clicking on a slider, or when using
+                    the page up and page down keys when the slider has focus.
+                </TextBlock>
             </StackPanel>
             <DockPanel Width="500" LastChildFill="False">
                 <Label Margin="4,0" Content="Run 8 Directory Path" />
