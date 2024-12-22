@@ -27,13 +27,20 @@
     </Window.Resources>
     <DockPanel>
         <syn:MenuAdv DockPanel.Dock="Top">
+
+            <!--  File Menu  -->
+
             <syn:MenuItemAdv Header="File">
                 <syn:MenuItemAdv
                     Command="{Binding ActivateWindowCommand}"
                     CommandParameter="{x:Static int:Run8Windows.Setup}"
                     Header="Setup" />
+                <syn:MenuItemAdv Click="OpenHotKeyEditor" Header="Hotkeys" />
                 <syn:MenuItemAdv Click="MenuItemAdv_Close" Header="Close" />
             </syn:MenuItemAdv>
+
+            <!--  Maps Menu  -->
+
             <syn:MenuItemAdv Header="Maps">
                 <syn:MenuItemAdv Header="Southern CA">
                     <syn:MenuItemAdv
@@ -113,7 +120,6 @@
                         Command="{Binding LoadMapCommand}"
                         CommandParameter="waycross/riceyard"
                         Header="Riceyard Route" />
-
                 </syn:MenuItemAdv>
                 <syn:MenuItemAdv Header="Northeast">
                     <syn:MenuItemAdv
@@ -140,6 +146,9 @@
                 <syn:MenuItemSeparator />
                 <syn:MenuItemAdv x:Name="GradeMapsMenu" Header="Grade Maps" />
             </syn:MenuItemAdv>
+
+            <!--  Apps Menu  -->
+
             <syn:MenuItemAdv Header="Apps">
                 <syn:MenuItemAdv
                     Command="{Binding ExecuteAppCommand, Source={StaticResource programProperties}}"
@@ -162,6 +171,9 @@
                     Header="External Assistent"
                     IsEnabled="{Binding IsEAPathValid, Source={StaticResource programProperties}}" />
             </syn:MenuItemAdv>
+
+            <!--  Window Menu  -->
+
             <syn:MenuItemAdv Header="Window">
                 <syn:MenuItemAdv Command="{Binding DefaultStateCommand}" Header="Default Layout" />
                 <syn:MenuItemAdv
@@ -215,6 +227,8 @@
                     Header="Start Up" />
             </syn:MenuItemAdv>
 
+            <!--  Help Menu  -->
+
             <syn:MenuItemAdv Header="Help">
                 <syn:MenuItemAdv Click="MenuItemAdv_About" Header="About" />
                 <syn:MenuItemAdv
@@ -247,7 +261,7 @@
         </StatusBar>
         <syn:DockingManager
             x:Name="dockingManager"
-            ChildrenCollectionChanged="dockingManager_ChildrenCollectionChanged"
+            ChildrenCollectionChanged="DockingManager_ChildrenCollectionChanged"
             DockStateChanged="DockingManager_DockStateChanged"
             UseDocumentContainer="True">
             <ContentControl

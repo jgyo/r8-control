@@ -4,16 +4,19 @@
 //     Copyright (c) Xcoder Software. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
+using HotKeyLibrary;
 using R8LocoCtrl.Interface;
 using R8LocoCtrl.ViewModel;
 using Syncfusion.Windows.PdfViewer;
 using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Input;
 
 namespace R8LocoCtrl
 {
@@ -22,11 +25,14 @@ namespace R8LocoCtrl
     /// </summary>
     public partial class MainWindow : Window
     {
-        const string DEFAULT_STATE_FILENAME = "DefaultState.xml";
-        const string PERSIST_STATE_FILENAME = "ClosingState.xml";
-        const double DEFAULT_WIDTH = 1230;
-        const double DEFAULT_HEIGHT = 540;
+        private const double DEFAULT_HEIGHT = 540;
+        private const string DEFAULT_STATE_FILENAME = "DefaultState.xml";
+        private const double DEFAULT_WIDTH = 1230;
+        private const string PERSIST_STATE_FILENAME = "ClosingState.xml";
 
+        private readonly CommandRegistry commandRegistry;
+        private Modifiers expModifiers;
+        private Modifiers genModifiers;
         private readonly ProgramPropertiesViewModel progProperties;
 
         public MainWindow()
@@ -43,14 +49,18 @@ namespace R8LocoCtrl
             SetProgramProperties(progProperties);
             SetSpeedometerProperties(progProperties);
             ConfigureGradeMapMenu();
+            commandRegistry = new CommandRegistry();
+            commandRegistry.RefreshHotKeyList(GeneralCommands.CurrentCommands);
+            this.PreviewKeyDown += MainWindow_PreviewKeyDown;
+            this.PreviewKeyUp += MainWindow_PreviewKeyUp;
 
-            if (CR8ID.Default.PersistState)
+            if(CR8ID.Default.PersistState)
             {
                 this.Top = CR8ID.Default.Top;
                 this.Left = CR8ID.Default.Left;
                 this.Height = CR8ID.Default.Height;
                 this.Width = CR8ID.Default.Width;
-                if (CR8ID.Default.Maximized)
+                if(CR8ID.Default.Maximized)
                 {
                     this.WindowState = WindowState.Maximized;
                 }
@@ -62,7 +72,7 @@ namespace R8LocoCtrl
 
         private void ConfigureDataContext()
         {
-            if (DataContext is DockingManagerViewModel dmvm)
+            if(DataContext is DockingManagerViewModel dmvm)
             {
                 dmvm.ActivateWindow += Dmvm_ActivateWindow;
                 dmvm.DefaultState += Dmvm_LoadDefaultState;
@@ -75,7 +85,7 @@ namespace R8LocoCtrl
 
         private void ConfigureGradeMapMenu()
         {
-            if (!progProperties.IsRun8PathValid)
+            if(!progProperties.IsRun8PathValid)
             {
                 this.GradeMapsMenu.Items.Clear();
                 this.GradeMapsMenu.ToolTip = "Requires configuration in setup.";
@@ -85,19 +95,19 @@ namespace R8LocoCtrl
             this.GradeMapsMenu.ToolTip = null;
             var files = Directory.EnumerateFiles(progProperties.GradeMapPath!, "*.pdf");
             var dmvm = (DockingManagerViewModel)DataContext;
-            foreach (var filePath in files)
+            foreach(var filePath in files)
             {
                 bool foundMatch = false;
                 try
                 {
                     foundMatch = GradeMapRegEx().IsMatch(filePath);
-                    if (foundMatch)
+                    if(foundMatch)
                     {
                         string? menuText = null;
                         menuText = GradeMapRegEx().Match(filePath).Groups["Name"].Value;
                         menuText = menuText.Replace('_', ' ').Trim();
 
-                        var newMenuItem = new MenuItemAdv()
+                        var newMenuItem = new MenuItemAdv
                         {
                             Header = menuText,
                             CommandParameter = filePath,
@@ -106,11 +116,10 @@ namespace R8LocoCtrl
                         this.GradeMapsMenu.Items.Add(newMenuItem);
                     }
                 }
-                catch (ArgumentException ex)
+                catch(ArgumentException ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-
             }
         }
 
@@ -133,7 +142,7 @@ namespace R8LocoCtrl
             var filepath = e[2];
             var webpath = e[1];
 
-            if (!File.Exists(filepath))
+            if(!File.Exists(filepath))
             {
                 // Try to download it
                 try
@@ -156,7 +165,12 @@ namespace R8LocoCtrl
 
             var docStream = File.OpenRead(filepath);
 
-            var pdfViewer = new PdfViewerControl() { Name = filename.Replace('.', '_').Replace('-','_'), ItemSource = docStream };
+            var pdfViewer = new PdfViewerControl
+            {
+                Name = filename.Replace('.', '_').Replace('-', '_'),
+                ItemSource = docStream
+            };
+
             dockingManager.Children.Add(pdfViewer);
             DockingManager.SetHeader(pdfViewer, filename);
             DockingManager.SetState(pdfViewer, DockState.Document);
@@ -165,7 +179,7 @@ namespace R8LocoCtrl
         private void Dmvm_OpenGradeMapWindow(object? sender, string filePath)
         {
             var filename = Path.GetFileName(filePath);
-            if (!File.Exists(filePath))
+            if(!File.Exists(filePath))
                 throw new FileNotFoundException(filename);
 
             try
@@ -174,14 +188,13 @@ namespace R8LocoCtrl
 
                 var name = filename.Split('.')[0].Replace(' ', '_');
 
-                var pdfViewer = new PdfViewerControl(){ Name = name, ItemSource = docStream };
-
+                var pdfViewer = new PdfViewerControl { Name = name, ItemSource = docStream };
 
                 dockingManager.Children.Add(pdfViewer);
                 DockingManager.SetHeader(pdfViewer, filename); // filename);
                 DockingManager.SetState(pdfViewer, DockState.Document);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageBox.Show(ex.Message, "Grade Map File Error");
             }
@@ -192,41 +205,81 @@ namespace R8LocoCtrl
             CR8ID.Default.PersistState = !e;
         }
 
+        private void DockingManager_ChildrenCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if(e.Action == NotifyCollectionChangedAction.Move)
+                return;
+
+            if(e.OldItems == null)
+                return;
+            foreach(var child in e.OldItems)
+            {
+                if(child is not PdfViewerControl pdfViewer)
+                    continue;
+                var file = pdfViewer.ItemSource as FileStream;
+                file?.Close();
+                file?.Dispose();
+            }
+        }
+
         private void DockingManager_CloseButtonClick(object sender, CloseButtonEventArgs e)
         {
             var content = (e.TargetItem as PdfViewerControl);
-            if (content != null)
+            if(content != null)
             {
                 dockingManager.Children.Remove(content);
             }
         }
 
+        private async void DockingManager_DockStateChanged(FrameworkElement sender, DockStateEventArgs e)
+        {
+            // Setting TopMost on the main window will put the main
+            // window and all detached dockable windows on top of
+            // all other displayed windows. However, if a window is
+            // undocked and floated on the screen, it may be covered
+            // by other windows from other programs.
+            //
+            // Resetting TopMost twice after a tear will put all
+            // application windows back on top, but how to do that
+            // programmatically? This even is the trick, but it fires
+            // just a little too soon for that to work. Taking a
+            // brief break, about 1/10 second, allows the tear to
+            // complete and allows the trick to work.
+
+            await Task.Delay(100);
+
+            AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
+            AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
+        }
+
         private void DockingManager_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!File.Exists(DEFAULT_STATE_FILENAME))
+            if(!File.Exists(DEFAULT_STATE_FILENAME))
                 dockingManager.SaveDockState(DEFAULT_STATE_FILENAME);
 
-            if (CR8ID.Default.PersistState && File.Exists(PERSIST_STATE_FILENAME))
+            if(CR8ID.Default.PersistState && File.Exists(PERSIST_STATE_FILENAME))
                 dockingManager.LoadDockState(PERSIST_STATE_FILENAME);
         }
 
         private void DockingManager_WindowClosing(object sender, WindowClosingEventArgs e)
         {
             var content = (e.TargetItem as PdfViewerControl);
-            if (content != null)
+            if(content != null)
             {
                 dockingManager.Children.Remove(content);
             }
         }
 
-        [GeneratedRegex(@"^.*\\(?:(RUN 8|RUN8|))(?<Name>.*)(?:Grade.Map\.pdf)", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Singleline, "en-US")]
+        [GeneratedRegex(@"^.*\\(?:(RUN 8|RUN8|))(?<Name>.*)(?:Grade.Map\.pdf)",
+            RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Singleline,
+            "en-US")]
         private static partial Regex GradeMapRegEx();
 
         private void MainWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (e.OldValue != null)
+            if(e.OldValue != null)
             {
-                if (e.OldValue is DockingManagerViewModel dmvm)
+                if(e.OldValue is DockingManagerViewModel dmvm)
                 {
                     dmvm.ActivateWindow -= Dmvm_ActivateWindow;
                     dmvm.DefaultState -= Dmvm_LoadDefaultState;
@@ -237,9 +290,158 @@ namespace R8LocoCtrl
             ConfigureDataContext();
         }
 
-        private void ProgProperties_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.PropertyName == "IsRun8PathValid")
+            e.Handled = true;
+            var key = e.Key;
+
+            // when Alt is pressed, SystemKey (instead of Key) is used instead
+            if(key == Key.System)
+                key = e.SystemKey;
+
+            if(key == Key.LeftCtrl ||
+                key == Key.RightCtrl ||
+                key == Key.LeftAlt ||
+                key == Key.RightAlt ||
+                key == Key.LeftShift ||
+                key == Key.RightShift ||
+                key == Key.LWin ||
+                key == Key.RWin)
+            {
+                switch(key)
+                {
+                    case Key.LeftCtrl:
+                        expModifiers = Modifiers.LeftCtrl;
+                        genModifiers = Modifiers.Ctrl;
+                        break;
+                    case Key.RightCtrl:
+                        expModifiers = Modifiers.RightCtrl;
+                        genModifiers = Modifiers.Ctrl;
+                        break;
+                    case Key.LeftAlt:
+                        expModifiers = Modifiers.LeftAlt;
+                        genModifiers = Modifiers.Alt;
+                        break;
+                    case Key.RightAlt:
+                        expModifiers = Modifiers.RightAlt;
+                        genModifiers = Modifiers.Alt;
+                        break;
+                    case Key.LeftShift:
+                        expModifiers = Modifiers.LeftShift;
+                        genModifiers = Modifiers.Shift;
+                        break;
+                    case Key.RightShift:
+                        expModifiers = Modifiers.RightShift;
+                        genModifiers = Modifiers.Shift;
+                        break;
+                    case Key.LWin:
+                        expModifiers |= Modifiers.LeftWin;
+                        genModifiers |= Modifiers.Win;
+                        break;
+                    case Key.RWin:
+                        expModifiers &= Modifiers.RightWin;
+                        genModifiers &= Modifiers.Win;
+                        break;
+                }
+
+                return;
+            }
+
+            var expHotKey = new HotKey(key, expModifiers);
+            var genHotKey = new HotKey(key, genModifiers);
+            commandRegistry.PollKey(expHotKey, genHotKey, true);
+        }
+
+        private void MainWindow_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            var key = e.Key;
+
+            if(key == Key.System)
+                key = e.SystemKey;
+
+            if(key == Key.LeftCtrl ||
+                key == Key.RightCtrl ||
+                key == Key.LeftAlt ||
+                key == Key.RightAlt ||
+                key == Key.LeftShift ||
+                key == Key.RightShift ||
+                key == Key.LWin ||
+                key == Key.RWin)
+            {
+                switch(key)
+                {
+                    case Key.LeftCtrl:
+                        expModifiers &= Modifiers.All ^ Modifiers.LeftCtrl;
+                        genModifiers &= Modifiers.All ^ Modifiers.Ctrl;
+                        break;
+                    case Key.RightCtrl:
+                        expModifiers &= Modifiers.All ^ Modifiers.RightCtrl;
+                        genModifiers &= Modifiers.All ^ Modifiers.Ctrl;
+                        break;
+                    case Key.LeftAlt:
+                        expModifiers &= Modifiers.All ^ Modifiers.LeftAlt;
+                        genModifiers &= Modifiers.All ^ Modifiers.All;
+                        break;
+                    case Key.RightAlt:
+                        expModifiers &= Modifiers.All ^ Modifiers.RightAlt;
+                        genModifiers &= Modifiers.All ^ Modifiers.Alt;
+                        break;
+                    case Key.LeftShift:
+                        expModifiers &= Modifiers.All ^ Modifiers.LeftShift;
+                        genModifiers &= Modifiers.All ^ Modifiers.Shift;
+                        break;
+                    case Key.RightShift:
+                        expModifiers &= Modifiers.All ^ Modifiers.RightShift;
+                        genModifiers &= Modifiers.All ^ Modifiers.Shift;
+                        break;
+                    case Key.LWin:
+                        expModifiers &= Modifiers.All ^ Modifiers.LeftWin;
+                        genModifiers &= Modifiers.All ^ Modifiers.Win;
+                        break;
+                    case Key.RWin:
+                        expModifiers &= Modifiers.All ^ Modifiers.RightWin;
+                        genModifiers &= Modifiers.All ^ Modifiers.Win;
+                        break;
+                }
+
+                return;
+            }
+
+            var expHotKey = new HotKey(key, expModifiers);
+            var genHotKey = new HotKey(key, genModifiers);
+            commandRegistry.PollKey(expHotKey, genHotKey, false);
+        }
+
+        private void MenuItemAdv_About(object sender, RoutedEventArgs e)
+        {
+            OpenAboutWindow();
+        }
+
+        private void MenuItemAdv_Close(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void OpenAboutWindow()
+        {
+            var aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
+        }
+
+        private void OpenHotKeyEditor(object sender, RoutedEventArgs e)
+        {
+            var win = new HotKeyListEditorWindow(GeneralCommands.DefaultCommands, GeneralCommands.CurrentCommands);
+            var result = win.ShowDialog();
+            if(result == true)
+            {
+                GeneralCommands.Save();
+            }
+        }
+
+        private void ProgProperties_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == "IsRun8PathValid")
             {
                 ConfigureGradeMapMenu();
             }
@@ -280,58 +482,10 @@ namespace R8LocoCtrl
             CR8ID.Default.Height = this.Height;
             CR8ID.Default.Maximized = this.WindowState == WindowState.Maximized;
             CR8ID.Default.Save();
-            if (CR8ID.Default.PersistState)
+            if(CR8ID.Default.PersistState)
                 dockingManager.SaveDockState(PERSIST_STATE_FILENAME);
 
             base.OnClosing(e);
-        }
-
-        private void MenuItemAdv_About(object sender, RoutedEventArgs e)
-        {
-            var aboutWindow = new AboutWindow();
-            aboutWindow.ShowDialog();
-        }
-
-        private void MenuItemAdv_Close(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private async void DockingManager_DockStateChanged(FrameworkElement sender, DockStateEventArgs e)
-        {
-            // Setting TopMost on the main window will put the main
-            // window and all detached dockable windows on top of
-            // all other displayed windows. However, if a window is
-            // undocked and floated on the screen, it may be covered
-            // by other windows from other programs.
-            //
-            // Resetting TopMost twice after a tear will put all
-            // application windows back on top, but how to do that
-            // programmatically? This even is the trick, but it fires
-            // just a little too soon for that to work. Taking a
-            // brief break, about 1/10 second, allows the tear to
-            // complete and allows the trick to work.
-
-            await Task.Delay(100);
-
-            AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
-            AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
-        }
-
-        private void dockingManager_ChildrenCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Move)
-                return;
-
-            if(e.OldItems == null) return;
-            foreach(var child in e.OldItems)
-            {
-                var pdfViewer = child as PdfViewerControl;
-                if(pdfViewer == null) continue;
-                var file = pdfViewer.ItemSource as FileStream;
-                file?.Close();
-                file?.Dispose();
-            }
         }
     }
 }

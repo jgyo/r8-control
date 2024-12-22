@@ -1,0 +1,214 @@
+﻿<UserControl
+    x:Class="HotKeyLibrary.HotKeyListEditorControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:design="clr-namespace:HotKeyLibrary.DesignTimeData"
+    xmlns:local="clr-namespace:HotKeyLibrary"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="btovConverter" />
+        <local:BooleanInverterConverter x:Key="booleanInverter" />
+        <local:EnableSubmitConditionsConverter x:Key="enableSubmitConverter" />
+    </UserControl.Resources>
+    <Grid Background="#FFF0F0F0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition MinWidth="262" />
+        </Grid.ColumnDefinitions>
+        <DataGrid
+            x:Name="dataGrid"
+            AutoGenerateColumns="False"
+            CanUserDeleteRows="False"
+            CanUserResizeRows="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding WorkingCommandKeys, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HotKeyListEditorControl}}}"
+            MinColumnWidth="150"
+            SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Name, Mode=OneWay}" Header="Command Name" />
+                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=Key, UpdateSourceTrigger=PropertyChanged}" Header="Primary Hotkey" />
+                <DataGridTextColumn Binding="{Binding Mode=OneWay, Path=AltKey}" Header="Alternative Hotkey" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <GridSplitter
+            Grid.Column="1"
+            Width="5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Stretch"
+            Background="#FFEAEAEA" />
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="112" />
+                <ColumnDefinition MinWidth="150" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="50" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label
+                Grid.Row="1"
+                Margin="4,0,4,0"
+                VerticalAlignment="Center"
+                Content="Command Name:" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="4"
+                Padding="4,2"
+                VerticalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Background="WhiteSmoke"
+                IsReadOnly="True"
+                IsReadOnlyCaretVisible="False"
+                Text="{Binding SelectedItem.Name, ElementName=dataGrid, Mode=OneWay}" />
+            <Label
+                Grid.Row="2"
+                Margin="4,0,4,0"
+                VerticalAlignment="Center"
+                Content="Hotkey:"
+                ToolTip="Primary hotkey" />
+            <local:HotKeyEditorControl
+                x:Name="primaryKey"
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="4"
+                VerticalAlignment="Center"
+                HotKey="{Binding SelectedItem.Key, ElementName=dataGrid}"
+                IsEnabled="{Binding IsKeyItemSelected, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HotKeyListEditorControl}}}"
+                SideDependent="{Binding IsChecked, ElementName=sideDepentButton}"
+                ToolTip="Primary hotkey" />
+            <Label
+                Grid.Row="3"
+                Margin="4,0,4,0"
+                VerticalAlignment="Center"
+                Content="Alt. Hotkey:"
+                ToolTip="Alternate hotkey" />
+            <local:HotKeyEditorControl
+                x:Name="altKey"
+                Grid.Row="3"
+                Grid.Column="1"
+                Margin="4"
+                VerticalAlignment="Center"
+                HotKey="{Binding SelectedItem.AltKey, ElementName=dataGrid}"
+                IsEnabled="{Binding IsKeyItemSelected, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HotKeyListEditorControl}}}"
+                SideDependent="{Binding IsChecked, ElementName=sideDepentButton}"
+                ToolTip="Alternate hotkey" />
+            <ToggleButton
+                x:Name="sideDepentButton"
+                Grid.Row="4"
+                Width="80"
+                Margin="4"
+                Content="L/R Exp."
+                ToolTip="Make left or right side buttons explicit" />
+            <TextBlock
+                Grid.Row="6"
+                Grid.RowSpan="9"
+                Margin="8,4,4,4"
+                Foreground="Red"
+                TextWrapping="WrapWithOverflow"
+                Visibility="{Binding WorkingCommandKeysHasErrors, Converter={StaticResource btovConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HotKeyListEditorControl}}}">
+                Duplicate keys exist in the hotkey database.
+                This condition must be corrected before
+                your changes can be submitted.
+            </TextBlock>
+            <Button
+                x:Name="Clear"
+                Grid.Row="4"
+                Grid.Column="1"
+                Margin="4"
+                Padding="0,2"
+                Click="Clear_Click"
+                Content="Clear"
+                IsEnabled="{Binding IsKeyItemSelected, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HotKeyListEditorControl}}}"
+                ToolTip="Clear the hotkeys to disable." />
+            <Button
+                x:Name="Reset"
+                Grid.Row="5"
+                Grid.Column="1"
+                Margin="4"
+                Padding="0,2"
+                Click="Reset_Click"
+                Content="Reset"
+                IsEnabled="{Binding IsKeyItemSelected, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HotKeyListEditorControl}}}"
+                ToolTip="Reset changes to these hotkeys." />
+            <Button
+                x:Name="Default"
+                Grid.Row="6"
+                Grid.Column="1"
+                Margin="4"
+                Padding="0,2"
+                Click="Default_Click"
+                Content="Default"
+                IsEnabled="{Binding IsKeyItemSelected, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HotKeyListEditorControl}}}"
+                ToolTip="Set hotkeys to their default values." />
+            <Button
+                x:Name="ClearAll"
+                Grid.Row="8"
+                Grid.Column="1"
+                Margin="4"
+                Padding="0,2"
+                Click="ClearAll_Click"
+                Content="Clear Everything"
+                ToolTip="Clear (disable) all hotkeys." />
+            <Button
+                x:Name="ResetAll"
+                Grid.Row="9"
+                Grid.Column="1"
+                Margin="4"
+                Padding="0,2"
+                Click="ResetAll_Click"
+                Content="Reset Everything"
+                ToolTip="Reset changes on all hotkeys." />
+            <Button
+                x:Name="DefaultAll"
+                Grid.Row="10"
+                Grid.Column="1"
+                Margin="4"
+                Padding="0,2"
+                Click="DefaultAll_Click"
+                Content="Default Everything"
+                ToolTip="Set all hotkeys to their default values." />
+            <Button
+                x:Name="Submit"
+                Grid.Row="12"
+                Grid.Column="1"
+                Margin="4"
+                Padding="0,2"
+                Click="Submit_Click"
+                Content="Submit Changes"
+                ToolTip="Accept all changes and close this window">
+                <!--  IsEnabled="{Binding WorkingCommandKeysHasErrors, Converter={StaticResource booleanInverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:HotKeyListEditorControl}}}"  -->
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource enableSubmitConverter}">
+                        <Binding Path="HasChanges" RelativeSource="{RelativeSource AncestorType={x:Type local:HotKeyListEditorControl}, Mode=FindAncestor}" />
+                        <Binding Path="WorkingCommandKeysHasErrors" RelativeSource="{RelativeSource AncestorType={x:Type local:HotKeyListEditorControl}, Mode=FindAncestor}" />
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
+            <Button
+                x:Name="Cancel"
+                Grid.Row="13"
+                Grid.Column="1"
+                Margin="4"
+                Padding="0,2"
+                Click="Cancel_Click"
+                Content="Cancel Changes"
+                ToolTip="Cancel all changes and close this window" />
+        </Grid>
+    </Grid>
+</UserControl>

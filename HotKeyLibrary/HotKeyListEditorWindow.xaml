@@ -1,0 +1,22 @@
+﻿<Window
+    x:Class="HotKeyLibrary.HotKeyListEditorWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:HotKeyLibrary"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="window"
+    Title="Hotkey Editor"
+    Width="800"
+    Height="450"
+    Topmost="True"
+    mc:Ignorable="d">
+    <Grid>
+        <local:HotKeyListEditorControl
+            x:Name="editor"
+            CancelButtonClicked="Editor_CancelButtonClicked"
+            CurrentCommandKeys="{Binding ElementName=window, Path=CurrentKeys}"
+            DefaultCommandKeys="{Binding ElementName=window, Path=DefaultKeys}"
+            SubmitButtonClicked="Editor_SubmitButtonClicked" />
+    </Grid>
+</Window>

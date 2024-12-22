@@ -43,6 +43,10 @@
 </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HotKeyLibrary\HotKeyLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="CR8ID.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -54,6 +58,12 @@
     <None Update="CR8ID.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>CR8ID.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Documentation\Hotkey Editor.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Documentation\R8 Control Default Key Bidnings.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="gy-cartoon.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
