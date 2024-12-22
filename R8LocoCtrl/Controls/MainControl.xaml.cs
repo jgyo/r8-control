@@ -85,10 +85,14 @@ namespace R8LocoCtrl.Controls
     DependencyProperty.Register("SpeedMphPerMin", typeof(double), typeof(MainControl), new PropertyMetadata(0.0));
         public static readonly DependencyProperty SpeedProperty =
     DependencyProperty.Register("Speed", typeof(int), typeof(MainControl), new PropertyMetadata(0));
+        public static readonly DependencyProperty SSPointerVisibilityProperty =
+    DependencyProperty.Register("SSPointerVisibility", typeof(Visibility), typeof(MainControl), new PropertyMetadata(Visibility.Visible));
+
         public static readonly DependencyProperty ThrottleProperty =
     DependencyProperty.Register("Throttle", typeof(int), typeof(MainControl), new PropertyMetadata(0));
         public static readonly DependencyProperty WaterTempProperty =
     DependencyProperty.Register("WaterTemp", typeof(int), typeof(MainControl), new PropertyMetadata(0));
+
 
         public MainControl()
         {
@@ -109,125 +113,155 @@ namespace R8LocoCtrl.Controls
             get { return (AlerterStatus)GetValue(AlerterStatusProperty); }
             set { SetValue(AlerterStatusProperty, value); }
         }
+
         public int AlertRangeMax
         {
             get { return (int)GetValue(AlertRangeMaxProperty); }
             set { SetValue(AlertRangeMaxProperty, value); }
         }
+
         public int Ammeter
         {
             get { return (int)GetValue(AmmeterProperty); }
             set { SetValue(AmmeterProperty, value); }
         }
+
         public int BcPsi
         {
             get { return (int)GetValue(BcPsiProperty); }
             set { SetValue(BcPsiProperty, value); }
         }
+
         public int BpPsi
         {
             get { return (int)GetValue(BpPsiProperty); }
             set { SetValue(BpPsiProperty, value); }
         }
+
         public BrakeStatusBits BrakeStatus
         {
             get { return (BrakeStatusBits)GetValue(BrakeStatusProperty); }
             set { SetValue(BrakeStatusProperty, value); }
         }
+
         public int CautionRangeMax
         {
             get { return (int)GetValue(CautionRangeMaxProperty); }
             set { SetValue(CautionRangeMaxProperty, value); }
         }
+
         public int CFM
         {
             get { return (int)GetValue(CFMProperty); }
             set { SetValue(CFMProperty, value); }
         }
+
         public int DieselRpm
         {
             get { return (int)GetValue(DieselRpmProperty); }
             set { SetValue(DieselRpmProperty, value); }
         }
+
         public int EotId
         {
             get { return (int)GetValue(EotIdProperty); }
             set { SetValue(EotIdProperty, value); }
         }
+
         public int EotPsi
         {
             get { return (int)GetValue(EotPsiProperty); }
             set { SetValue(EotPsiProperty, value); }
         }
+
         public EotStatus EotStatus
         {
             get { return (EotStatus)GetValue(EotStatusProperty); }
             set { SetValue(EotStatusProperty, value); }
         }
+
         public int EqPsi
         {
             get { return (int)GetValue(EqPsiProperty); }
             set { SetValue(EqPsiProperty, value); }
         }
+
         public int FuelLevel
         {
             get { return (int)GetValue(FuelLevelProperty); }
             set { SetValue(FuelLevelProperty, value); }
         }
+
         public LocoStatusBits LocoStatus
         {
             get { return (LocoStatusBits)GetValue(LocoStatusProperty); }
             set { SetValue(LocoStatusProperty, value); }
         }
+
         public int MainPsi
         {
             get { return (int)GetValue(MainPsiProperty); }
             set { SetValue(MainPsiProperty, value); }
         }
+
         public int MaxSpeedValue
         {
             get { return (int)GetValue(MaxSpeedValueProperty); }
             set { SetValue(MaxSpeedValueProperty, value); }
         }
+
         public double NextMinSpeed
         {
             get { return (double)GetValue(NextMinSpeedProperty); }
             set { SetValue(NextMinSpeedProperty, value); }
         }
+
         public SignalInstructions NextSignal
         {
             get { return (SignalInstructions)GetValue(NextSignalProperty); }
             set { SetValue(NextSignalProperty, value); }
         }
+
         public int PressureReference
         {
             get { return (int)GetValue(PressureReferenceProperty); }
             set { SetValue(PressureReferenceProperty, value); }
         }
+
         public SignalInstructions PreviousSignal
         {
             get { return (SignalInstructions)GetValue(PreviousSignalProperty); }
             set { SetValue(PreviousSignalProperty, value); }
         }
+
         public ReverserPositions ReverserPosition
         {
             get { return (ReverserPositions)GetValue(ReverserPositionProperty); }
             set { SetValue(ReverserPositionProperty, value); }
         }
+
         public int SafeRangeMax
         {
             get { return (int)GetValue(SafeRangeMaxProperty); }
             set { SetValue(SafeRangeMaxProperty, value); }
         }
+
         public int Speed
         {
             get { return (int)GetValue(SpeedProperty); }
             set { SetValue(SpeedProperty, value); }
         }
+
         public double SpeedMphPerMin
         {
             get { return (double)GetValue(SpeedMphPerMinProperty); }
             set { SetValue(SpeedMphPerMinProperty, value); }
+        }
+
+        public Visibility SSPointerVisibility
+        {
+            get { return (Visibility)GetValue(SSPointerVisibilityProperty); }
+            set { SetValue(SSPointerVisibilityProperty, value); }
         }
         public int Throttle
         {

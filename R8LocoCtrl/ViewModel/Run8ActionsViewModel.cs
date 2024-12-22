@@ -16,7 +16,6 @@ namespace R8LocoCtrl.ViewModel
 {
     public class Run8ActionsViewModel : ViewModelBase
     {
-
         private RelayCommand<bool>? _AutoABCommand = null;
         private RelayCommand<bool>? _AutoCBCommand = null;
         private RelayCommand<bool>? _AutoEOTCommand = null;
@@ -64,6 +63,8 @@ namespace R8LocoCtrl.ViewModel
         private RelayCommand<bool[]>? _TractionMotorsCommand = null;
         private RelayCommand<TrainBrakeCutoutValues>? _TrainBrakeCutOutCommand = null;
         private int dynamicBrakes;
+        private int dynBrakeLC;
+        private int indyBrakeLC;
         private int indyBrakes;
         private bool isDynamicBrakesEnabled = true;
         private bool isReverserEnabled = true;
@@ -71,11 +72,11 @@ namespace R8LocoCtrl.ViewModel
         private ReverserPositions reverserPosition = ReverserPositions.Neutral;
         private Run8SenderClient? senderClient;
         private int throttleValue;
+        private int trainBrakeLC;
         private int trainBrakes;
 
         public Run8ActionsViewModel()
-        {
-        }
+        { }
 
         public RelayCommand<bool> AutoABCommand
         {
@@ -85,6 +86,7 @@ namespace R8LocoCtrl.ViewModel
                 return _AutoABCommand;
             }
         }
+
         public RelayCommand<bool> AutoCBCommand
         {
             get
@@ -93,6 +95,7 @@ namespace R8LocoCtrl.ViewModel
                 return _AutoCBCommand;
             }
         }
+
         public RelayCommand<bool> AutoEOTCommand
         {
             get
@@ -101,6 +104,7 @@ namespace R8LocoCtrl.ViewModel
                 return _AutoEOTCommand;
             }
         }
+
         public RelayCommand<bool> AutoMUCommand
         {
             get
@@ -109,6 +113,7 @@ namespace R8LocoCtrl.ViewModel
                 return _AutoMUCommand;
             }
         }
+
         public RelayCommand<bool> AutoStartTrainCommand
         {
             get
@@ -117,6 +122,7 @@ namespace R8LocoCtrl.ViewModel
                 return _AutoStartTrainCommand;
             }
         }
+
         public RelayCommand<bool> ControlSwitchCommand
         {
             get
@@ -125,6 +131,7 @@ namespace R8LocoCtrl.ViewModel
                 return _ControlSwitchCommand;
             }
         }
+
         public RelayCommand<bool> DPUFenceDecreaseCommand
         {
             get
@@ -133,6 +140,7 @@ namespace R8LocoCtrl.ViewModel
                 return _DPUFenceDecreaseCommand;
             }
         }
+
         public RelayCommand<bool> DPUFenceIncreaseCommand
         {
             get
@@ -141,6 +149,7 @@ namespace R8LocoCtrl.ViewModel
                 return _DPUFenceIncreaseCommand;
             }
         }
+
         public RelayCommand<DTMFCommandParameter> DTMFToneCommand
         {
             get
@@ -149,11 +158,31 @@ namespace R8LocoCtrl.ViewModel
                 return _DTMFToneCommand;
             }
         }
+
         public int DynamicBrakes
         {
-            get => dynamicBrakes;
-            set => SetProperty(ref dynamicBrakes, value);
+            get
+            {
+                return dynamicBrakes;
+            }
+            set
+            {
+                SetProperty(ref dynamicBrakes, value);
+            }
         }
+
+        public int DynBrakeLC
+        {
+            get
+            {
+                return dynBrakeLC;
+            }
+            set
+            {
+                SetProperty(ref dynBrakeLC, value);
+            }
+        }
+
         public RelayCommand<bool> DynBrakeSetupCommand
         {
             get
@@ -162,6 +191,7 @@ namespace R8LocoCtrl.ViewModel
                 return _DynBrakeSetupCommand;
             }
         }
+
         public RelayCommand<bool> DynBrakeSwitchCommand
         {
             get
@@ -170,6 +200,7 @@ namespace R8LocoCtrl.ViewModel
                 return _DynBrakeSwitchCommand;
             }
         }
+
         public RelayCommand<bool[]> EngineStartCommand
         {
             get
@@ -178,6 +209,7 @@ namespace R8LocoCtrl.ViewModel
                 return _EngineStartCommand;
             }
         }
+
         public RelayCommand<bool> EngRunSwitchCommand
         {
             get
@@ -186,6 +218,7 @@ namespace R8LocoCtrl.ViewModel
                 return _EngRunSwitchCommand;
             }
         }
+
         public RelayCommand<bool> GenFieldSwitchCommand
         {
             get
@@ -194,6 +227,7 @@ namespace R8LocoCtrl.ViewModel
                 return _GenFieldSwitchCommand;
             }
         }
+
         public RelayCommand<bool> HEPCommand
         {
             get
@@ -202,16 +236,43 @@ namespace R8LocoCtrl.ViewModel
                 return _HEPCommand;
             }
         }
+
+        public int IndyBrakeLC
+        {
+            get
+            {
+                return indyBrakeLC;
+            }
+            set
+            {
+                SetProperty(ref indyBrakeLC, value);
+            }
+        }
+
         public int IndyBrakes
         {
-            get => indyBrakes;
-            set => SetProperty(ref indyBrakes, value);
+            get
+            {
+                return indyBrakes;
+            }
+            set
+            {
+                SetProperty(ref indyBrakes, value);
+            }
         }
+
         public bool IsDynamicBrakesEnabled
         {
-            get => isDynamicBrakesEnabled;
-            set => SetProperty(ref isDynamicBrakesEnabled, value);
+            get
+            {
+                return isDynamicBrakesEnabled;
+            }
+            set
+            {
+                SetProperty(ref isDynamicBrakesEnabled, value);
+            }
         }
+
         public RelayCommand<IsolationSwitchValues> IsolationSwitchCommand
         {
             get
@@ -220,16 +281,31 @@ namespace R8LocoCtrl.ViewModel
                 return _IsolationSwitchCommand;
             }
         }
+
         public bool IsReverserEnabled
         {
-            get => isReverserEnabled;
-            set => SetProperty(ref isReverserEnabled, value);
+            get
+            {
+                return isReverserEnabled;
+            }
+            set
+            {
+                SetProperty(ref isReverserEnabled, value);
+            }
         }
+
         public bool IsThrottleEnabled
         {
-            get => isThrottleEnabled;
-            set => SetProperty(ref isThrottleEnabled, value);
+            get
+            {
+                return isThrottleEnabled;
+            }
+            set
+            {
+                SetProperty(ref isThrottleEnabled, value);
+            }
         }
+
         public RelayCommand<MUHLSwitchValues> MUHeadlightSwitchCommand
         {
             get
@@ -238,11 +314,19 @@ namespace R8LocoCtrl.ViewModel
                 return _MUHeadlightSwitchCommand;
             }
         }
+
         public ReverserPositions ReverserPosition
         {
-            get => reverserPosition;
-            set => SetProperty(ref reverserPosition, value);
+            get
+            {
+                return reverserPosition;
+            }
+            set
+            {
+                SetProperty(ref reverserPosition, value);
+            }
         }
+
         public RelayCommand<bool> SendAlerterCommand
         {
             get
@@ -251,6 +335,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendAlerterCommand;
             }
         }
+
         public RelayCommand<bool> SendBellCommand
         {
             get
@@ -259,6 +344,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendBellCommand;
             }
         }
+
         public RelayCommand<bool> SendCabLightSwitchCommand
         {
             get
@@ -267,6 +353,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendCabLightSwitchCommand;
             }
         }
+
         public RelayCommand<bool> SendDistanceCountDownCommand
         {
             get
@@ -275,6 +362,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendDistanceCountDownCommand;
             }
         }
+
         public RelayCommand<bool> SendDistanceCountUpCommand
         {
             get
@@ -283,6 +371,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendDistanceCountUpCommand;
             }
         }
+
         public RelayCommand<bool> SendEOTEmgStopCommand
         {
             get
@@ -291,6 +380,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendEOTEmgStopCommand;
             }
         }
+
         public RelayCommand<HeadlightValues> SendFrontHeadlightCommand
         {
             get
@@ -299,6 +389,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendFrontHeadlightCommand;
             }
         }
+
         public RelayCommand<bool> SendGaugeLightSwitchCommand
         {
             get
@@ -307,6 +398,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendGaugeLightSwitchCommand;
             }
         }
+
         public RelayCommand<bool> SendHornCommand
         {
             get
@@ -315,6 +407,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendHornCommand;
             }
         }
+
         public RelayCommand SendHornSequenceCommand
         {
             get
@@ -323,6 +416,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendHornSequenceCommand;
             }
         }
+
         public RelayCommand<bool> SendIndyBailOffCommand
         {
             get
@@ -331,6 +425,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendIndyBailOffCommand;
             }
         }
+
         public RelayCommand<bool> SendRadioChannelModeCommand
         {
             get
@@ -339,6 +434,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendRadioChannelModeCommand;
             }
         }
+
         public RelayCommand<bool> SendRadioDTMFModeCommand
         {
             get
@@ -347,6 +443,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendRadioDTMFModeCommand;
             }
         }
+
         public RelayCommand<bool> SendRadioVolumeDecreaseCommand
         {
             get
@@ -355,6 +452,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendRadioVolumeDecreaseCommand;
             }
         }
+
         public RelayCommand<bool> SendRadioVolumeIncreaseCommand
         {
             get
@@ -363,6 +461,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendRadioVolumeIncreaseCommand;
             }
         }
+
         public RelayCommand<bool> SendRadioVolumeMuteCommand
         {
             get
@@ -371,6 +470,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendRadioVolumeMuteCommand;
             }
         }
+
         public RelayCommand<HeadlightValues> SendRearHeadlightCommand
         {
             get
@@ -379,6 +479,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendRearHeadlightCommand;
             }
         }
+
         public RelayCommand<bool> SendReleaseParkingCommand
         {
             get
@@ -387,6 +488,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendReleaseParkingCommand;
             }
         }
+
         public RelayCommand<bool> SendSanderCommand
         {
             get
@@ -395,6 +497,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendSanderCommand;
             }
         }
+
         public RelayCommand<bool> SendSetParkingCommand
         {
             get
@@ -403,6 +506,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendSetParkingCommand;
             }
         }
+
         public RelayCommand<bool> SendSlowSpeedDecrementCommand
         {
             get
@@ -411,6 +515,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendSlowSpeedDecrementCommand;
             }
         }
+
         public RelayCommand<bool> SendSlowSpeedIncrementCommand
         {
             get
@@ -419,6 +524,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendSlowSpeedIncrementCommand;
             }
         }
+
         public RelayCommand<bool> SendSlowSpeedOnOffCommand
         {
             get
@@ -427,6 +533,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendSlowSpeedOnOffCommand;
             }
         }
+
         public RelayCommand<bool> SendStepLightSwitchCommand
         {
             get
@@ -435,6 +542,7 @@ namespace R8LocoCtrl.ViewModel
                 return _SendStepLightSwitchCommand;
             }
         }
+
         public RelayCommand<ServiceSelectorSwitchValues> ServiceSelectorCommand
         {
             get
@@ -443,6 +551,7 @@ namespace R8LocoCtrl.ViewModel
                 return _ServiceSelectorCommand;
             }
         }
+
         public RelayCommand<bool> ThrottleDecreaseCommand
         {
             get
@@ -451,6 +560,7 @@ namespace R8LocoCtrl.ViewModel
                 return _ThrottleDecreaseCommand;
             }
         }
+
         public RelayCommand<bool> ThrottleIncreaseCommand
         {
             get
@@ -459,11 +569,19 @@ namespace R8LocoCtrl.ViewModel
                 return _ThrottleIncreaseCommand;
             }
         }
+
         public int ThrottleValue
         {
-            get => throttleValue;
-            set => SetProperty(ref throttleValue, value);
+            get
+            {
+                return throttleValue;
+            }
+            set
+            {
+                SetProperty(ref throttleValue, value);
+            }
         }
+
         public RelayCommand<bool[]> TractionMotorsCommand
         {
             get
@@ -472,6 +590,7 @@ namespace R8LocoCtrl.ViewModel
                 return _TractionMotorsCommand;
             }
         }
+
         public RelayCommand<TrainBrakeCutoutValues> TrainBrakeCutOutCommand
         {
             get
@@ -480,100 +599,137 @@ namespace R8LocoCtrl.ViewModel
                 return _TrainBrakeCutOutCommand;
             }
         }
+
+        public int TrainBrakeLC
+        {
+            get
+            {
+                return trainBrakeLC;
+            }
+            set
+            {
+                SetProperty(ref trainBrakeLC, value);
+            }
+        }
+
         public int TrainBrakes
         {
-            get => trainBrakes;
-            set => SetProperty(ref trainBrakes, value);
+            get
+            {
+                return trainBrakes;
+            }
+            set
+            {
+                SetProperty(ref trainBrakes, value);
+            }
         }
 
         protected virtual void AutoABExecute(bool parameter)
         {
             senderClient?.SendAutoABTrain(parameter);
         }
+
         protected virtual void AutoCBExecute(bool parameter)
         {
             senderClient?.SendAutoCBTrain(parameter);
         }
+
         protected virtual void AutoEOTExecute(bool parameter)
         {
             senderClient?.SendAutoEOTTrain(parameter);
         }
+
         protected virtual void AutoMUExecute(bool parameter)
         {
             senderClient?.SendAutoMUTrain(parameter);
         }
+
         protected virtual void AutoStartTrainExecute(bool parameter)
         {
             senderClient?.SendAutoStartTrain(parameter);
         }
+
         protected virtual void ControlSwitchExecute(bool parameter)
         {
             senderClient?.SendControlSwitch(parameter);
         }
+
         protected virtual void DPUFenceDecreaseExecute(bool parameter)
         {
             senderClient?.SendDPUFenceDecrease(parameter);
         }
+
         protected virtual void DPUFenceIncreaseExecute(bool parameter)
         {
             senderClient?.SendDPUFenceIncrease(parameter);
         }
+
         protected virtual void DTMFToneExecute(DTMFCommandParameter parameter)
         {
-            if (parameter == null) return;
+            if(parameter == null)
+                return;
             senderClient?.SendDTMFTone(parameter.Tone, parameter.IsButtonPressed);
         }
+
         protected virtual void DynBrakeSetupExecute(bool parameter)
         {
             senderClient?.SendDynBrakeSetup(parameter);
         }
+
         protected virtual void DynBrakeSwitchExecute(bool parameter)
         {
             senderClient?.SendDynBrakeSwitch(parameter);
         }
+
         protected virtual void EngineStartExecute(bool[]? values)
         {
             ArgumentNullException.ThrowIfNull(values);
             var isKeyDown = values[0];
             var isChecked = values[1];
 
-            if (isChecked)
+            if(isChecked)
                 senderClient?.SendEngineStart(isKeyDown);
             else
                 senderClient?.SendEngineStop(isKeyDown);
         }
+
         protected virtual void EngRunSwitchExecute(bool parameter)
         {
             senderClient?.SendEngRunSwitch(parameter);
         }
+
         protected virtual void GenFieldSwitchExecute(bool parameter)
         {
             senderClient?.SendGenFieldSwitch(parameter);
         }
+
         protected virtual void HEPExecute(bool parameter)
         {
             senderClient?.SendHEPSwitch(parameter);
         }
+
         protected virtual void IsolationSwitchExecute(IsolationSwitchValues parameter)
         {
             senderClient?.SendIsolationSwitch(parameter);
         }
+
         protected virtual void MUHeadlightSwitchExecute(MUHLSwitchValues parameter)
         {
             senderClient?.SendMUHLSwitch(parameter);
         }
+
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            switch (propertyName)
+            switch(propertyName)
             {
                 case "ReverserPosition":
                     senderClient?.SendReverserLever(ReverserPosition);
                     break;
                 case "ThrottleValue":
-                    if (ThrottleValue == 0)
+                    if(ThrottleValue == 0)
                     {
                         IsDynamicBrakesEnabled = true;
-                        if (DynamicBrakes < 0.01)
+                        if(DynamicBrakes < 0.01)
                         {
                             IsReverserEnabled = true;
                         }
@@ -586,10 +742,10 @@ namespace R8LocoCtrl.ViewModel
                     senderClient?.SendThrottleLever((byte)ThrottleValue);
                     break;
                 case "DynamicBrakes":
-                    if (DynamicBrakes == 0)
+                    if(DynamicBrakes == 0)
                     {
                         IsThrottleEnabled = true;
-                        if (ThrottleValue < 0.01)
+                        if(ThrottleValue < 0.01)
                         {
                             IsReverserEnabled = true;
                         }
@@ -613,114 +769,142 @@ namespace R8LocoCtrl.ViewModel
 
             base.OnPropertyChanged(propertyName);
         }
+
         protected virtual void SendAlerterExecute(bool parameter)
         {
             senderClient?.SendAlerter(parameter);
         }
+
         protected virtual void SendBellExecute(bool parameter)
         {
             senderClient?.SendBell(parameter);
         }
+
         protected virtual void SendCabLightSwitchExecute(bool parameter)
         {
             senderClient?.SendCabLightSwitch(parameter);
         }
+
         protected virtual void SendDistanceCountDownExecute(bool isPressed)
         {
             senderClient?.SendDistanceCounter(false, isPressed);
         }
+
         protected virtual void SendDistanceCountUpExecute(bool isPressed)
         {
             senderClient?.SendDistanceCounter(true, isPressed);
         }
+
         protected virtual void SendEOTEmgStopExecute(bool parameter)
         {
             senderClient?.SendEOTEmgStop(parameter);
         }
+
         protected virtual void SenderSanderExecute(bool parameter)
         {
             senderClient?.SendSander(parameter);
         }
+
         protected virtual void SendFrontHeadlightExecute(HeadlightValues parameter)
         {
             senderClient?.SendHeadlightFront(parameter);
         }
+
         protected virtual void SendGaugeLightSwitchExecute(bool parameter)
         {
             senderClient?.SendGaugeLightSwitch(parameter);
         }
+
         protected virtual void SendHornExecute(bool parameter)
         {
             senderClient?.SendHorn(parameter);
         }
+
         protected virtual async void SendHornSequenceExecute()
         {
             await senderClient!.SendHornSequencerAsync();
         }
+
         protected virtual void SendIndyBailOffExecute(bool parameter)
         {
             senderClient?.SendIndyBailOff(parameter);
         }
+
         protected virtual void SendRadioChannelModeExecute(bool parameter)
         {
             senderClient?.SendRadioChannelMode(parameter);
         }
+
         protected virtual void SendRadioDTMFModeExecute(bool parameter)
         {
             senderClient?.SendRadioDTMFMode(parameter);
         }
+
         protected virtual void SendRadioVolumeDecreaseExecute(bool parameter)
         {
             senderClient?.SendRadioVolumeDecrease(parameter);
         }
+
         protected virtual void SendRadioVolumeIncreaseExecute(bool parameter)
         {
             senderClient?.SendRadioVolumeIncrease(parameter);
         }
+
         protected virtual void SendRadioVolumeMuteExecute(bool parameter)
         {
             senderClient?.SendRadioVolumeMute(parameter);
         }
+
         protected virtual void SendRearHeadlightExecute(HeadlightValues parameter)
         {
             senderClient?.SendHeadlightRear(parameter);
         }
+
         protected virtual void SendReleaseParkingExecute(bool parameter)
         {
             senderClient?.SendParkingBrakeRelease(parameter);
         }
+
         protected virtual void SendSetParkingExecute(bool parameter)
         {
             senderClient?.SendParkingBrakeSet(parameter);
         }
+
         protected virtual void SendSlowSpeedDecrementExecute(bool parameter)
         {
             senderClient?.SendSlowSpeedDecrement(parameter);
         }
+
         protected virtual void SendSlowSpeedIncrementExecute(bool parameter)
         {
             senderClient?.SendSlowSpeedIncrement(parameter);
         }
+
         protected virtual void SendSlowSpeedOnOffExecute(bool parameter)
         {
             senderClient?.SendSlowSpeedToggle(parameter);
         }
+
         protected virtual void SendStepLightSwitchExecute(bool parameter)
         {
             senderClient?.SendStepLightSwitch(parameter);
         }
+
         protected virtual void ServiceSelectorExecute(ServiceSelectorSwitchValues parameter)
         {
             senderClient?.SendServiceSelectorSwitch(parameter);
         }
+
         protected virtual void ThrottleDecreaseExecute(bool parameter)
         {
             senderClient?.SendDPUThrottleDecrease(parameter);
         }
+
         protected virtual void ThrottleIncreaseExecute(bool parameter)
         {
             senderClient?.SendDPUThrottleIncrease(parameter);
         }
+
         protected virtual void TractionMotorsExecute(bool[] parameter)
         {
             TractionMotors motors = TractionMotors.flag;
@@ -733,6 +917,7 @@ namespace R8LocoCtrl.ViewModel
 
             senderClient?.SendTractionMotors(motors);
         }
+
         protected virtual void TrainBrakeCutOutExecute(TrainBrakeCutoutValues parameter)
         {
             senderClient?.SendTrainBrakeCutoutValve(parameter);
@@ -740,13 +925,12 @@ namespace R8LocoCtrl.ViewModel
 
         internal void SetEndPoint(UdpEndpoint? endPoint)
         {
-            if (senderClient == null)
+            if(senderClient == null)
             {
                 senderClient = new Run8SenderClient();
             }
 
             senderClient.Endpoint = endPoint;
         }
-
     }
 }

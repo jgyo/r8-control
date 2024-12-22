@@ -12,8 +12,10 @@ using Syncfusion.Windows.Shared;
 using Syncfusion.Windows.Tools.Controls;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
@@ -48,6 +50,7 @@ namespace R8LocoCtrl
             progProperties.PropertyChanged += ProgProperties_PropertyChanged;
             SetProgramProperties(progProperties);
             SetSpeedometerProperties(progProperties);
+            SetRun8ActionProperties(progProperties);
             ConfigureGradeMapMenu();
             commandRegistry = new CommandRegistry();
             commandRegistry.RefreshHotKeyList(GeneralCommands.CurrentCommands);
@@ -270,6 +273,16 @@ namespace R8LocoCtrl
             }
         }
 
+        private async Task<Version> GetRepoVersion()
+        {
+            // Get releases from GitHub
+            // Source: https://octokitnet.readthedocs.io/en/latest/getting-started/
+            var client = new GitHubClient(new ProductHeaderValue("R8Control-app"));
+            var releases = await client.Repository.Release.GetAll("jgyo", "R8-Control");
+
+            return new Version(releases[0].TagName.Trim('v'));
+        }
+
         [GeneratedRegex(@"^.*\\(?:(RUN 8|RUN8|))(?<Name>.*)(?:Grade.Map\.pdf)",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Singleline,
             "en-US")]
@@ -450,6 +463,7 @@ namespace R8LocoCtrl
         private void ProgProperties_SubmitProperties(object? sender, ProgramPropertiesViewModel e)
         {
             SetSpeedometerProperties(e);
+            SetRun8ActionProperties(e);
             DockingManager.SetState(this.Setup, DockState.Hidden);
         }
 
@@ -465,6 +479,14 @@ namespace R8LocoCtrl
             properties.ConsistEdPath = CR8ID.Default.ConsistEdPath;
         }
 
+        private void SetRun8ActionProperties(ProgramPropertiesViewModel e)
+        {
+            var driverControl = (Run8ActionsViewModel)this.FindResource("actionViewModel");
+            driverControl.TrainBrakeLC = e.TrainBrakeLC;
+            driverControl.IndyBrakeLC = e.IndyBrakeLC;
+            driverControl.DynBrakeLC = e.DynBrakeLC;
+        }
+
         private void SetSpeedometerProperties(ProgramPropertiesViewModel properties)
         {
             var speedometer = (SpeedometerSettingsViewModel)this.FindResource("speedoViewModel");
@@ -472,6 +494,7 @@ namespace R8LocoCtrl
             speedometer.PressureReference = properties.PressureReference;
             speedometer.MaxSafeSpeed = properties.MaximumSafeSpeed;
             speedometer.MaxCautionSpeed = properties.MaximumCautionSpeed;
+            speedometer.SSPointerVisible = properties.SSPointerVisible;
         }
 
         protected override void OnClosing(CancelEventArgs e)

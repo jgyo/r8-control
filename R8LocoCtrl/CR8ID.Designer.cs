@@ -190,5 +190,53 @@ namespace R8LocoCtrl {
                 this["EAPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SSPointerVisible {
+            get {
+                return ((bool)(this["SSPointerVisible"]));
+            }
+            set {
+                this["SSPointerVisible"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int DynBrakeLC {
+            get {
+                return ((int)(this["DynBrakeLC"]));
+            }
+            set {
+                this["DynBrakeLC"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int TrainBrakeLC {
+            get {
+                return ((int)(this["TrainBrakeLC"]));
+            }
+            set {
+                this["TrainBrakeLC"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int IndyBrakeLC {
+            get {
+                return ((int)(this["IndyBrakeLC"]));
+            }
+            set {
+                this["IndyBrakeLC"] = value;
+            }
+        }
     }
 }
