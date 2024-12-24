@@ -24,9 +24,6 @@ namespace HotKeyLibrary
                     "LAlt" => Modifiers.LeftAlt,
                     "RAlt" => Modifiers.RightAlt,
                     "Alt" => Modifiers.Alt,
-                    "LWin" => Modifiers.LeftWin,
-                    "RWin" => Modifiers.RightWin,
-                    "Win" => Modifiers.Win,
                     "LShift" => Modifiers.LeftShift,
                     "RShift" => Modifiers.RightShift,
                     "Shift" => Modifiers.Shift,
@@ -57,9 +54,7 @@ namespace HotKeyLibrary
                             Modifiers.LeftCtrl |
                             Modifiers.RightCtrl |
                             Modifiers.LeftShift |
-                            Modifiers.RightShift |
-                            Modifiers.LeftWin |
-                            Modifiers.RightWin)) !=
+                            Modifiers.RightShift)) !=
                     Modifiers.None;
             }
         }
@@ -116,12 +111,6 @@ namespace HotKeyLibrary
                 str.Append("RAlt + ");
             if(Modifiers.HasFlag(Modifiers.Alt))
                 str.Append("Alt + ");
-            if(Modifiers.HasFlag(Modifiers.LeftWin))
-                str.Append("LWin + ");
-            if(Modifiers.HasFlag(Modifiers.RightWin))
-                str.Append("RWin + ");
-            if(Modifiers.HasFlag(Modifiers.Win))
-                str.Append("Win + ");
 
             str.Append(ObscureKeyConversion.GetHumanName(Key));
 

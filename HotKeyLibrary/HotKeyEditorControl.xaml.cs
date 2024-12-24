@@ -87,7 +87,7 @@ namespace HotKeyLibrary
                 return;
             }
 
-            if(key == Key.Clear || key == Key.OemClear || key == Key.Apps)
+            if(key == Key.Clear || key == Key.OemClear || key == Key.Apps || key == Key.LWin || key == Key.RWin)
                 return;
 
             if(key == Key.LeftCtrl ||
@@ -95,9 +95,7 @@ namespace HotKeyLibrary
                 key == Key.LeftAlt ||
                 key == Key.RightAlt ||
                 key == Key.LeftShift ||
-                key == Key.RightShift ||
-                key == Key.LWin ||
-                key == Key.RWin)
+                key == Key.RightShift)
             {
                 switch(key)
                 {
@@ -118,12 +116,6 @@ namespace HotKeyLibrary
                         break;
                     case Key.RightShift:
                         modifiersState |= SideDependent ? Modifiers.RightShift : Modifiers.Shift;
-                        break;
-                    case Key.LWin:
-                        modifiersState |= SideDependent ? Modifiers.LeftWin : Modifiers.Win;
-                        break;
-                    case Key.RWin:
-                        modifiersState |= SideDependent ? Modifiers.RightWin : Modifiers.Win;
                         break;
                 }
 
@@ -160,12 +152,6 @@ namespace HotKeyLibrary
                     break;
                 case Key.RightShift:
                     modifiersState &= Modifiers.All ^ (SideDependent ? Modifiers.RightShift : Modifiers.Shift);
-                    break;
-                case Key.LWin:
-                    modifiersState &= Modifiers.All ^ (SideDependent ? Modifiers.LeftWin : Modifiers.Win);
-                    break;
-                case Key.RWin:
-                    modifiersState &= Modifiers.All ^ (SideDependent ? Modifiers.RightWin : Modifiers.Win);
                     break;
             }
         }

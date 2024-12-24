@@ -58,8 +58,8 @@ namespace HotKeyLibrary
         private void Editor_CancelButtonClicked(object sender, EventArgs e)
         {
             // No changes wanted. Close the window
-            this.Close();
             this.DialogResult = false;
+            this.Close();
         }
 
         private void Editor_SubmitButtonClicked(object sender, EventArgs e)

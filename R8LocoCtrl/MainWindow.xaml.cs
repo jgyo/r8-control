@@ -5,6 +5,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using HotKeyLibrary;
+using Octokit;
 using R8LocoCtrl.Interface;
 using R8LocoCtrl.ViewModel;
 using Syncfusion.Windows.PdfViewer;
@@ -32,10 +33,15 @@ namespace R8LocoCtrl
         private const double DEFAULT_WIDTH = 1230;
         private const string PERSIST_STATE_FILENAME = "ClosingState.xml";
 
-        private readonly CommandRegistry commandRegistry;
+        private static readonly CommandRegistry commandRegistry;
         private Modifiers expModifiers;
         private Modifiers genModifiers;
         private readonly ProgramPropertiesViewModel progProperties;
+
+        static MainWindow()
+        {
+            commandRegistry = new CommandRegistry();
+        }
 
         public MainWindow()
         {
@@ -52,7 +58,7 @@ namespace R8LocoCtrl
             SetSpeedometerProperties(progProperties);
             SetRun8ActionProperties(progProperties);
             ConfigureGradeMapMenu();
-            commandRegistry = new CommandRegistry();
+
             commandRegistry.RefreshHotKeyList(GeneralCommands.CurrentCommands);
             this.PreviewKeyDown += MainWindow_PreviewKeyDown;
             this.PreviewKeyUp += MainWindow_PreviewKeyUp;
@@ -71,7 +77,16 @@ namespace R8LocoCtrl
 
             var version = GetType().Assembly.GetName().Version!.ToString();
             sbVersion.Text = $"Version: {version}";
+
+            // Register commands
+            CommandRegistry.SubscribeToCommand("AboutWindow", OpenAboutWindow);
+            CommandRegistry.SubscribeToCommand("HotKeyWindow", OpenHotkeyEditor);
         }
+
+        /// <summary>
+        /// Gets the command registry.
+        /// </summary>
+        public static CommandRegistry CommandRegistry => commandRegistry;
 
         private void ConfigureDataContext()
         {
@@ -288,6 +303,11 @@ namespace R8LocoCtrl
             "en-US")]
         private static partial Regex GradeMapRegEx();
 
+        private void Hotkey_MenuClick(object sender, RoutedEventArgs e)
+        {
+            OpenHotkeyEditor();
+        }
+
         private void MainWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if(e.OldValue != null)
@@ -317,9 +337,7 @@ namespace R8LocoCtrl
                 key == Key.LeftAlt ||
                 key == Key.RightAlt ||
                 key == Key.LeftShift ||
-                key == Key.RightShift ||
-                key == Key.LWin ||
-                key == Key.RWin)
+                key == Key.RightShift)
             {
                 switch(key)
                 {
@@ -347,14 +365,6 @@ namespace R8LocoCtrl
                         expModifiers = Modifiers.RightShift;
                         genModifiers = Modifiers.Shift;
                         break;
-                    case Key.LWin:
-                        expModifiers |= Modifiers.LeftWin;
-                        genModifiers |= Modifiers.Win;
-                        break;
-                    case Key.RWin:
-                        expModifiers &= Modifiers.RightWin;
-                        genModifiers &= Modifiers.Win;
-                        break;
                 }
 
                 return;
@@ -362,12 +372,12 @@ namespace R8LocoCtrl
 
             var expHotKey = new HotKey(key, expModifiers);
             var genHotKey = new HotKey(key, genModifiers);
-            commandRegistry.PollKey(expHotKey, genHotKey, true);
+            CommandRegistry.PollKey(expHotKey, genHotKey, true);
         }
 
         private void MainWindow_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            e.Handled = true;
+            //e.Handled = true;
             var key = e.Key;
 
             if(key == Key.System)
@@ -378,9 +388,7 @@ namespace R8LocoCtrl
                 key == Key.LeftAlt ||
                 key == Key.RightAlt ||
                 key == Key.LeftShift ||
-                key == Key.RightShift ||
-                key == Key.LWin ||
-                key == Key.RWin)
+                key == Key.RightShift)
             {
                 switch(key)
                 {
@@ -408,14 +416,6 @@ namespace R8LocoCtrl
                         expModifiers &= Modifiers.All ^ Modifiers.RightShift;
                         genModifiers &= Modifiers.All ^ Modifiers.Shift;
                         break;
-                    case Key.LWin:
-                        expModifiers &= Modifiers.All ^ Modifiers.LeftWin;
-                        genModifiers &= Modifiers.All ^ Modifiers.Win;
-                        break;
-                    case Key.RWin:
-                        expModifiers &= Modifiers.All ^ Modifiers.RightWin;
-                        genModifiers &= Modifiers.All ^ Modifiers.Win;
-                        break;
                 }
 
                 return;
@@ -423,7 +423,7 @@ namespace R8LocoCtrl
 
             var expHotKey = new HotKey(key, expModifiers);
             var genHotKey = new HotKey(key, genModifiers);
-            commandRegistry.PollKey(expHotKey, genHotKey, false);
+            CommandRegistry.PollKey(expHotKey, genHotKey, false);
         }
 
         private void MenuItemAdv_About(object sender, RoutedEventArgs e)
@@ -436,18 +436,82 @@ namespace R8LocoCtrl
             this.Close();
         }
 
+        private async void MenuItemAdv_VersionCheck(object sender, RoutedEventArgs e)
+        {
+            var latestVersion = await GetRepoVersion();
+            var localVersion = Assembly.GetExecutingAssembly().GetName().Version;
+
+            var versionComparison = localVersion!.CompareTo(latestVersion);
+            if(versionComparison < 0)
+            {
+                var result = MessageBox.Show(
+                    "There is a new version of R8 Control available.\r\n" +
+                        $"Current version: {localVersion.ToString().Trim('0').Trim('.')}" +
+                        "\r\n" +
+                        $"Latest version: {latestVersion}" +
+                        "\r\n" +
+                        "Would you like to download the latest version now?",
+                    "Version Information",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Information);
+                if(result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        Process.Start(
+                            new ProcessStartInfo(
+                                $"https://github.com/jgyo/r8-control/releases/download/v1.1.1/R8.Control.v{latestVersion}.exe")
+                            {
+                                UseShellExecute = true
+                            });
+
+                        MessageBox.Show(
+                            $"Please check your browser for R8.Control.v{latestVersion}.exe and execute that program to install the latest version.",
+                            "Version Information",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                    catch
+                    {
+                        MessageBox.Show(
+                            "I am unable to download the latest version. You may need to set up a default browser.",
+                            "Downloading Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
+                }
+            }
+            else if(versionComparison > 0)
+            {
+                MessageBox.Show(
+                    $"Your current version ({localVersion.ToString().Trim('0').Trim('.')}) is later than the latest version on GitHub ({latestVersion}). Well done! ☺",
+                    "Version Information",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show(
+                    $"You already have the latest version ({latestVersion}). No upgrade is needed.",
+                    "Version Information",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+        }
+
         private void OpenAboutWindow()
         {
             var aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
         }
 
-        private void OpenHotKeyEditor(object sender, RoutedEventArgs e)
+        private static void OpenHotkeyEditor()
         {
             var win = new HotKeyListEditorWindow(GeneralCommands.DefaultCommands, GeneralCommands.CurrentCommands);
             var result = win.ShowDialog();
             if(result == true)
             {
+                CommandRegistry.RefreshHotKeyList(GeneralCommands.CurrentCommands);
                 GeneralCommands.Save();
             }
         }

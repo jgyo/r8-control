@@ -40,22 +40,22 @@
                 <DoubleAnimation
                     AutoReverse="True"
                     BeginTime="0:0:0"
-                    Duration="0:0:0.5"
-                    From="1.0"
                     RepeatBehavior="Forever"
                     Storyboard.TargetProperty="(Image.Opacity)"
-                    To="0.0" />
+                    From="1.0"
+                    To="0.0"
+                    Duration="0:0:0.5" />
             </Storyboard>
 
             <Storyboard x:Key="FastBlinker">
                 <DoubleAnimation
                     AutoReverse="True"
                     BeginTime="0:0:0"
-                    Duration="0:0:0.25"
-                    From="1.0"
                     RepeatBehavior="Forever"
                     Storyboard.TargetProperty="(Image.Opacity)"
-                    To="0.0" />
+                    From="1.0"
+                    To="0.0"
+                    Duration="0:0:0.25" />
             </Storyboard>
 
             <!--  View Models  -->
@@ -426,21 +426,21 @@
                                         <VisualState x:Name="MouseOver">
                                             <Storyboard>
                                                 <ColorAnimationUsingKeyFrames Storyboard.TargetName="Ellipse" Storyboard.TargetProperty="(Shape.Fill).                     (GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                    <EasingColorKeyFrame Value="{StaticResource ControlMouseOverColor}" KeyTime="0" />
+                                                    <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlMouseOverColor}" />
                                                 </ColorAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </VisualState>
                                         <VisualState x:Name="Pressed">
                                             <Storyboard>
                                                 <ColorAnimationUsingKeyFrames Storyboard.TargetName="Ellipse" Storyboard.TargetProperty="(Shape.Fill).                     (GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                    <EasingColorKeyFrame Value="{StaticResource ControlPressedColor}" KeyTime="0" />
+                                                    <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
                                                 </ColorAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </VisualState>
                                         <VisualState x:Name="Disabled">
                                             <Storyboard>
                                                 <ColorAnimationUsingKeyFrames Storyboard.TargetName="Ellipse" Storyboard.TargetProperty="(Shape.Fill).                     (GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                    <EasingColorKeyFrame Value="{StaticResource DisabledControlDarkColor}" KeyTime="0" />
+                                                    <EasingColorKeyFrame KeyTime="0" Value="{StaticResource DisabledControlDarkColor}" />
                                                 </ColorAnimationUsingKeyFrames>
                                             </Storyboard>
                                         </VisualState>

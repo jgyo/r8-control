@@ -15,9 +15,6 @@ namespace HotKeyLibrary
         LeftShift = 64,
         RightShift = 128,
         Shift = 256,
-        LeftWin = 512,
-        RightWin = 1024,
-        Win = 2048,
         All = LeftCtrl |
             RightCtrl |
             Ctrl |
@@ -26,10 +23,7 @@ namespace HotKeyLibrary
             Alt |
             LeftShift |
             RightShift |
-            Shift |
-            LeftWin |
-            RightWin |
-            Win,
+            Shift,
         None = 0
     }
 }

@@ -153,14 +153,11 @@ namespace HotKeyLibrary.DesignTimeData
             Modifiers.Alt,
             Modifiers.Ctrl,
             Modifiers.Shift,
-            Modifiers.Win,
             Modifiers.LeftAlt,
             Modifiers.LeftCtrl,
-            Modifiers.LeftWin,
             Modifiers.LeftShift,
             Modifiers.RightAlt,
             Modifiers.RightCtrl,
-            Modifiers.RightWin,
             Modifiers.RightShift
         ];
 

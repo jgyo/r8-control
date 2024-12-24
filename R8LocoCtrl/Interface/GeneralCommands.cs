@@ -6,6 +6,10 @@ using System.Xml;
 
 namespace R8LocoCtrl.Interface
 {
+    /// <summary>
+    /// Implements the GeneralCommands class. This class contains a list of all hotkey commands, and default keys, and
+    /// methods to read and write hotkey bindings.
+    /// </summary>
     public class GeneralCommands
     {
         private const string COMMAND_NAMES =
@@ -89,16 +93,16 @@ namespace R8LocoCtrl.Interface
             DPUDynBrakeSetup        , LShift + Divide
             DPUFenceIncrease        , LShift + Oem6
             DPUFenceDecrease        , LShift + OemOpenBrackets
-            AboutWindow             , Win + A
-            Driver1Window           , Win + D1
-            Driver2Window           , Win + D2
-            AutoWindow              , Win + D3
-            StartUpWindow           , Win + D4
-            DPUWindow               , Win + D5
-            RadioWindow             , Win + D6
-            LightsWindow            , Win + D7
-            HotKeyWindow            , Win + D8
-            SetupWindow             , Win + D9";
+            AboutWindow             , D0
+            Driver1Window           , D1
+            Driver2Window           , D2
+            AutoWindow              , D3
+            StartUpWindow           , D4
+            DPUWindow               , D5
+            RadioWindow             , D6
+            LightsWindow            , D7
+            HotKeyWindow            , D8
+            SetupWindow             , D9";
         private const string KEY_BINDINGS_FILENAME = "KeyBindings.xml";
 
         public static readonly List<NamedCommandKeys> CurrentCommands = [];
@@ -138,21 +142,27 @@ namespace R8LocoCtrl.Interface
         {
             var list = new List<NamedCommandKeys>();
 
-            var reader = new XmlTextReader(KEY_BINDINGS_FILENAME);
-            reader.Read(); // move past the root node
-            while(reader.Read())
+            using (var reader = new XmlTextReader(KEY_BINDINGS_FILENAME))
             {
-                reader.MoveToElement();
-                var name = reader.GetAttribute("name");
-                var key = reader.GetAttribute("key");
-                var altKey = reader.GetAttribute("AltKey");
+                reader.Read(); // move past the root node
+                while (reader.Read())
+                {
+                    reader.MoveToElement();
 
-                list.Add(
-                    new NamedCommandKeys(name!)
-                    {
-                        Key = string.IsNullOrEmpty(key) ? null : new HotKey(key),
-                        AltKey = string.IsNullOrEmpty(altKey) ? null : new HotKey(altKey)
-                    });
+                    if (reader.Name != "Command")
+                        continue;
+
+                    var name = reader.GetAttribute("name");
+                    var key = reader.GetAttribute("key");
+                    var altKey = reader.GetAttribute("AltKey");
+
+                    list.Add(
+                        new NamedCommandKeys(name!)
+                        {
+                            Key = string.IsNullOrEmpty(key) ? null : new HotKey(key),
+                            AltKey = string.IsNullOrEmpty(altKey) ? null : new HotKey(altKey)
+                        });
+                }
             }
 
             return list;
@@ -160,20 +170,22 @@ namespace R8LocoCtrl.Interface
 
         private static void WriteKeyBindingFile(List<NamedCommandKeys> keys)
         {
-            var writer = new XmlTextWriter(KEY_BINDINGS_FILENAME, null);
-            writer.WriteStartElement("commands");
-            foreach(var key in keys)
+            using (var writer = new XmlTextWriter(KEY_BINDINGS_FILENAME, null))
             {
-                writer.WriteStartElement("Command");
-                writer.WriteAttributeString("name", key.Name);
-                writer.WriteAttributeString("key", key.Key?.ToString());
-                writer.WriteAttributeString("altKey", key.AltKey?.ToString());
-                writer.WriteEndElement();
-            }
+                writer.WriteStartElement("commands");
+                foreach (var key in keys)
+                {
+                    writer.WriteStartElement("Command");
+                    writer.WriteAttributeString("name", key.Name);
+                    writer.WriteAttributeString("key", key.Key?.ToString());
+                    writer.WriteAttributeString("altKey", key.AltKey?.ToString());
+                    writer.WriteEndElement();
+                }
 
-            writer.WriteEndElement();
-            writer.Flush();
-            writer.Close();
+                writer.WriteEndElement();
+                writer.Flush();
+                writer.Close();
+            }
         }
 
         public static void Save()

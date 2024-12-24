@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace HotKeyLibrary
 {
@@ -33,6 +34,7 @@ namespace HotKeyLibrary
         private bool dataHasErrors;
         private bool hasChanges;
         private bool isKeyItemSelected;
+        private HotKeyEditorControl? lastKeyBoxWithFocus;
         private bool workingCommandKeysHasErrors;
 
         public HotKeyListEditorControl()
@@ -201,6 +203,11 @@ namespace HotKeyLibrary
             }
         }
 
+        private void HotKeyBoxGotFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            lastKeyBoxWithFocus = (HotKeyEditorControl)sender;
+        }
+
         private void Key_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if(WorkingCommandKeys == null)
@@ -219,6 +226,10 @@ namespace HotKeyLibrary
         private void OnDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             IsKeyItemSelected = dataGrid.SelectedIndex >= 0;
+            if(lastKeyBoxWithFocus == null)
+                primaryKey.HotKeyTextBox.Focus();
+            else
+                lastKeyBoxWithFocus.HotKeyTextBox.Focus();
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
