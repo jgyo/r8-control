@@ -28,21 +28,21 @@ namespace R8LocoCtrl
     /// </summary>
     public partial class MainWindow : Window
     {
+
         private const double DEFAULT_HEIGHT = 540;
         private const string DEFAULT_STATE_FILENAME = "DefaultState.xml";
         private const double DEFAULT_WIDTH = 1230;
         private const string PERSIST_STATE_FILENAME = "ClosingState.xml";
 
-        private static readonly CommandRegistry commandRegistry;
+        private static CommandRegistry commandRegistry;
         private Modifiers expModifiers;
         private Modifiers genModifiers;
         private readonly ProgramPropertiesViewModel progProperties;
 
         static MainWindow()
         {
-            commandRegistry = new CommandRegistry();
+            commandRegistry = CommandRegistry.Instance;
         }
-
         public MainWindow()
         {
             InitializeComponent();
@@ -63,13 +63,13 @@ namespace R8LocoCtrl
             this.PreviewKeyDown += MainWindow_PreviewKeyDown;
             this.PreviewKeyUp += MainWindow_PreviewKeyUp;
 
-            if(CR8ID.Default.PersistState)
+            if (CR8ID.Default.PersistState)
             {
                 this.Top = CR8ID.Default.Top;
                 this.Left = CR8ID.Default.Left;
                 this.Height = CR8ID.Default.Height;
                 this.Width = CR8ID.Default.Width;
-                if(CR8ID.Default.Maximized)
+                if (CR8ID.Default.Maximized)
                 {
                     this.WindowState = WindowState.Maximized;
                 }
@@ -79,18 +79,21 @@ namespace R8LocoCtrl
             sbVersion.Text = $"Version: {version}";
 
             // Register commands
-            CommandRegistry.SubscribeToCommand("AboutWindow", OpenAboutWindow);
-            CommandRegistry.SubscribeToCommand("HotKeyWindow", OpenHotkeyEditor);
+            commandRegistry.SubscribeToCommand("AboutWindow", OpenAboutWindow);
+            commandRegistry.SubscribeToCommand("HotKeyWindow", OpenHotkeyEditor);
+            CommandRegistry.Instance.SubscribeToCommand(Commands.AutoWindow, OpenAutoWindow);
+            CommandRegistry.Instance.SubscribeToCommand(Commands.DPUWindow, OpenDPUWindow);
+            CommandRegistry.Instance.SubscribeToCommand(Commands.Driver1Window, OpenDriver1Window);
+            CommandRegistry.Instance.SubscribeToCommand(Commands.Driver2Window, OpenDriver2Window);
+            CommandRegistry.Instance.SubscribeToCommand(Commands.LightsWindow, OpenLightsWindow);
+            CommandRegistry.Instance.SubscribeToCommand(Commands.RadioWindow, OpenRadioWindow);
+            CommandRegistry.Instance.SubscribeToCommand(Commands.SetupWindow, OpenSetupWindow);
+            CommandRegistry.Instance.SubscribeToCommand(Commands.StartUpWindow, OpenStartUpWindow);
         }
-
-        /// <summary>
-        /// Gets the command registry.
-        /// </summary>
-        public static CommandRegistry CommandRegistry => commandRegistry;
 
         private void ConfigureDataContext()
         {
-            if(DataContext is DockingManagerViewModel dmvm)
+            if (DataContext is DockingManagerViewModel dmvm)
             {
                 dmvm.ActivateWindow += Dmvm_ActivateWindow;
                 dmvm.DefaultState += Dmvm_LoadDefaultState;
@@ -100,10 +103,9 @@ namespace R8LocoCtrl
                 dmvm.IsPersistStateSet = CR8ID.Default.PersistState;
             }
         }
-
         private void ConfigureGradeMapMenu()
         {
-            if(!progProperties.IsRun8PathValid)
+            if (!progProperties.IsRun8PathValid)
             {
                 this.GradeMapsMenu.Items.Clear();
                 this.GradeMapsMenu.ToolTip = "Requires configuration in setup.";
@@ -113,13 +115,13 @@ namespace R8LocoCtrl
             this.GradeMapsMenu.ToolTip = null;
             var files = Directory.EnumerateFiles(progProperties.GradeMapPath!, "*.pdf");
             var dmvm = (DockingManagerViewModel)DataContext;
-            foreach(var filePath in files)
+            foreach (var filePath in files)
             {
                 bool foundMatch = false;
                 try
                 {
                     foundMatch = GradeMapRegEx().IsMatch(filePath);
-                    if(foundMatch)
+                    if (foundMatch)
                     {
                         string? menuText = null;
                         menuText = GradeMapRegEx().Match(filePath).Groups["Name"].Value;
@@ -134,18 +136,16 @@ namespace R8LocoCtrl
                         this.GradeMapsMenu.Items.Add(newMenuItem);
                     }
                 }
-                catch(ArgumentException ex)
+                catch (ArgumentException ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
             }
         }
-
         private void Dmvm_ActivateWindow(object? sender, Run8Windows e)
         {
             this.dockingManager.ActivateWindow(e.ToString());
         }
-
         private void Dmvm_LoadDefaultState(object? sender, EventArgs e)
         {
             this.dockingManager.LoadDockState(DEFAULT_STATE_FILENAME);
@@ -153,14 +153,13 @@ namespace R8LocoCtrl
             this.Height = DEFAULT_HEIGHT;
             this.WindowState = WindowState.Normal;
         }
-
         private async void Dmvm_LoadMap(object? sender, string[] e)
         {
             var filename = e[0];
             var filepath = e[2];
             var webpath = e[1];
 
-            if(!File.Exists(filepath))
+            if (!File.Exists(filepath))
             {
                 // Try to download it
                 try
@@ -193,11 +192,10 @@ namespace R8LocoCtrl
             DockingManager.SetHeader(pdfViewer, filename);
             DockingManager.SetState(pdfViewer, DockState.Document);
         }
-
         private void Dmvm_OpenGradeMapWindow(object? sender, string filePath)
         {
             var filename = Path.GetFileName(filePath);
-            if(!File.Exists(filePath))
+            if (!File.Exists(filePath))
                 throw new FileNotFoundException(filename);
 
             try
@@ -212,43 +210,39 @@ namespace R8LocoCtrl
                 DockingManager.SetHeader(pdfViewer, filename); // filename);
                 DockingManager.SetState(pdfViewer, DockState.Document);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Grade Map File Error");
             }
         }
-
         private void Dmvm_PersistState(object? sender, bool e)
         {
             CR8ID.Default.PersistState = !e;
         }
-
         private void DockingManager_ChildrenCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if(e.Action == NotifyCollectionChangedAction.Move)
+            if (e.Action == NotifyCollectionChangedAction.Move)
                 return;
 
-            if(e.OldItems == null)
+            if (e.OldItems == null)
                 return;
-            foreach(var child in e.OldItems)
+            foreach (var child in e.OldItems)
             {
-                if(child is not PdfViewerControl pdfViewer)
+                if (child is not PdfViewerControl pdfViewer)
                     continue;
                 var file = pdfViewer.ItemSource as FileStream;
                 file?.Close();
                 file?.Dispose();
             }
         }
-
         private void DockingManager_CloseButtonClick(object sender, CloseButtonEventArgs e)
         {
             var content = (e.TargetItem as PdfViewerControl);
-            if(content != null)
+            if (content != null)
             {
                 dockingManager.Children.Remove(content);
             }
         }
-
         private async void DockingManager_DockStateChanged(FrameworkElement sender, DockStateEventArgs e)
         {
             // Setting TopMost on the main window will put the main
@@ -269,25 +263,22 @@ namespace R8LocoCtrl
             AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
             AlwaysOnTop.IsChecked = !AlwaysOnTop.IsChecked;
         }
-
         private void DockingManager_Loaded(object sender, RoutedEventArgs e)
         {
-            if(!File.Exists(DEFAULT_STATE_FILENAME))
+            if (!File.Exists(DEFAULT_STATE_FILENAME))
                 dockingManager.SaveDockState(DEFAULT_STATE_FILENAME);
 
-            if(CR8ID.Default.PersistState && File.Exists(PERSIST_STATE_FILENAME))
+            if (CR8ID.Default.PersistState && File.Exists(PERSIST_STATE_FILENAME))
                 dockingManager.LoadDockState(PERSIST_STATE_FILENAME);
         }
-
         private void DockingManager_WindowClosing(object sender, WindowClosingEventArgs e)
         {
             var content = (e.TargetItem as PdfViewerControl);
-            if(content != null)
+            if (content != null)
             {
                 dockingManager.Children.Remove(content);
             }
         }
-
         private async Task<Version> GetRepoVersion()
         {
             // Get releases from GitHub
@@ -297,22 +288,19 @@ namespace R8LocoCtrl
 
             return new Version(releases[0].TagName.Trim('v'));
         }
-
         [GeneratedRegex(@"^.*\\(?:(RUN 8|RUN8|))(?<Name>.*)(?:Grade.Map\.pdf)",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Singleline,
             "en-US")]
         private static partial Regex GradeMapRegEx();
-
         private void Hotkey_MenuClick(object sender, RoutedEventArgs e)
         {
             OpenHotkeyEditor();
         }
-
         private void MainWindow_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if(e.OldValue != null)
+            if (e.OldValue != null)
             {
-                if(e.OldValue is DockingManagerViewModel dmvm)
+                if (e.OldValue is DockingManagerViewModel dmvm)
                 {
                     dmvm.ActivateWindow -= Dmvm_ActivateWindow;
                     dmvm.DefaultState -= Dmvm_LoadDefaultState;
@@ -322,24 +310,23 @@ namespace R8LocoCtrl
 
             ConfigureDataContext();
         }
-
         private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
             var key = e.Key;
 
             // when Alt is pressed, SystemKey (instead of Key) is used instead
-            if(key == Key.System)
+            if (key == Key.System)
                 key = e.SystemKey;
 
-            if(key == Key.LeftCtrl ||
+            if (key == Key.LeftCtrl ||
                 key == Key.RightCtrl ||
                 key == Key.LeftAlt ||
                 key == Key.RightAlt ||
                 key == Key.LeftShift ||
                 key == Key.RightShift)
             {
-                switch(key)
+                switch (key)
                 {
                     case Key.LeftCtrl:
                         expModifiers = Modifiers.LeftCtrl;
@@ -372,25 +359,24 @@ namespace R8LocoCtrl
 
             var expHotKey = new HotKey(key, expModifiers);
             var genHotKey = new HotKey(key, genModifiers);
-            CommandRegistry.PollKey(expHotKey, genHotKey, true);
+            commandRegistry.PollKey(expHotKey, genHotKey, true);
         }
-
         private void MainWindow_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             //e.Handled = true;
             var key = e.Key;
 
-            if(key == Key.System)
+            if (key == Key.System)
                 key = e.SystemKey;
 
-            if(key == Key.LeftCtrl ||
+            if (key == Key.LeftCtrl ||
                 key == Key.RightCtrl ||
                 key == Key.LeftAlt ||
                 key == Key.RightAlt ||
                 key == Key.LeftShift ||
                 key == Key.RightShift)
             {
-                switch(key)
+                switch (key)
                 {
                     case Key.LeftCtrl:
                         expModifiers &= Modifiers.All ^ Modifiers.LeftCtrl;
@@ -423,26 +409,23 @@ namespace R8LocoCtrl
 
             var expHotKey = new HotKey(key, expModifiers);
             var genHotKey = new HotKey(key, genModifiers);
-            CommandRegistry.PollKey(expHotKey, genHotKey, false);
+            commandRegistry.PollKey(expHotKey, genHotKey, false);
         }
-
         private void MenuItemAdv_About(object sender, RoutedEventArgs e)
         {
             OpenAboutWindow();
         }
-
         private void MenuItemAdv_Close(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
         private async void MenuItemAdv_VersionCheck(object sender, RoutedEventArgs e)
         {
             var latestVersion = await GetRepoVersion();
             var localVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
             var versionComparison = localVersion!.CompareTo(latestVersion);
-            if(versionComparison < 0)
+            if (versionComparison < 0)
             {
                 var result = MessageBox.Show(
                     "There is a new version of R8 Control available.\r\n" +
@@ -454,7 +437,7 @@ namespace R8LocoCtrl
                     "Version Information",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Information);
-                if(result == MessageBoxResult.Yes)
+                if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
@@ -481,7 +464,7 @@ namespace R8LocoCtrl
                     }
                 }
             }
-            else if(versionComparison > 0)
+            else if (versionComparison > 0)
             {
                 MessageBox.Show(
                     $"Your current version ({localVersion.ToString().Trim('0').Trim('.')}) is later than the latest version on GitHub ({latestVersion}). Well done! ☺",
@@ -498,39 +481,74 @@ namespace R8LocoCtrl
                     MessageBoxImage.Information);
             }
         }
-
         private void OpenAboutWindow()
         {
             var aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
         }
-
+        private void OpenAutoWindow()
+        {
+            var dm = DataContext as DockingManagerViewModel;
+            dm!.ActivateWindowCommand.Execute(Run8Windows.Auto);
+        }
+        private void OpenDPUWindow()
+        {
+            var dm = DataContext as DockingManagerViewModel;
+            dm!.ActivateWindowCommand.Execute(Run8Windows.DPU);
+        }
+        private void OpenDriver1Window()
+        {
+            var dm = DataContext as DockingManagerViewModel;
+            dm!.ActivateWindowCommand.Execute(Run8Windows.Driver1);
+        }
+        private void OpenDriver2Window()
+        {
+            var dm = DataContext as DockingManagerViewModel;
+            dm!.ActivateWindowCommand.Execute(Run8Windows.Driver2);
+        }
         private static void OpenHotkeyEditor()
         {
             var win = new HotKeyListEditorWindow(GeneralCommands.DefaultCommands, GeneralCommands.CurrentCommands);
             var result = win.ShowDialog();
-            if(result == true)
+            if (result == true)
             {
-                CommandRegistry.RefreshHotKeyList(GeneralCommands.CurrentCommands);
+                commandRegistry.RefreshHotKeyList(GeneralCommands.CurrentCommands);
                 GeneralCommands.Save();
             }
         }
-
+        private void OpenLightsWindow()
+        {
+            var dm = DataContext as DockingManagerViewModel;
+            dm!.ActivateWindowCommand.Execute(Run8Windows.Lights);
+        }
+        private void OpenRadioWindow()
+        {
+            var dm = DataContext as DockingManagerViewModel;
+            dm!.ActivateWindowCommand.Execute(Run8Windows.Radio);
+        }
+        private void OpenSetupWindow()
+        {
+            var dm = DataContext as DockingManagerViewModel;
+            dm!.ActivateWindowCommand.Execute(Run8Windows.Setup);
+        }
+        private void OpenStartUpWindow()
+        {
+            var dm = DataContext as DockingManagerViewModel;
+            dm!.ActivateWindowCommand.Execute(Run8Windows.StartUp);
+        }
         private void ProgProperties_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == "IsRun8PathValid")
+            if (e.PropertyName == "IsRun8PathValid")
             {
                 ConfigureGradeMapMenu();
             }
         }
-
         private void ProgProperties_SubmitProperties(object? sender, ProgramPropertiesViewModel e)
         {
             SetSpeedometerProperties(e);
             SetRun8ActionProperties(e);
             DockingManager.SetState(this.Setup, DockState.Hidden);
         }
-
         private static void SetProgramProperties(ProgramPropertiesViewModel properties)
         {
             properties.PressureReference = CR8ID.Default.PressureReference;
@@ -542,7 +560,6 @@ namespace R8LocoCtrl
             properties.EAPath = CR8ID.Default.EAPath;
             properties.ConsistEdPath = CR8ID.Default.ConsistEdPath;
         }
-
         private void SetRun8ActionProperties(ProgramPropertiesViewModel e)
         {
             var driverControl = (Run8ActionsViewModel)this.FindResource("actionViewModel");
@@ -550,7 +567,6 @@ namespace R8LocoCtrl
             driverControl.IndyBrakeLC = e.IndyBrakeLC;
             driverControl.DynBrakeLC = e.DynBrakeLC;
         }
-
         private void SetSpeedometerProperties(ProgramPropertiesViewModel properties)
         {
             var speedometer = (SpeedometerSettingsViewModel)this.FindResource("speedoViewModel");
@@ -569,10 +585,11 @@ namespace R8LocoCtrl
             CR8ID.Default.Height = this.Height;
             CR8ID.Default.Maximized = this.WindowState == WindowState.Maximized;
             CR8ID.Default.Save();
-            if(CR8ID.Default.PersistState)
+            if (CR8ID.Default.PersistState)
                 dockingManager.SaveDockState(PERSIST_STATE_FILENAME);
 
             base.OnClosing(e);
         }
+
     }
 }

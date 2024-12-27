@@ -80,8 +80,7 @@ namespace R8LocoCtrl.Interface
             AutoCBTrain
             AutoABTrain
             AutoEOTTrain
-            EngineStart
-            EngineStop
+            EngineStartStop
             HEPSwitch
             TrainBrakeCutout
             ServiceSelector
@@ -142,14 +141,14 @@ namespace R8LocoCtrl.Interface
         {
             var list = new List<NamedCommandKeys>();
 
-            using (var reader = new XmlTextReader(KEY_BINDINGS_FILENAME))
+            using(var reader = new XmlTextReader(KEY_BINDINGS_FILENAME))
             {
                 reader.Read(); // move past the root node
-                while (reader.Read())
+                while(reader.Read())
                 {
                     reader.MoveToElement();
 
-                    if (reader.Name != "Command")
+                    if(reader.Name != "Command")
                         continue;
 
                     var name = reader.GetAttribute("name");
@@ -170,10 +169,10 @@ namespace R8LocoCtrl.Interface
 
         private static void WriteKeyBindingFile(List<NamedCommandKeys> keys)
         {
-            using (var writer = new XmlTextWriter(KEY_BINDINGS_FILENAME, null))
+            using(var writer = new XmlTextWriter(KEY_BINDINGS_FILENAME, null))
             {
                 writer.WriteStartElement("commands");
-                foreach (var key in keys)
+                foreach(var key in keys)
                 {
                     writer.WriteStartElement("Command");
                     writer.WriteAttributeString("name", key.Name);

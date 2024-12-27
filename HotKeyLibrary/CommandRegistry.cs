@@ -10,20 +10,22 @@ namespace HotKeyLibrary
     {
         private readonly Dictionary<string, string> CommandByHotKeys = [];
         private readonly Dictionary<string, Action> RegisteredDownKeyCommands = [];
-        private readonly Dictionary<string, Action> RegisteredUpKeyCommands = [];
+        public readonly Dictionary<string, Action<bool>> RegisteredUpAndDownKeyCommands = [];
+
+        public static CommandRegistry Instance = new CommandRegistry();
 
         /// <summary>
         /// Polls the key.
         /// </summary>
-        /// <param name="expHK">The explicit (left or right) hotkey.</param>
-        /// <param name="genHK">The generic hotkey.</param>
+        /// <param name="explicitHK">The explicit (left or right) hotkey.</param>
+        /// <param name="generalHK">The generic hotkey.</param>
         /// <param name="isDownKey">If true, the key is down.</param>
-        public void PollKey(HotKey expHK, HotKey genHK, bool isDownKey)
+        public void PollKey(HotKey explicitHK, HotKey generalHK, bool isDownKey)
         {
             // Get a command bound to the key
-            if(!CommandByHotKeys.TryGetValue(expHK.KeyStr, out string? command))
+            if(!CommandByHotKeys.TryGetValue(explicitHK.KeyStr, out string? command))
             {
-                if(!CommandByHotKeys.TryGetValue(genHK.KeyStr, out string? command2))
+                if(!CommandByHotKeys.TryGetValue(generalHK.KeyStr, out string? command2))
                 {
                     return;
                 }
@@ -33,20 +35,17 @@ namespace HotKeyLibrary
                 }
             }
 
-            Dictionary<string, Action> registry;
-
-            if(isDownKey)
-            {
-                registry = RegisteredDownKeyCommands;
-            }
-            else
-            {
-                registry = RegisteredUpKeyCommands;
-            }
-
             // if the command has a registered action, call it.
-            if(registry.TryGetValue(command, out Action? action))
-                action();
+            if(isDownKey && RegisteredDownKeyCommands.TryGetValue(command, out Action? value))
+            {
+                value();
+                return;
+            }
+
+            if(RegisteredUpAndDownKeyCommands.TryGetValue(command, out Action<bool>? action))
+            {
+                action(isDownKey);
+            }
         }
 
         /// <summary>
@@ -70,50 +69,55 @@ namespace HotKeyLibrary
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="action">The action.</param>
-        /// <param name="isDownKey">If true, the subscription is for a key down event.</param>
-        /// <exception cref="ArgumentNullException">Raised if command is null or empty.</exception>
-        /// <exception cref="ArgumentException">Raised if the command is already registered.</exception>
-        public void SubscribeToCommand(string command, Action action, bool isDownKey = true)
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public void SubscribeToCommand(string command, Action action)
         {
             if(string.IsNullOrEmpty(command))
                 throw new ArgumentNullException(nameof(command));
 
-            Dictionary<string, Action> registry;
-
-            if(isDownKey)
-            {
-                registry = RegisteredDownKeyCommands;
-            }
-            else
-            {
-                registry = RegisteredUpKeyCommands;
-            }
-
-            if(registry.ContainsKey(command))
+            if(RegisteredDownKeyCommands.ContainsKey(command))
                 throw new ArgumentException($"{command} is already registered.");
 
-            registry.Add(command, action);
+            RegisteredDownKeyCommands.Add(command, action);
+        }
+
+        /// <summary>
+        /// Subscribes an action to command.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="action">The action.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public void SubscribeToCommand(string command, Action<bool> action)
+        {
+            if(string.IsNullOrEmpty(command))
+                throw new ArgumentNullException(nameof(command));
+
+            if(RegisteredUpAndDownKeyCommands.ContainsKey(command))
+                throw new ArgumentException($"{command} is already registered.");
+
+            RegisteredUpAndDownKeyCommands.Add(command, action);
         }
 
         /// <summary>
         /// Removes a subscription for a command.
         /// </summary>
         /// <param name="command">The command.</param>
-        /// <param name="isDownKey">If true, the subscription was for a key down event.</param>
-        public void UnsubscribeToCommand(string command, bool isDownKey)
+        /// <exception cref="Exception">Raised if the command cannot be removed.</exception>
+        public void UnsubscribeToCommand(string command)
         {
-            Dictionary<string, Action> registry;
-
-            if(isDownKey)
+            try
             {
-                registry = RegisteredDownKeyCommands;
+                if(RegisteredDownKeyCommands.ContainsKey(command))
+                    RegisteredDownKeyCommands.Remove(command);
+                else
+                    RegisteredUpAndDownKeyCommands.Remove(command);
             }
-            else
+            catch(Exception ex)
             {
-                registry = RegisteredUpKeyCommands;
+                throw new Exception($"Unable to remove the {command} command key.", ex);
             }
-
-            registry.Remove(command);
         }
     }
 }

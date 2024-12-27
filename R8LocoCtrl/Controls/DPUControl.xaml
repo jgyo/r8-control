@@ -16,23 +16,23 @@
                 <WrapPanel>
                     <Button
                         ClickMode="Press"
-                        Command="{Binding ThrottleIncreaseCommand}"
+                        Command="{Binding DPUThrottleIncreaseCommand}"
                         CommandParameter="{StaticResource True}"
                         Content="Throttle ▲">
                         <b:Interaction.Triggers>
                             <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
-                                <b:InvokeCommandAction Command="{Binding ThrottleIncreaseCommand}" CommandParameter="{StaticResource False}" />
+                                <b:InvokeCommandAction Command="{Binding DPUThrottleIncreaseCommand}" CommandParameter="{StaticResource False}" />
                             </b:DataTrigger>
                         </b:Interaction.Triggers>
                     </Button>
                     <Button
                         ClickMode="Press"
-                        Command="{Binding ThrottleDecreaseCommand}"
+                        Command="{Binding DPUThrottleDecreaseCommand}"
                         CommandParameter="{StaticResource True}"
                         Content="Throttle ▼">
                         <b:Interaction.Triggers>
                             <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}" Value="false">
-                                <b:InvokeCommandAction Command="{Binding ThrottleDecreaseCommand}" CommandParameter="{StaticResource False}" />
+                                <b:InvokeCommandAction Command="{Binding DPUThrottleDecreaseCommand}" CommandParameter="{StaticResource False}" />
                             </b:DataTrigger>
                         </b:Interaction.Triggers>
                     </Button>

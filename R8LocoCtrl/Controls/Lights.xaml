@@ -13,16 +13,19 @@
     <Grid>
         <WrapPanel Background="White">
             <ToggleButton
+                x:Name="CabLightButton"
                 Command="{Binding SendCabLightSwitchCommand}"
                 CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
                 Content="Cab Light"
                 Style="{StaticResource tbstyle}" />
             <ToggleButton
+                x:Name="StepLightButton"
                 Command="{Binding SendStepLightSwitchCommand}"
                 CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
                 Content="Step Light"
                 Style="{StaticResource tbstyle}" />
             <ToggleButton
+                x:Name="GaugeLightButton"
                 Command="{Binding SendGaugeLightSwitchCommand}"
                 CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
                 Content="Gauge Light"
@@ -30,14 +33,17 @@
             <GroupBox Header="Front Headlight">
                 <WrapPanel>
                     <RadioButton
+                        x:Name="FrontHLOff"
                         Command="{Binding SendFrontHeadlightCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:HeadlightValues.Off}"
                         Content="Off" />
                     <RadioButton
+                        x:Name="FrontHLDim"
                         Command="{Binding SendFrontHeadlightCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:HeadlightValues.Dim}"
                         Content="Dim" />
                     <RadioButton
+                        x:Name="FrontHLFull"
                         Command="{Binding SendFrontHeadlightCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:HeadlightValues.Full}"
                         Content="Full" />
@@ -46,14 +52,17 @@
             <GroupBox Header="Rear Headlight">
                 <WrapPanel>
                     <RadioButton
+                        x:Name="RearHLOff"
                         Command="{Binding SendRearHeadlightCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:HeadlightValues.Off}"
                         Content="Off" />
                     <RadioButton
+                        x:Name="RearHLDim"
                         Command="{Binding SendRearHeadlightCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:HeadlightValues.Dim}"
                         Content="Dim" />
                     <RadioButton
+                        x:Name="RearHLFull"
                         Command="{Binding SendRearHeadlightCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:HeadlightValues.Full}"
                         Content="Full" />

@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:int="clr-namespace:R8LocoCtrl.Interface"
     xmlns:local="clr-namespace:R8LocoCtrl.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
-    d:DesignHeight="412.783"
+    d:DesignHeight="464.783"
     d:DesignWidth="170.421"
     DataContext="{StaticResource actionViewModel}"
     mc:Ignorable="d">
@@ -18,6 +19,7 @@
                     <Image Source="pack://siteoforigin:,,,/icons/ReverserLabel.png" Stretch="None" />
                 </Label>
                 <local:ReverserSlider
+                    x:Name="ReverserSlider"
                     Height="118"
                     Margin="0,4,0,4"
                     AutoToolTipPlacement="TopLeft"
@@ -38,6 +40,7 @@
                     Stretch="None" />
             </Label>
             <Slider
+                x:Name="ThrottleSlider"
                 Height="118"
                 Margin="0,4,0,4"
                 AutoToolTipPlacement="TopLeft"
@@ -56,6 +59,7 @@
                     <Image Source="pack://siteoforigin:,,,/icons/DynamicBrakesLabel.png" Stretch="None" />
                 </Label>
                 <Slider
+                    x:Name="DynBrakes"
                     Height="118"
                     Margin="0,4,0,4"
                     AutoToolTipPlacement="TopLeft"
@@ -75,6 +79,7 @@
                     <Image Source="pack://siteoforigin:,,,/icons/TrainBrakesLabel.png" Stretch="None" />
                 </Label>
                 <Slider
+                    x:Name="TrainBrakes"
                     Height="118"
                     Margin="0,4,0,4"
                     AutoToolTipPlacement="TopLeft"
@@ -93,6 +98,7 @@
                     <Image Source="pack://siteoforigin:,,,/icons/IndyBrakesLabel.png" Stretch="None" />
                 </Label>
                 <Slider
+                    x:Name="IndyBrakes"
                     Height="118"
                     Margin="0,4,0,4"
                     AutoToolTipPlacement="TopLeft"
@@ -161,6 +167,30 @@
                     </b:DataTrigger>
                 </b:Interaction.Triggers>
             </Button>
+            <GroupBox Header="Wipers">
+                <WrapPanel>
+                    <RadioButton
+                        x:Name="WipersOff"
+                        Command="{Binding SendWiperCommand, Mode=OneWay}"
+                        CommandParameter="{x:Static int:WiperSwitchValues.Off}"
+                        Content="Off" />
+                    <RadioButton
+                        x:Name="WipersLow"
+                        Command="{Binding SendWiperCommand, Mode=OneWay}"
+                        CommandParameter="{x:Static int:WiperSwitchValues.Int1}"
+                        Content="Low" />
+                    <RadioButton
+                        x:Name="WipersMid"
+                        Command="{Binding SendWiperCommand, Mode=OneWay}"
+                        CommandParameter="{x:Static int:WiperSwitchValues.Int2}"
+                        Content="Medium" />
+                    <RadioButton
+                        x:Name="WipersFull"
+                        Command="{Binding SendWiperCommand, Mode=OneWay}"
+                        CommandParameter="{x:Static int:WiperSwitchValues.Full}"
+                        Content="Fast" />
+                </WrapPanel>
+            </GroupBox>
         </WrapPanel>
     </Grid>
 </UserControl>

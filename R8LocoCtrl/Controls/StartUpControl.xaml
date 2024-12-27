@@ -25,17 +25,27 @@
                 ToolTip="Toggles engine running state.">
                 <ToggleButton.CommandParameter>
                     <MultiBinding Converter="{StaticResource BoolsArrayConverter}">
-                        <Binding Source="{StaticResource True}" />
+                        <Binding Source="{StaticResource False}" />
                         <Binding ElementName="EngineButton" Path="IsChecked" />
                     </MultiBinding>
                 </ToggleButton.CommandParameter>
                 <b:Interaction.Triggers>
-                    <b:DataTrigger Binding="{Binding IsPressed, Mode=OneWay, ElementName=EngineButton}" Value="false">
+                    <b:DataTrigger Binding="{Binding IsChecked, Mode=OneWay, ElementName=EngineButton}" Value="true">
                         <b:InvokeCommandAction Command="{Binding EngineStartCommand}">
                             <b:InvokeCommandAction.CommandParameter>
                                 <MultiBinding Converter="{StaticResource BoolsArrayConverter}">
+                                    <Binding Source="{StaticResource True}" />
+                                    <Binding Source="{StaticResource True}" />
+                                </MultiBinding>
+                            </b:InvokeCommandAction.CommandParameter>
+                        </b:InvokeCommandAction>
+                    </b:DataTrigger>
+                    <b:DataTrigger Binding="{Binding IsChecked, Mode=OneWay, ElementName=EngineButton}" Value="false">
+                        <b:InvokeCommandAction Command="{Binding EngineStartCommand}">
+                            <b:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource BoolsArrayConverter}">
+                                    <Binding Source="{StaticResource True}" />
                                     <Binding Source="{StaticResource False}" />
-                                    <Binding ElementName="EngineButton" Path="IsChecked" />
                                 </MultiBinding>
                             </b:InvokeCommandAction.CommandParameter>
                         </b:InvokeCommandAction>
@@ -51,14 +61,17 @@
             <GroupBox Header="Isolation Switch">
                 <WrapPanel>
                     <RadioButton
+                        x:Name="IsoStart"
                         Command="{Binding IsolationSwitchCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:IsolationSwitchValues.Start}"
                         Content="Start" />
                     <RadioButton
+                        x:Name="IsoIsolate"
                         Command="{Binding IsolationSwitchCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:IsolationSwitchValues.Isolate}"
                         Content="Isolate" />
                     <RadioButton
+                        x:Name="IsoRun"
                         Command="{Binding IsolationSwitchCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:IsolationSwitchValues.Run}"
                         Content="Run" />
@@ -67,14 +80,17 @@
             <GroupBox Header="Train Brake Cutout">
                 <WrapPanel>
                     <RadioButton
+                        x:Name="TBCutOut"
                         Command="{Binding TrainBrakeCutOutCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:TrainBrakeCutoutValues.CutOut}"
                         Content="Cut-out" />
                     <RadioButton
+                        x:Name="TBFreight"
                         Command="{Binding TrainBrakeCutOutCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:TrainBrakeCutoutValues.Freight}"
                         Content="Freight" />
                     <RadioButton
+                        x:Name="TBPassenger"
                         Command="{Binding TrainBrakeCutOutCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:TrainBrakeCutoutValues.Passenger}"
                         Content="Passenger" />
@@ -83,18 +99,22 @@
             <GroupBox Header="Service Selector">
                 <WrapPanel>
                     <RadioButton
+                        x:Name="SsSw1"
                         Command="{Binding ServiceSelectorCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:ServiceSelectorSwitchValues.switch1}"
                         Content="Switch 1" />
                     <RadioButton
+                        x:Name="SsSw2"
                         Command="{Binding ServiceSelectorCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:ServiceSelectorSwitchValues.switch2}"
                         Content="Switch 2" />
                     <RadioButton
+                        x:Name="SsFS"
                         Command="{Binding ServiceSelectorCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:ServiceSelectorSwitchValues.forestalling}"
                         Content="Forestalling" />
                     <RadioButton
+                        x:Name="SsRoad"
                         Command="{Binding ServiceSelectorCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:ServiceSelectorSwitchValues.road}"
                         Content="Road" />
@@ -103,22 +123,27 @@
             <GroupBox Header="MU Headlight Switch">
                 <WrapPanel>
                     <RadioButton
+                        x:Name="MUHLSM"
                         Command="{Binding MUHeadlightSwitchCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:MUHLSwitchValues.SingleMiddle}"
                         Content="Single Middle" />
                     <RadioButton
+                        x:Name="MUHLSHL"
                         Command="{Binding MUHeadlightSwitchCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:MUHLSwitchValues.ShortHoodLead}"
                         Content="Short Hood Lead" />
                     <RadioButton
+                        x:Name="MUHLSHT"
                         Command="{Binding MUHeadlightSwitchCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:MUHLSwitchValues.ShortHoodTrail}"
                         Content="Short Hood Trail" />
                     <RadioButton
+                        x:Name="MUHLLHL"
                         Command="{Binding MUHeadlightSwitchCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:MUHLSwitchValues.LongHoodLead}"
                         Content="Long Hood Lead" />
                     <RadioButton
+                        x:Name="MUHLLHT"
                         Command="{Binding MUHeadlightSwitchCommand, Mode=OneWay}"
                         CommandParameter="{x:Static int:MUHLSwitchValues.LongHoodTrail}"
                         Content="Long Hood Trail" />

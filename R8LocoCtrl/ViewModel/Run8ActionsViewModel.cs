@@ -5,6 +5,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 using CommunityToolkit.Mvvm.Input;
+using HotKeyLibrary;
 using R8LocoCtrl.Interface;
 using R8LocoCtrl.Tools;
 using SimpleUdp;
@@ -40,6 +41,7 @@ namespace R8LocoCtrl.ViewModel
         private RelayCommand<bool>? _SendDistanceCountUpCommand = null;
         private RelayCommand<bool>? _SendEOTEmgStopCommand = null;
         private RelayCommand<HeadlightValues>? _SendFrontHeadlightCommand = null;
+        private RelayCommand<WiperSwitchValues>? _SendWipersCommand = null;
         private RelayCommand<bool>? _SendGaugeLightSwitchCommand = null;
         private RelayCommand<bool>? _SendHornCommand = null;
         private RelayCommand? _SendHornSequenceCommand = null;
@@ -58,10 +60,11 @@ namespace R8LocoCtrl.ViewModel
         private RelayCommand<bool>? _SendSlowSpeedOnOffCommand = null;
         private RelayCommand<bool>? _SendStepLightSwitchCommand = null;
         private RelayCommand<ServiceSelectorSwitchValues>? _ServiceSelectorCommand = null;
-        private RelayCommand<bool>? _ThrottleDecreaseCommand = null;
-        private RelayCommand<bool>? _ThrottleIncreaseCommand = null;
+        private RelayCommand<bool>? _DPUThrottleDecreaseCommand = null;
+        private RelayCommand<bool>? _DPUThrottleIncreaseCommand = null;
         private RelayCommand<bool[]>? _TractionMotorsCommand = null;
         private RelayCommand<TrainBrakeCutoutValues>? _TrainBrakeCutOutCommand = null;
+        private CommandRegistry commandRegistry;
         private int dynamicBrakes;
         private int dynBrakeLC;
         private int indyBrakeLC;
@@ -76,7 +79,56 @@ namespace R8LocoCtrl.ViewModel
         private int trainBrakes;
 
         public Run8ActionsViewModel()
-        { }
+        {
+            commandRegistry = CommandRegistry.Instance;
+
+            commandRegistry.SubscribeToCommand(Commands.AlerterReset, SendAlerterExecute);
+            commandRegistry.SubscribeToCommand(Commands.AutoABTrain, AutoABExecute);
+            commandRegistry.SubscribeToCommand(Commands.AutoCBTrain, AutoABExecute);
+            commandRegistry.SubscribeToCommand(Commands.AutoEOTTrain, AutoEOTExecute);
+            commandRegistry.SubscribeToCommand(Commands.AutoMUTrain, AutoMUExecute);
+            commandRegistry.SubscribeToCommand(Commands.AutoStartTrain, AutoStartTrainExecute);
+            commandRegistry.SubscribeToCommand(Commands.BellOnOff, SendBellExecute);
+            commandRegistry.SubscribeToCommand(Commands.CB_Control, ControlSwitchExecute);
+            commandRegistry.SubscribeToCommand(Commands.CB_DynBrake, DynBrakeSwitchExecute);
+            commandRegistry.SubscribeToCommand(Commands.CB_EngRun, EngRunSwitchExecute);
+            commandRegistry.SubscribeToCommand(Commands.CB_GenField, GenFieldSwitchExecute);
+            commandRegistry.SubscribeToCommand(Commands.DistanceCounterDown, SendDistanceCountDownExecute);
+            commandRegistry.SubscribeToCommand(Commands.DistanceCounterUp, SendDistanceCountUpExecute);
+            commandRegistry.SubscribeToCommand(Commands.DPUDynBrakeSetup, DynBrakeSetupExecute);
+            commandRegistry.SubscribeToCommand(Commands.DPUFenceDecrease, DPUFenceDecreaseExecute);
+            commandRegistry.SubscribeToCommand(Commands.DPUFenceIncrease, DPUFenceIncreaseExecute);
+            commandRegistry.SubscribeToCommand(Commands.DTMF0, DTMF0);
+            commandRegistry.SubscribeToCommand(Commands.DTMF1, DTMF1);
+            commandRegistry.SubscribeToCommand(Commands.DTMF2, DTMF2);
+            commandRegistry.SubscribeToCommand(Commands.DTMF3, DTMF3);
+            commandRegistry.SubscribeToCommand(Commands.DTMF4, DTMF4);
+            commandRegistry.SubscribeToCommand(Commands.DTMF5, DTMF5);
+            commandRegistry.SubscribeToCommand(Commands.DTMF6, DTMF6);
+            commandRegistry.SubscribeToCommand(Commands.DTMF7, DTMF7);
+            commandRegistry.SubscribeToCommand(Commands.DTMF8, DTMF8);
+            commandRegistry.SubscribeToCommand(Commands.DTMF9, DTMF9);
+            commandRegistry.SubscribeToCommand(Commands.DTMFPound, DTMFPound);
+            commandRegistry.SubscribeToCommand(Commands.DTMFStar, DTMFStar);
+            commandRegistry.SubscribeToCommand(Commands.EOTEmgStop, SendEOTEmgStopExecute);
+            commandRegistry.SubscribeToCommand(Commands.HEPSwitch, HEPExecute);
+            commandRegistry.SubscribeToCommand(Commands.Horn, SendHornExecute);
+            commandRegistry.SubscribeToCommand(Commands.HornSequencer, SendHornSequenceExecute);
+            commandRegistry.SubscribeToCommand(Commands.IndyBrakeBail, SendIndyBailOffExecute);
+            commandRegistry.SubscribeToCommand(Commands.ParkingBrakeReset, SendReleaseParkingExecute);
+            commandRegistry.SubscribeToCommand(Commands.ParkingBrakeSet, SendSetParkingExecute);
+            commandRegistry.SubscribeToCommand(Commands.RadioChannelMode, SendRadioChannelModeExecute);
+            commandRegistry.SubscribeToCommand(Commands.RadioDTMFMode, SendRadioDTMFModeExecute);
+            commandRegistry.SubscribeToCommand(Commands.RadioVolDecrease, SendRadioVolumeDecreaseExecute);
+            commandRegistry.SubscribeToCommand(Commands.RadioVolIncrease, SendRadioVolumeIncreaseExecute);
+            commandRegistry.SubscribeToCommand(Commands.RadioVolMute, SendRadioVolumeMuteExecute);
+            commandRegistry.SubscribeToCommand(Commands.SanderToggle, SenderSanderExecute);
+            commandRegistry.SubscribeToCommand(Commands.SlowSpeedDecrease, SendSlowSpeedDecrementExecute);
+            commandRegistry.SubscribeToCommand(Commands.SlowSpeedIncrease, SendSlowSpeedIncrementExecute);
+            commandRegistry.SubscribeToCommand(Commands.SlowSpeedToggle, SendSlowSpeedOnOffExecute);
+            commandRegistry.SubscribeToCommand(Commands.DPUThrottleDecrease, DPUThrottleDecreaseExecute);
+            commandRegistry.SubscribeToCommand(Commands.DPUThrottleIncrease, DPUThrottleIncreaseExecute);
+        }
 
         public RelayCommand<bool> AutoABCommand
         {
@@ -381,12 +433,24 @@ namespace R8LocoCtrl.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets the command that sends the front headlight value when its radio buttons change.
+        /// </summary>
         public RelayCommand<HeadlightValues> SendFrontHeadlightCommand
         {
             get
             {
                 _SendFrontHeadlightCommand ??= new RelayCommand<HeadlightValues>(SendFrontHeadlightExecute);
                 return _SendFrontHeadlightCommand;
+            }
+        }
+
+        public RelayCommand<WiperSwitchValues> SendWipersCommand
+        {
+            get
+            {
+                _SendWipersCommand ??= new RelayCommand<WiperSwitchValues>(SendWiperExecute);
+                return _SendWipersCommand;
             }
         }
 
@@ -471,6 +535,9 @@ namespace R8LocoCtrl.ViewModel
             }
         }
 
+        /// <summary>
+        /// Gets the value that sets the rear headlights value when its radio buttons change.
+        /// </summary>
         public RelayCommand<HeadlightValues> SendRearHeadlightCommand
         {
             get
@@ -552,21 +619,21 @@ namespace R8LocoCtrl.ViewModel
             }
         }
 
-        public RelayCommand<bool> ThrottleDecreaseCommand
+        public RelayCommand<bool> DPUThrottleDecreaseCommand
         {
             get
             {
-                _ThrottleDecreaseCommand ??= new RelayCommand<bool>(ThrottleDecreaseExecute);
-                return _ThrottleDecreaseCommand;
+                _DPUThrottleDecreaseCommand ??= new RelayCommand<bool>(DPUThrottleDecreaseExecute);
+                return _DPUThrottleDecreaseCommand;
             }
         }
 
-        public RelayCommand<bool> ThrottleIncreaseCommand
+        public RelayCommand<bool> DPUThrottleIncreaseCommand
         {
             get
             {
-                _ThrottleIncreaseCommand ??= new RelayCommand<bool>(ThrottleIncreaseExecute);
-                return _ThrottleIncreaseCommand;
+                _DPUThrottleIncreaseCommand ??= new RelayCommand<bool>(DPUThrottleIncreaseExecute);
+                return _DPUThrottleIncreaseCommand;
             }
         }
 
@@ -624,29 +691,101 @@ namespace R8LocoCtrl.ViewModel
             }
         }
 
-        protected virtual void AutoABExecute(bool parameter)
+        private void DTMF0(bool isButtonPressed)
         {
-            senderClient?.SendAutoABTrain(parameter);
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF0 });
         }
 
-        protected virtual void AutoCBExecute(bool parameter)
+        private void DTMF1(bool isButtonPressed)
         {
-            senderClient?.SendAutoCBTrain(parameter);
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF1 });
         }
 
-        protected virtual void AutoEOTExecute(bool parameter)
+        private void DTMF2(bool isButtonPressed)
         {
-            senderClient?.SendAutoEOTTrain(parameter);
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF2 });
         }
 
-        protected virtual void AutoMUExecute(bool parameter)
+        private void DTMF3(bool isButtonPressed)
         {
-            senderClient?.SendAutoMUTrain(parameter);
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF3 });
         }
 
-        protected virtual void AutoStartTrainExecute(bool parameter)
+        private void DTMF4(bool isButtonPressed)
         {
-            senderClient?.SendAutoStartTrain(parameter);
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF4 });
+        }
+
+        private void DTMF5(bool isButtonPressed)
+        {
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF5 });
+        }
+
+        private void DTMF6(bool isButtonPressed)
+        {
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF6 });
+        }
+
+        private void DTMF7(bool isButtonPressed)
+        {
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF7 });
+        }
+
+        private void DTMF8(bool isButtonPressed)
+        {
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF8 });
+        }
+
+        private void DTMF9(bool isButtonPressed)
+        {
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMF9 });
+        }
+
+        private void DTMFPound(bool isButtonPressed)
+        {
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMFPound });
+        }
+
+        private void DTMFStar(bool isButtonPressed)
+        {
+            DTMFToneExecute(
+                new DTMFCommandParameter { IsButtonPressed = isButtonPressed, Tone = DTMFToneValues.DTMFStar });
+        }
+
+        protected virtual void AutoABExecute(bool buttonIsPressed)
+        {
+            senderClient?.SendAutoABTrain(buttonIsPressed);
+        }
+
+        protected virtual void AutoCBExecute(bool buttonIsPressed)
+        {
+            senderClient?.SendAutoCBTrain(buttonIsPressed);
+        }
+
+        protected virtual void AutoEOTExecute(bool buttonIsPressed)
+        {
+            senderClient?.SendAutoEOTTrain(buttonIsPressed);
+        }
+
+        protected virtual void AutoMUExecute(bool buttonIsPressed)
+        {
+            senderClient?.SendAutoMUTrain(buttonIsPressed);
+        }
+
+        protected virtual void AutoStartTrainExecute(bool buttonIsPressed)
+        {
+            senderClient?.SendAutoStartTrain(buttonIsPressed);
         }
 
         protected virtual void ControlSwitchExecute(bool parameter)
@@ -664,6 +803,7 @@ namespace R8LocoCtrl.ViewModel
             senderClient?.SendDPUFenceIncrease(parameter);
         }
 
+        // Todo: Not a bool param
         protected virtual void DTMFToneExecute(DTMFCommandParameter parameter)
         {
             if(parameter == null)
@@ -681,6 +821,7 @@ namespace R8LocoCtrl.ViewModel
             senderClient?.SendDynBrakeSwitch(parameter);
         }
 
+        // Todo: This is not a bool param
         protected virtual void EngineStartExecute(bool[]? values)
         {
             ArgumentNullException.ThrowIfNull(values);
@@ -708,11 +849,13 @@ namespace R8LocoCtrl.ViewModel
             senderClient?.SendHEPSwitch(parameter);
         }
 
+        // No hot key
         protected virtual void IsolationSwitchExecute(IsolationSwitchValues parameter)
         {
             senderClient?.SendIsolationSwitch(parameter);
         }
 
+        // No hot key
         protected virtual void MUHeadlightSwitchExecute(MUHLSwitchValues parameter)
         {
             senderClient?.SendMUHLSwitch(parameter);
@@ -805,9 +948,19 @@ namespace R8LocoCtrl.ViewModel
             senderClient?.SendSander(parameter);
         }
 
+
+        /// <summary>
+        /// Sets the front headlight to the value specified.
+        /// </summary>
+        /// <param name="parameter">The specified value.</param>
         protected virtual void SendFrontHeadlightExecute(HeadlightValues parameter)
         {
             senderClient?.SendHeadlightFront(parameter);
+        }
+
+        protected virtual void SendWiperExecute(WiperSwitchValues parameter)
+        {
+            senderClient?.SendWiperSwitch(parameter);
         }
 
         protected virtual void SendGaugeLightSwitchExecute(bool parameter)
@@ -855,6 +1008,7 @@ namespace R8LocoCtrl.ViewModel
             senderClient?.SendRadioVolumeMute(parameter);
         }
 
+        // Todo: Params
         protected virtual void SendRearHeadlightExecute(HeadlightValues parameter)
         {
             senderClient?.SendHeadlightRear(parameter);
@@ -890,21 +1044,23 @@ namespace R8LocoCtrl.ViewModel
             senderClient?.SendStepLightSwitch(parameter);
         }
 
+        // Todo: Params
         protected virtual void ServiceSelectorExecute(ServiceSelectorSwitchValues parameter)
         {
             senderClient?.SendServiceSelectorSwitch(parameter);
         }
 
-        protected virtual void ThrottleDecreaseExecute(bool parameter)
+        protected virtual void DPUThrottleDecreaseExecute(bool parameter)
         {
             senderClient?.SendDPUThrottleDecrease(parameter);
         }
 
-        protected virtual void ThrottleIncreaseExecute(bool parameter)
+        protected virtual void DPUThrottleIncreaseExecute(bool parameter)
         {
             senderClient?.SendDPUThrottleIncrease(parameter);
         }
 
+        // Todo: params
         protected virtual void TractionMotorsExecute(bool[] parameter)
         {
             TractionMotors motors = TractionMotors.flag;
@@ -918,6 +1074,7 @@ namespace R8LocoCtrl.ViewModel
             senderClient?.SendTractionMotors(motors);
         }
 
+        // Todo: Params
         protected virtual void TrainBrakeCutOutExecute(TrainBrakeCutoutValues parameter)
         {
             senderClient?.SendTrainBrakeCutoutValve(parameter);
