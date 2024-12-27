@@ -11,8 +11,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:syn="http://schemas.syncfusion.com/wpf"
     xmlns:vm="clr-namespace:R8LocoCtrl.ViewModel"
-    d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True,
-                                     Type=int:Run8ListenerClient}"
     d:Height="400"
     d:Width="830"
     Background="Black"
