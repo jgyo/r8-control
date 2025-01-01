@@ -1,6 +1,4 @@
-#### 2025/01/01 Version 1.1.3
+#### 2025/01/01 Version 1.1.4
 
-- Adding hotkey feature including 90 commands.
-- Starting to add documentation under documentation folder.
-    - Hotkey Editor.pdf
-    - R8 Control Default Key Bindings.pdf
+- New documentation under documentation folder.
+    - Getting Started Using R8 Control.pdf
