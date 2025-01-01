@@ -60,6 +60,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>CR8ID.Designer.cs</LastGenOutput>
     </None>
+    <None Update="Documentation\Getting Started with R8 Control.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Documentation\Hotkey Editor.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
