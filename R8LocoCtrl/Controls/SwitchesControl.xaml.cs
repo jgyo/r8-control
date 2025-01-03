@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HotKeyLibrary;
+using R8LocoCtrl.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,12 @@ namespace R8LocoCtrl.Controls
         public SwitchesControl()
         {
             InitializeComponent();
+            CommandRegistry.Instance.SubscribeToCommand(Commands.SlowSpeedToggle, ToggleSlowSpeedControl);
+        }
+
+        private void ToggleSlowSpeedControl()
+        {
+            SlowSpeedOnOffButton.IsChecked = !SlowSpeedOnOffButton.IsChecked;
         }
     }
 }

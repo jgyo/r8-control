@@ -291,23 +291,5 @@
                 installed. This directory enables the External Assistant menu option.
             </TextBlock>
         </StackPanel>
-        <Grid Width="500">
-            <Grid Width="300" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Button
-                    Grid.Column="0"
-                    Command="{Binding ResetPropertiesCommand}"
-                    Content="Reset" />
-                <Button
-                    Grid.Column="2"
-                    Command="{Binding SubmitPropertiesCommand}"
-                    Content="Submit" />
-
-            </Grid>
-        </Grid>
     </WrapPanel>
 </UserControl>

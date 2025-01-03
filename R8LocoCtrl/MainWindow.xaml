@@ -32,8 +32,8 @@
 
             <syn:MenuItemAdv Header="File">
                 <syn:MenuItemAdv
-                    Command="{Binding ActivateWindowCommand}"
-                    CommandParameter="{x:Static int:Run8Windows.Setup}"
+                    x:Name="OpenSetupWindowMenuItem"
+                    Click="OpenSetupWindow_Click"
                     Header="Setup" />
                 <syn:MenuItemAdv Click="Hotkey_MenuClick" Header="Hotkeys" />
                 <syn:MenuItemAdv Click="MenuItemAdv_Close" Header="Close" />
@@ -353,14 +353,6 @@
                 syn:DockingManager.TargetNameInDockedMode="Driver1">
                 <ScrollViewer>
                     <controls:DPUControl />
-                </ScrollViewer>
-            </ContentControl>
-            <ContentControl
-                x:Name="Setup"
-                syn:DockingManager.Header="Program Properties"
-                syn:DockingManager.State="Document">
-                <ScrollViewer>
-                    <controls:ProgramProperties />
                 </ScrollViewer>
             </ContentControl>
             <ContentControl
