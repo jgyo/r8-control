@@ -1,0 +1,44 @@
+﻿<Window
+    x:Class="R8LocoCtrl.SetupWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:R8LocoCtrl.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:R8LocoCtrl"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Setup Program Properties"
+    Width="541"
+    Height="450"
+    Topmost="True"
+    mc:Ignorable="d">
+    <Grid Background="#FFF0F0F0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <ScrollViewer>
+            <controls:ProgramProperties />
+        </ScrollViewer>
+        <Grid Grid.Row="1" Width="500">
+            <Grid
+                Width="300"
+                Margin="4"
+                HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding ResetPropertiesCommand}"
+                    Content="Reset" />
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding SubmitPropertiesCommand}"
+                    Content="Submit" />
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -125,7 +125,6 @@ namespace R8LocoCtrl.ViewModel
             commandRegistry.SubscribeToCommand(Commands.SanderToggle, SenderSanderExecute);
             commandRegistry.SubscribeToCommand(Commands.SlowSpeedDecrease, SendSlowSpeedDecrementExecute);
             commandRegistry.SubscribeToCommand(Commands.SlowSpeedIncrease, SendSlowSpeedIncrementExecute);
-            commandRegistry.SubscribeToCommand(Commands.SlowSpeedToggle, SendSlowSpeedOnOffExecute);
             commandRegistry.SubscribeToCommand(Commands.DPUThrottleDecrease, DPUThrottleDecreaseExecute);
             commandRegistry.SubscribeToCommand(Commands.DPUThrottleIncrease, DPUThrottleIncreaseExecute);
         }
